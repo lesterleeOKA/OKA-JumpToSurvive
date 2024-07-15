@@ -1,15 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class QuestionController : MonoBehaviour
 {
     public static QuestionController Instance = null;
-    public string[] questions = new string[4] {"test", "book", "color", "car"};
-    public Text qaBoard;
-    public bool answered = false;
     public Word word;
+
+    public CurrentQuestion currentQuestion;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class QuestionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.randomQuestion();
+        this.GetQuestionAnswer();
     }
 
     // Update is called once per frame
@@ -29,34 +29,119 @@ public class QuestionController : MonoBehaviour
     {
         if (Input.GetKeyDown("q"))
         {
-            randomQuestion();
+            GetQuestionAnswer();
         }
     }
 
-
-    public void NextQuestion()
+    public void nextQuestion()
     {
-        StartCoroutine(nextQuestion());
+        this.GetQuestionAnswer();
     }
 
-    IEnumerator nextQuestion()
+    public void randAnswer()
     {
-        yield return new WaitForSeconds(2.0f);
-        this.randomQuestion();
+        if(this.currentQuestion.qa == null) return;
+        var randId = UnityEngine.Random.Range(0, this.currentQuestion.answersChoics.Length);
+        var answer = this.currentQuestion.answersChoics[randId];
+        this.word.setWord(answer);
     }
-    public void randomQuestion()
+
+    public void GetQuestionAnswer(Action finisedAction = null)
     {
-        this.answered = false;
+        if (LoaderConfig.Instance == null || QuestionManager.Instance == null)
+            return;
 
-        int randQA = Random.Range(0, this.questions.Length);
-
-        if (this.qaBoard != null) this.qaBoard.text = this.questions[randQA];
-
-        GameController.Instance.RandomlySortChildObjects();
-
-        if(this.word != null)
+        try
         {
-            this.word.setWord(this.questions[randQA]);
+            var questionDataList = QuestionManager.Instance.questionData;
+            if (LogController.Instance != null) LogController.Instance.debug("Loaded questions:" + questionDataList.Data.Count);
+            if (questionDataList == null || questionDataList.Data == null || questionDataList.Data.Count == 0)
+            {
+                return;
+            }
+            int answeredQA = this.currentQuestion.numberQuestion;
+            string correctAnswer = this.currentQuestion.correctAnswer;
+
+            if (answeredQA >= questionDataList.Data.Count)
+            {
+                answeredQA = 0;
+            }
+
+            int questionCount = questionDataList.Data.Count;
+            QuestionList qa = questionDataList.Data[answeredQA];
+            this.currentQuestion.setNewQuestion(qa);
+
+            answeredQA = (answeredQA + 1) % questionDataList.Data.Count;
+            if(GameController.Instance != null) GameController.Instance.RandomlySortChildObjects();
+            this.randAnswer();
         }
+        catch (Exception e)
+        {
+            if (LogController.Instance != null) LogController.Instance.debugError(e.Message);
+        }
+
     }
+}
+
+
+
+[Serializable]
+public class CurrentQuestion
+{
+    public int numberQuestion = 0;
+    public QuestionType questiontype = QuestionType.None;
+    public QuestionList qa = null;
+    public TextMeshProUGUI questionText;
+    public string correctAnswer;
+    public string[] answersChoics;
+    public RawImage questionImage;
+    private AspectRatioFitter aspecRatioFitter = null;
+
+    public void setNewQuestion(QuestionList qa = null)
+    {
+        if (qa == null) return;
+        this.qa = qa;
+
+        switch (qa.QuestionType)
+        {
+            case "Picture":
+                this.questiontype = QuestionType.Picture;
+                this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
+                var qaImage = qa.texture;
+
+                if (this.questionImage != null && qaImage != null)
+                {
+                    this.questionImage.texture = qaImage;
+                    this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
+                }
+                break;
+            case "Audio":
+                this.questiontype = QuestionType.Picture;
+                break;
+            case "Text":
+                this.questiontype = QuestionType.Text;
+                if (this.questionText != null) this.questionText.enabled = true;
+                if (this.questionText != null) this.questionText.text = qa.Question;
+                if (this.questionImage!= null)this.questionImage.enabled = false;
+                this.correctAnswer = qa.Answer;
+                this.answersChoics = qa.Answers;
+                break;
+        }
+
+        if (LogController.Instance != null)
+        {
+            LogController.Instance.debug($"Get new {nameof(this.questiontype)} question");
+        }
+
+        this.numberQuestion += 1;
+    }
+}
+
+
+public enum QuestionType
+{
+    None=0,
+    Text=1,
+    Picture=2,
+    Audio=3,
 }

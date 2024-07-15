@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         // Jump if the player presses the jump button and is grounded
         if (Input.GetKeyDown("space"))
         {
-            Debug.Log("Jumped");
+            //Debug.Log("Jumped");
             Jump();
         }
 
@@ -49,7 +49,8 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if(this.character.isGrounded) this.rb.AddForce(Vector2.up * jumpForce);
+        if(this.character.isGrounded && StartGame.Instance.startedGame) 
+            this.rb.AddForce(Vector2.up * jumpForce);
     }
 
     
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     void SetCharacterSprite(int id)
     {
-        Debug.Log(id);
+        //Debug.Log(id);
         if(this.characterSprites[id] != null)
             this.character.gameObject.GetComponent<Image>().sprite = this.characterSprites[id];
     }
@@ -65,6 +66,6 @@ public class PlayerController : MonoBehaviour
     void TriggerWord()
     {
         Debug.Log("word belong to player:" + this.playerId);
-        QuestionController.Instance.NextQuestion();
+        QuestionController.Instance.randAnswer();
     }
 }

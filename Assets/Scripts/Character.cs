@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.collider.tag);
+        //Debug.Log(collision.collider.tag);
         if (collision.collider.tag.Contains("Ground"))
         {
             isGrounded = true;
@@ -35,9 +35,9 @@ public class Character : MonoBehaviour
         if (collider.tag.Contains("Word"))
         {
             Debug.Log(collider.tag);
-            this.collidedWord?.Invoke();
             var word = collider.GetComponent<Word>();
             word.resetPosition();
+            this.collidedWord?.Invoke();
         }
     }
 }
