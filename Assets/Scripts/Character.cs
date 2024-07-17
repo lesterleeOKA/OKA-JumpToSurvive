@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public delegate void CollidedWord();
+    public delegate void CollidedWord(string word);
     public delegate void EnterGround(int id);
     public delegate void ExitGround(int id);
     public event CollidedWord collidedWord;
@@ -17,6 +17,16 @@ public class Character : MonoBehaviour
         {
             isGrounded = true;
             this.enterGround?.Invoke(0);
+        }
+
+        if (collision.collider.tag.Contains("Word"))
+        {
+            var obj = collision.collider;
+            Debug.Log(obj.tag);
+            var wordObj = obj.GetComponent<Word>();
+            wordObj.resetPosition();
+            this.collidedWord?.Invoke(wordObj.word.text);
+            this.enabled = false;
         }
     }
 
@@ -35,9 +45,9 @@ public class Character : MonoBehaviour
         if (collider.tag.Contains("Word"))
         {
             Debug.Log(collider.tag);
-            var word = collider.GetComponent<Word>();
-            word.resetPosition();
-            this.collidedWord?.Invoke();
+            var wordObj = collider.GetComponent<Word>();
+            wordObj.resetPosition();
+            this.collidedWord?.Invoke(wordObj.word.text);
         }
     }
 }

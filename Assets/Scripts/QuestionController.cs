@@ -3,13 +3,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class QuestionController : MonoBehaviour
 {
     public static QuestionController Instance = null;
-    public Word word;
-
+    public Vector2 startPosition;
+    public Transform wordParent;
+    public GameObject word;
+    public List<Word> createdWords = new List<Word>();
     public CurrentQuestion currentQuestion;
+    public bool wordTriggering = false;
+    public bool moveTonextQuestion = true;
+    public float delayToNextQuestion = 2f;
+    private float count = 0f;
 
     private void Awake()
     {
@@ -18,32 +26,119 @@ public class QuestionController : MonoBehaviour
             Instance = this;
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        this.GetQuestionAnswer();
+        this.createdWords = new List<Word>();
+        this.count = this.delayToNextQuestion;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("q") && !this.wordTriggering)
         {
-            GetQuestionAnswer();
+            StartCoroutine(reTriggerWords());
+        }
+
+        if(GameController.Instance != null && StartGame.Instance != null && this.createdWords != null)
+        {
+            if (!GameController.Instance.gameTimer.endGame && StartGame.Instance.startedGame && this.createdWords.Count > 0)
+            {
+                this.moveTonextQuestion = this.createdWords.All(word => !word.allowMove);
+
+                if (this.moveTonextQuestion)
+                {
+                    if(this.count > 0f)
+                    {
+                        this.count -= Time.deltaTime;
+
+                        if(this.count < (this.delayToNextQuestion * 0.5f))
+                        {
+                            if (GameController.Instance != null) 
+                                GameController.Instance.resetPlayers();
+                        }
+                    }
+                    else
+                    {
+                        this.count = this.delayToNextQuestion;
+                        this.nextQuestion();
+                    }
+                }
+            }
         }
     }
 
     public void nextQuestion()
     {
-        this.GetQuestionAnswer();
+        if (this.moveTonextQuestion)
+        {
+            Debug.Log("next question");
+            this.moveTonextQuestion = false;
+            this.GetQuestionAnswer();
+        }
+    }
+
+    private IEnumerator reTriggerWords()
+    {
+        this.wordTriggering = true;
+        float _delay = UnityEngine.Random.Range(0.8f, 2f);
+        var answers = this.createdWords.Count;
+        for (int i = 0; i < this.createdWords.Count; i++)
+        {
+            var word = this.createdWords[i];
+            if (word != null)
+            {
+                float posY = UnityEngine.Random.Range(startPosition.y - 250f, startPosition.y - 500f);
+                word.gameObject.transform.localPosition = new Vector2(startPosition.x, posY);
+                word.reTrigger();
+                yield return new WaitForSeconds(_delay);
+                if(i == answers - 1) this.wordTriggering = false;
+            }
+        }
     }
 
     public void randAnswer()
     {
-        if(this.currentQuestion.qa == null) return;
-        var randId = UnityEngine.Random.Range(0, this.currentQuestion.answersChoics.Length);
-        var answer = this.currentQuestion.answersChoics[randId];
-        this.word.setWord(answer);
+        if (this.currentQuestion.qa == null || String.IsNullOrEmpty(this.currentQuestion.qa.QID)) return;
+        this.createdWords.Clear();
+        StartCoroutine(this.InstantiateWordsWithDelay());
+    }
+
+    private IEnumerator InstantiateWordsWithDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        this.wordTriggering = true;
+        float _delay = UnityEngine.Random.Range(0.8f, 2f);
+        var answers = this.currentQuestion.answersChoics.Length;
+        for (int i = 0; i < answers; i++)
+        {
+            var answer = this.currentQuestion.answersChoics[i];
+            if (!string.IsNullOrEmpty(answer))
+            {
+                this.InstantiateWord(answer);
+                yield return new WaitForSeconds(_delay);
+                if (i == answers - 1) this.wordTriggering = false;
+            }
+        }
+    }
+
+    void InstantiateWord(string text)
+    {
+        // Instantiate the prefab at the current transform position and rotation
+        float minY = startPosition.y - 500f;
+        float maxY = startPosition.y - 250f;
+        float posY = UnityEngine.Random.Range(minY, maxY); // Corrected range
+        Vector2 pos = new Vector2(startPosition.x, posY);
+
+        var rock = Instantiate(word, Vector2.zero, Quaternion.identity); // Corrected instantiation
+        rock.transform.SetParent(this.wordParent, true); // Set parent and keep local scale
+        rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
+
+        var createdWord = rock.GetComponent<Word>();
+        createdWord.startPosition = pos;
+        createdWord.setWord(text);
+        this.createdWords.Add(createdWord);
     }
 
     public void GetQuestionAnswer(Action finisedAction = null)
@@ -59,21 +154,22 @@ public class QuestionController : MonoBehaviour
             {
                 return;
             }
-            int answeredQA = this.currentQuestion.numberQuestion;
+
             string correctAnswer = this.currentQuestion.correctAnswer;
-
-            if (answeredQA >= questionDataList.Data.Count)
-            {
-                answeredQA = 0;
-            }
-
             int questionCount = questionDataList.Data.Count;
-            QuestionList qa = questionDataList.Data[answeredQA];
-            this.currentQuestion.setNewQuestion(qa);
-
-            answeredQA = (answeredQA + 1) % questionDataList.Data.Count;
-            if(GameController.Instance != null) GameController.Instance.RandomlySortChildObjects();
+            QuestionList qa = questionDataList.Data[this.currentQuestion.numberQuestion];
+            this.currentQuestion.setNewQuestion(qa, questionCount);
             this.randAnswer();
+
+            /*if (this.currentQuestion.numberQuestion < questionDataList.Data.Count)
+            {
+                this.currentQuestion.numberQuestion += 1;
+            }
+            else
+            {
+                this.currentQuestion.numberQuestion = 0;
+            }*/
+
         }
         catch (Exception e)
         {
@@ -97,7 +193,7 @@ public class CurrentQuestion
     public RawImage questionImage;
     private AspectRatioFitter aspecRatioFitter = null;
 
-    public void setNewQuestion(QuestionList qa = null)
+    public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0)
     {
         if (qa == null) return;
         this.qa = qa;
@@ -133,7 +229,10 @@ public class CurrentQuestion
             LogController.Instance.debug($"Get new {nameof(this.questiontype)} question");
         }
 
-        this.numberQuestion += 1;
+        if(this.numberQuestion < totalQuestion-1)
+            this.numberQuestion += 1;
+        else
+            this.numberQuestion = 0;
     }
 }
 

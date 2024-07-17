@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +11,51 @@ public class GameController : MonoBehaviour
     private List<int> previousSiblingIndices = new List<int>();
     public List<RectTransform> playersList = new List<RectTransform>();
     public HorizontalLayoutGroup layoutGroup;
+    public bool reseting = false;
+    public Timer gameTimer;
+    public CanvasGroup GameUILayer, TopUILayer, EndGameLayer;
 
     private void Awake()
     {
         if(Instance == null) Instance = this;
+        SetUI.Set(this.GameUILayer, true, 0f);
+        SetUI.Set(this.TopUILayer, false, 0f);
+        SetUI.Set(this.EndGameLayer, false, 0f);
+    }
+
+    public void enterGame(bool status)
+    {
+        if(!status) SetUI.Set(this.GameUILayer, false, 0f);
+        SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
+        SetUI.Set(this.EndGameLayer, !status, !status ? 0.5f : 0f);
+    }
+
+    public void resetPlayers()
+    {
+        if(!reseting)
+        {
+            this.reseting = true;
+            StartCoroutine(randomlySortChildObjects());
+        }
+    }
+
+    public System.Collections.IEnumerator randomlySortChildObjects()
+    {
+        for (int i = 0; i < this.playersList.Count; i++)
+        {
+            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            if (playerController != null) { 
+                playerController.checkAnswer();
+                playerController.Init();
+            }
+        }
+        yield return new WaitForSeconds(1f);
+        this.RandomlySortChildObjects();
+    }
+
+    public void retryGame()
+    {
+        SceneManager.LoadScene(2);
     }
 
     public void RandomlySortChildObjects()
@@ -56,6 +98,7 @@ public class GameController : MonoBehaviour
 
         // Refresh the layout to apply the changes
         layoutGroup.SetLayoutHorizontal();
+        this.reseting = false;
     }
 
     private bool HasMatchingIndices(List<int> newIndices)

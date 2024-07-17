@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +9,8 @@ public class StartGame : MonoBehaviour
     public bool startedGame = false;
     public UnityEvent finishedEvent;
     private CanvasGroup cg = null;
+    private float lastPlayTime = 0f;
+    private float playDelay = 1f;
 
     private void Awake()
     {
@@ -19,6 +19,7 @@ public class StartGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.startedGame = false;
         this.cg = GetComponent<CanvasGroup>();
         SetUI.Set(this.cg, true, 0f);
         this.startupCountDown.Init();
@@ -33,7 +34,26 @@ public class StartGame : MonoBehaviour
             {
                 this.count += Time.deltaTime;
                 this.startupCountDown.toImage((int)this.count);
-                if (LogController.Instance != null) LogController.Instance.debug("prepare counting:" + this.count);
+
+                if (Time.time - lastPlayTime >= playDelay)
+                {
+                    if (AudioController.Instance != null)
+                    {
+                        if (startupCountDown.cg.Length - (int)count <= 1)
+                        {
+                            AudioController.Instance.PlayAudio(5);
+                        }
+                        else
+                        {
+                            AudioController.Instance.PlayAudio(4);
+                        }
+                    }                    
+                    lastPlayTime = Time.time;
+                }
+
+                
+
+                //if (LogController.Instance != null) LogController.Instance.debug("prepare counting:" + this.count);
             }
             else
             {

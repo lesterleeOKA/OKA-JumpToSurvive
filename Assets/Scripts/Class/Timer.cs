@@ -9,7 +9,6 @@ public class Timer : MonoBehaviour
     public float currentTime = 0f;
     public TextMeshProUGUI timer = null;
     bool isSoundPlay=false;
-    public AudioSource audioSource;
     public bool endGame = false;
     public UnityEvent finishedEvent;
 
@@ -28,10 +27,11 @@ public class Timer : MonoBehaviour
             if(this.currentTime > 0f)
             {
                 if(this.currentTime < 10f)
-                {if(isSoundPlay== false)
+                {
+                    if(isSoundPlay== false)
                     {
                         isSoundPlay = true;
-                        if(this.audioSource!= null) this.audioSource.Play();
+                        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(6, true);
                         this.timer.color = Color.red;
                         
                     }
@@ -44,8 +44,7 @@ public class Timer : MonoBehaviour
             {
                 this.currentTime = 0f;
                 this.UpdateTimerText();
-                if (this.audioSource != null) this.audioSource.Stop();
-                StartGame.Instance.startedGame = false;
+                if (AudioController.Instance != null) AudioController.Instance.StopAudio();
                 this.endGame = true;
                 if (this.finishedEvent != null) this.finishedEvent.Invoke();
             }

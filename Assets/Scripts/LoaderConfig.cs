@@ -5,7 +5,7 @@ public class LoaderConfig : MonoBehaviour
 {
     public static LoaderConfig Instance = null;
     public bool audioStatus = false;
-    public AudioSource bgmAudio;
+    private AudioSource bgmAudio = null;
     public string unitKey = string.Empty;
 
 
