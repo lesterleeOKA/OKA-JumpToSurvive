@@ -11,9 +11,11 @@ public class Timer : MonoBehaviour
     bool isSoundPlay=false;
     public bool endGame = false;
     public UnityEvent finishedEvent;
+    private AudioSource lastTenDingDing = null;
 
     private void Start()
     {
+        this.lastTenDingDing = GetComponent<AudioSource>();
         this.Init();
     }
 
@@ -31,9 +33,24 @@ public class Timer : MonoBehaviour
                     if(isSoundPlay== false)
                     {
                         isSoundPlay = true;
-                        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(6, true);
-                        this.timer.color = Color.red;
-                        
+
+                        if (LoaderConfig.Instance.audioStatus)
+                        {
+                            this.lastTenDingDing.Play();
+                            this.lastTenDingDing.loop = true;
+                        }
+                        this.timer.color = Color.red;                  
+                    }
+                    else
+                    {
+                        if (!LoaderConfig.Instance.audioStatus)
+                        {
+                            if(isSoundPlay)
+                            {
+                                this.lastTenDingDing.Stop();
+                                isSoundPlay = false;
+                            }
+                        }
                     }
                     
                 }
@@ -44,8 +61,10 @@ public class Timer : MonoBehaviour
             {
                 this.currentTime = 0f;
                 this.UpdateTimerText();
-                if (AudioController.Instance != null) AudioController.Instance.StopAudio();
+                if (AudioController.Instance != null) 
+                    AudioController.Instance.StopAudio();
                 this.endGame = true;
+                this.lastTenDingDing.Stop();
                 if (this.finishedEvent != null) this.finishedEvent.Invoke();
             }
         }
@@ -55,7 +74,12 @@ public class Timer : MonoBehaviour
     public void Init()
     {
         this.endGame = false;
-        this.currentTime = this.gameDuration;
+
+        if(LoaderConfig.Instance != null && LoaderConfig.Instance.GameTime > 0f) 
+            this.currentTime = LoaderConfig.Instance.GameTime;
+        else
+            this.currentTime = this.gameDuration;
+
         UpdateTimerText();    
     }
     private void UpdateTimerText()

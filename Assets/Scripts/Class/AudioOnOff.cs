@@ -8,6 +8,7 @@ public class AudioOnOff
 {
     public CanvasGroup musicOnPanel;
     public float startPosY = 200f;
+    public bool isAnimated = false;
 
     public void Init(bool status)
     {
@@ -19,8 +20,7 @@ public class AudioOnOff
     {
         if (LoaderConfig.Instance != null)
         {
-            LoaderConfig.Instance.audioStatus = status;
-            LoaderConfig.Instance.changeBGMStatus(LoaderConfig.Instance.audioStatus);
+            LoaderConfig.Instance.changeBGMStatus(status);
         }
 
         if (AudioController.Instance != null)
@@ -34,10 +34,19 @@ public class AudioOnOff
 
     public void setAnimated(bool status, UnityAction completed = null)
     {
-        this.setPanel(status);
-        if (this.musicOnPanel != null)
+        if(!this.isAnimated)
         {
-            this.musicOnPanel.transform.DOLocalMoveY(status ? 0f : this.startPosY, status ? 0.75f : 0f).OnComplete(() => completed?.Invoke());
+            this.isAnimated = true;
+            this.setPanel(status);
+            if (this.musicOnPanel != null)
+            {
+                this.musicOnPanel.transform.DOLocalMoveY(status ? 0f : this.startPosY, status ? 0.75f : 0f).OnComplete(() =>
+                {
+                    this.isAnimated = false;
+                    completed?.Invoke();
+                }
+               );
+            }
         }
     }
 }

@@ -6,9 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     public int playerId = 0;
     public Color32 playerColor = Color.white;
+    public Image playerIcon;
     public int score = 0;
     public string answer = string.Empty;
-    public TextMeshProUGUI scoreText, resultScore;
+    public TextMeshProUGUI userName, scoreText, resultScore;
+    public Animator scoringAnimator;
     public Button jumpBtn;
     public Sprite[] characterSprites;
     public Character character;
@@ -33,6 +35,14 @@ public class PlayerController : MonoBehaviour
             this.jumpBtn.GetComponent<Image>().color = this.playerColor;
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
+
+        if(this.userName != null && this.resultScore != null && this.playerIcon != null)
+        {
+            this.userName.color = this.playerColor;
+            this.playerIcon.color = this.playerColor;
+            this.resultScore.color = this.playerColor;
+        }
+
         this.Init();
     }
 
@@ -47,6 +57,7 @@ public class PlayerController : MonoBehaviour
         if(string.IsNullOrEmpty(word))
         {
             SetUI.Set(this.answerBox, false, 0f);
+            this.answer = "";
             if (this.answerText != null) this.answerText.text = "";
         }
         else
@@ -66,24 +77,21 @@ public class PlayerController : MonoBehaviour
             if (this.scoreText != null && this.resultScore != null)
             {
                 this.score += 10;
+                if(this.scoringAnimator != null)
+                {
+                    this.scoringAnimator.SetTrigger("addScore");
+                }
                 this.scoreText.text = this.score.ToString();
                 this.resultScore.text = this.score.ToString();
             }
         }
+
+        this.Init();
     }
 
     void FixedUpdate()
     {
         if(this.character == null || rb == null) return;
-        // Get input from the player
-       // float horizontal = Input.GetAxis("Horizontal");
-      //  float vertical = Input.GetAxis("Vertical");
-
-        // Move the character
-      //  Vector3 movement = new Vector3(horizontal, 0f, vertical);
-       // movement = this.character.transform.TransformDirection(movement);
-      //  this.character.transform.position += movement * moveSpeed * Time.deltaTime;
-
         // Jump if the player presses the jump button and is grounded
        /* if (Input.GetKeyDown("space"))
         {
@@ -99,15 +107,28 @@ public class PlayerController : MonoBehaviour
         {
             rb.gravityScale = 1.5f;
         }
+
+
+        if(this.jumpBtn != null)
+        {
+            if (this.character.isGrounded &&
+               StartGame.Instance.startedGame &&
+               !QuestionController.Instance.moveTonextQuestion)
+            {
+                this.jumpBtn.interactable = true;
+            }
+            else
+            {
+                this.jumpBtn.interactable = false;
+            }
+        }
     }
 
     public void Jump()
     {
-        if(this.character.isGrounded && StartGame.Instance.startedGame && !QuestionController.Instance.moveTonextQuestion && !GameController.Instance.reseting) {
-            if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
-            this.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            this.rb.velocity = new Vector2(this.rb.velocity.x, this.rb.velocity.y * jumpSpeedMultiplier);
-        }
+        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
+        this.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        this.rb.velocity = new Vector2(this.rb.velocity.x, this.rb.velocity.y * jumpSpeedMultiplier);
     }
 
     void SetCharacterSprite(int id)

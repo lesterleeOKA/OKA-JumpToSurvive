@@ -7,6 +7,7 @@ public class LoaderConfig : MonoBehaviour
     public bool audioStatus = false;
     private AudioSource bgmAudio = null;
     public string unitKey = string.Empty;
+    public float gameTime;
 
 
     private void Awake()
@@ -48,8 +49,18 @@ public class LoaderConfig : MonoBehaviour
 
                     if (!string.IsNullOrEmpty(value))
                     {
-                        unitKey = value;
-                        if (LogController.Instance != null) LogController.Instance.debug("Current Game Unit: " + this.CurrentUnit);
+
+                        switch (key)
+                        {
+                            case "unit":
+                                this.unitKey = value;
+                                if (LogController.Instance != null) LogController.Instance.debug("Current Game Unit: " + this.CurrentUnit);
+                                break;
+                            case "gameTime":
+                                this.gameTime = float.Parse(value);
+                                if (LogController.Instance != null) LogController.Instance.debug("Game Time: " + this.GameTime);
+                                break;
+                        }
                     }
                 }
             }
@@ -75,10 +86,24 @@ public class LoaderConfig : MonoBehaviour
         }
     }
 
+
+    public float GameTime
+    {
+        get
+        {
+            return this.gameTime;
+        }
+        set
+        {
+            this.gameTime = value;
+        }
+    }
+
     public void changeBGMStatus(bool status)
     {
         if (this.bgmAudio != null)
         {
+            this.audioStatus = status;
             this.bgmAudio.enabled = this.audioStatus;
         }
     }

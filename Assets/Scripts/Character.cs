@@ -23,8 +23,9 @@ public class Character : MonoBehaviour
         {
             var obj = collision.collider;
             Debug.Log(obj.tag);
+            if (LogController.Instance != null) LogController.Instance.debug("collision:" + obj.tag);
             var wordObj = obj.GetComponent<Word>();
-            wordObj.resetPosition();
+            //wordObj.resetPosition();
             this.collidedWord?.Invoke(wordObj.word.text);
             this.enabled = false;
         }
@@ -44,9 +45,9 @@ public class Character : MonoBehaviour
        // Debug.Log(collider.tag);
         if (collider.tag.Contains("Word"))
         {
-            Debug.Log(collider.tag);
+            if (LogController.Instance != null) LogController.Instance.debug("collide:" + collider.tag);
             var wordObj = collider.GetComponent<Word>();
-            wordObj.resetPosition();
+            //wordObj.resetPosition();
             this.collidedWord?.Invoke(wordObj.word.text);
         }
     }

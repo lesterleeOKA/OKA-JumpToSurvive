@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(EventTrigger))]
 public class UIButtonEffect : MonoBehaviour
 {
     private EventTrigger eventTrigger = null;
     public float scaleRatio = 0.75f;
+    private Button buttonClick = null;
     
     // Start is called before the first frame update
     void Start()
     {
+        this.buttonClick = this.GetComponent<Button>();
         this.eventTrigger = this.GetComponent<EventTrigger>();
         EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
         pointerDownEntry.eventID = EventTriggerType.PointerDown;
@@ -25,7 +28,7 @@ public class UIButtonEffect : MonoBehaviour
 
     void scaleSmallBtn(BaseEventData data)
     {
-        this.transform.DOScale(this.scaleRatio, 0.3f);
+        if(this.buttonClick.interactable) this.transform.DOScale(this.scaleRatio, 0.3f);
     }
 
     void scaleToOriginal(BaseEventData data)

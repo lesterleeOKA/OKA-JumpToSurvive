@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class AudioControl : MonoBehaviour
@@ -12,8 +11,12 @@ public class AudioControl : MonoBehaviour
     {
         if (this.audioOnOffPanel != null) this.audioOnOffPanel.Init(false);
         this.setMutePanel(false);
-        if (this.muteBtn != null && this.audioSprites[0] != null) 
-            this.muteBtn.sprite = this.audioSprites[0];
+
+        if(LoaderConfig.Instance != null)
+        {
+            if (this.muteBtn != null && this.audioSprites[LoaderConfig.Instance.audioStatus ? 0 : 1] != null)
+                this.muteBtn.sprite = this.audioSprites[LoaderConfig.Instance.audioStatus ? 0 : 1];
+        }
     }
 
     public void setAudioStatus(bool status)
@@ -26,7 +29,7 @@ public class AudioControl : MonoBehaviour
 
     public void setMutePanel(bool status)
     {
-        if (this.audioOnOffPanel != null)
+        if (this.audioOnOffPanel != null && !this.audioOnOffPanel.isAnimated)
         {
             if (status)
             {

@@ -11,32 +11,35 @@ public class GameController : MonoBehaviour
     private List<int> previousSiblingIndices = new List<int>();
     public List<RectTransform> playersList = new List<RectTransform>();
     public HorizontalLayoutGroup layoutGroup;
-    public bool reseting = false;
     public Timer gameTimer;
     public CanvasGroup GameUILayer, TopUILayer, EndGameLayer;
 
     private void Awake()
     {
         if(Instance == null) Instance = this;
+    }
+
+    private void Start()
+    {
         SetUI.Set(this.GameUILayer, true, 0f);
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.EndGameLayer, false, 0f);
+        this.RandomlySortChildObjects();
     }
 
     public void enterGame(bool status)
     {
-        if(!status) SetUI.Set(this.GameUILayer, false, 0f);
+        if(!status) { 
+            SetUI.Set(this.GameUILayer, false, 0f);
+            if (LoaderConfig.Instance != null) LoaderConfig.Instance.changeBGMStatus(false);
+        }
         SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
         SetUI.Set(this.EndGameLayer, !status, !status ? 0.5f : 0f);
     }
 
     public void resetPlayers()
     {
-        if(!reseting)
-        {
-            this.reseting = true;
-            StartCoroutine(randomlySortChildObjects());
-        }
+        StartCoroutine(randomlySortChildObjects());
     }
 
     public System.Collections.IEnumerator randomlySortChildObjects()
@@ -44,17 +47,18 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < this.playersList.Count; i++)
         {
             var playerController = this.playersList[i].GetComponent<PlayerController>();
-            if (playerController != null) { 
+            if (playerController != null) {
                 playerController.checkAnswer();
-                playerController.Init();
             }
         }
         yield return new WaitForSeconds(1f);
         this.RandomlySortChildObjects();
+        QuestionController.Instance.nextQuestion();
     }
 
     public void retryGame()
     {
+        if (LoaderConfig.Instance != null) LoaderConfig.Instance.changeBGMStatus(true);
         SceneManager.LoadScene(2);
     }
 
@@ -98,7 +102,6 @@ public class GameController : MonoBehaviour
 
         // Refresh the layout to apply the changes
         layoutGroup.SetLayoutHorizontal();
-        this.reseting = false;
     }
 
     private bool HasMatchingIndices(List<int> newIndices)
@@ -127,6 +130,7 @@ public class GameController : MonoBehaviour
 
     public void BackToWebpage()
     {
+#if !UNITY_EDITOR
         string hostname = this.GetCurrentDomainName;
 
         if (hostname.Contains("dev.openknowledge.hk"))
@@ -141,5 +145,6 @@ public class GameController : MonoBehaviour
             string Production = "https://www.starwishparty.com/";
             Application.ExternalEval($"location.href = '{Production}', '_self'");
         }
+#endif
     }
 }

@@ -1,10 +1,9 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Word : MonoBehaviour
 {
-    public float rotationSpeed = 360.0f; // Speed at which the wheel rotates (degrees per second)
+    public float rotationSpeed = 360.0f;
     public float checkEndDistance = 200f;
     public RectTransform rectTransform;
     public TextMeshProUGUI word;
@@ -12,17 +11,19 @@ public class Word : MonoBehaviour
     public Vector2 startPosition;
     public Vector2 endPosition;
     public bool allowMove = false;
-    private Rigidbody2D rockRigidbody;
+    private Collider2D col = null;
+    private Rigidbody2D rockRigidbody = null;
     public float forceMagnitude = 500.0f; // Magnitude of the force applied to the rock
 
 
     public void setWord(string _word)
     {
         if(this.word != null) {
-            rectTransform = GetComponent<RectTransform>();
-            rockRigidbody = GetComponent<Rigidbody2D>();
-            rockRigidbody.isKinematic = true;
-            rectTransform.localPosition = this.startPosition;
+            this.rectTransform = GetComponent<RectTransform>();
+            this.rockRigidbody = GetComponent<Rigidbody2D>();
+            this.col = GetComponent<Collider2D>();
+            this.rockRigidbody.isKinematic = true;
+            this.rectTransform.localPosition = this.startPosition;
             this.word.text = _word;
             this.MoveRock();
         }
@@ -32,23 +33,17 @@ public class Word : MonoBehaviour
     {
         if (rockRigidbody == null) return;
         this.allowMove = true;
-        rockRigidbody.isKinematic = false;
+        this.rockRigidbody.isKinematic = false;
         Vector2 direction = (endPosition - startPosition).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x);
-        //this.forceMagnitude = Random.Range(forceRange.x, forceRange.y);
+        //this.forceMagnitude = Random.Range(300f, 500f);
         Vector2 force = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized * this.forceMagnitude;
-        // Apply the force in the object's local space
-        rockRigidbody.AddRelativeForce(force);
+        //this.rockRigidbody.AddRelativeForce(force);
     }
 
     void FixedUpdate()
     {
         if (rockRigidbody == null || !allowMove) return;
-        /*float targetRotation = 0f;
-        float rotationDamping = 3f; // Adjust this value to control the smoothness
-        float currentRotation = rockRigidbody.rotation;
-        float newRotation = Mathf.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationDamping);
-        rockRigidbody.MoveRotation(newRotation);*/
 
         if (wheel != null)
         {
@@ -59,27 +54,39 @@ public class Word : MonoBehaviour
         //Debug.Log(distance);
         if (distance < this.checkEndDistance)
         {
-            resetPosition();
+            this.resetPosition();
         }
         else
         {
-            rectTransform.localPosition = Vector2.MoveTowards(rectTransform.localPosition, endPosition, this.forceMagnitude * Random.Range(4f, 8f) * Time.deltaTime);
+            this.rectTransform.localPosition = Vector2.MoveTowards(this.rectTransform.localPosition, endPosition, this.forceMagnitude * Time.deltaTime);
         }
     }
 
     public void resetPosition()
     {
-        if (rectTransform == null) return;
+        if (this.rectTransform == null) return;
 
         this.allowMove = false;
-        rockRigidbody.velocity = Vector2.zero;
-        rockRigidbody.angularVelocity = 0.0f;
-        rockRigidbody.isKinematic = true; // Disable physics movement
-        rectTransform.localPosition = this.startPosition;
+        this.rockRigidbody.velocity = Vector2.zero;
+        this.rockRigidbody.angularVelocity = 0.0f;
+        this.rockRigidbody.isKinematic = true;
+        this.col.isTrigger = false;
+        this.rockRigidbody.constraints = rockRigidbody.constraints & ~RigidbodyConstraints2D.FreezePositionY;
+        this.rectTransform.localPosition = this.startPosition;
     }
 
     public void reTrigger()
     {
         this.MoveRock();
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Debug.Log(collision.collider.tag);
+        if (collision.collider.tag.Contains("Ground"))
+        {
+            this.col.isTrigger = true;
+            this.rockRigidbody.constraints = RigidbodyConstraints2D.FreezePositionY | this.rockRigidbody.constraints;
+        }
     }
 }

@@ -325,7 +325,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -346,7 +346,7 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   word: {fileID: 320189865214174387}
   wheel: {fileID: 8001341404332177212}
-  startPosition: {x: -1800, y: -250}
-  endPosition: {x: 1300, y: -500}
+  startPosition: {x: -1600, y: -250}
+  endPosition: {x: 1600, y: -535}
   allowMove: 0
-  forceMagnitude: 120
+  forceMagnitude: 500

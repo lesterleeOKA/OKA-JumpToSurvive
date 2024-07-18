@@ -16,6 +16,7 @@ public class QuestionController : MonoBehaviour
     public CurrentQuestion currentQuestion;
     public bool wordTriggering = false;
     public bool moveTonextQuestion = true;
+    private bool allowCheckingWords = true;
     public float delayToNextQuestion = 2f;
     private float count = 0f;
 
@@ -43,7 +44,7 @@ public class QuestionController : MonoBehaviour
 
         if(GameController.Instance != null && StartGame.Instance != null && this.createdWords != null)
         {
-            if (!GameController.Instance.gameTimer.endGame && StartGame.Instance.startedGame && this.createdWords.Count > 0)
+            if (!GameController.Instance.gameTimer.endGame && StartGame.Instance.startedGame && this.createdWords.Count > 0 && this.allowCheckingWords)
             {
                 this.moveTonextQuestion = this.createdWords.All(word => !word.allowMove);
 
@@ -52,17 +53,13 @@ public class QuestionController : MonoBehaviour
                     if(this.count > 0f)
                     {
                         this.count -= Time.deltaTime;
-
-                        if(this.count < (this.delayToNextQuestion * 0.5f))
-                        {
-                            if (GameController.Instance != null) 
-                                GameController.Instance.resetPlayers();
-                        }
                     }
                     else
                     {
                         this.count = this.delayToNextQuestion;
-                        this.nextQuestion();
+                        if (GameController.Instance != null) GameController.Instance.resetPlayers();
+                        this.moveTonextQuestion = false;
+                        this.allowCheckingWords = false;
                     }
                 }
             }
@@ -71,12 +68,8 @@ public class QuestionController : MonoBehaviour
 
     public void nextQuestion()
     {
-        if (this.moveTonextQuestion)
-        {
-            Debug.Log("next question");
-            this.moveTonextQuestion = false;
-            this.GetQuestionAnswer();
-        }
+        Debug.Log("next question");
+        this.GetQuestionAnswer();
     }
 
     private IEnumerator reTriggerWords()
@@ -101,29 +94,41 @@ public class QuestionController : MonoBehaviour
     public void randAnswer()
     {
         if (this.currentQuestion.qa == null || String.IsNullOrEmpty(this.currentQuestion.qa.QID)) return;
-        this.createdWords.Clear();
-        StartCoroutine(this.InstantiateWordsWithDelay());
+        //this.createdWords.Clear();
+        StartCoroutine(this.InstantiateWordsWithDelay());     
     }
 
     private IEnumerator InstantiateWordsWithDelay()
     {
         yield return new WaitForSeconds(2f);
         this.wordTriggering = true;
-        float _delay = UnityEngine.Random.Range(0.8f, 2f);
+        this.ShuffleArray(this.currentQuestion.answersChoics);
         var answers = this.currentQuestion.answersChoics.Length;
         for (int i = 0; i < answers; i++)
         {
             var answer = this.currentQuestion.answersChoics[i];
+            float _delay = UnityEngine.Random.Range(1f, 3f);
             if (!string.IsNullOrEmpty(answer))
             {
-                this.InstantiateWord(answer);
+                this.InstantiateWord(answer, i);
                 yield return new WaitForSeconds(_delay);
                 if (i == answers - 1) this.wordTriggering = false;
             }
         }
     }
 
-    void InstantiateWord(string text)
+    private void ShuffleArray<T>(T[] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, array.Length);
+            T temp = array[i];
+            array[i] = array[randomIndex];
+            array[randomIndex] = temp;
+        }
+    }
+
+    void InstantiateWord(string text, int id)
     {
         // Instantiate the prefab at the current transform position and rotation
         float minY = startPosition.y - 500f;
@@ -131,17 +136,29 @@ public class QuestionController : MonoBehaviour
         float posY = UnityEngine.Random.Range(minY, maxY); // Corrected range
         Vector2 pos = new Vector2(startPosition.x, posY);
 
-        var rock = Instantiate(word, Vector2.zero, Quaternion.identity); // Corrected instantiation
-        rock.transform.SetParent(this.wordParent, true); // Set parent and keep local scale
-        rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
+        Word createdWord;
 
-        var createdWord = rock.GetComponent<Word>();
-        createdWord.startPosition = pos;
-        createdWord.setWord(text);
-        this.createdWords.Add(createdWord);
+        if (this.createdWords.Count == this.currentQuestion.answersChoics.Length)
+        {
+            createdWord = this.createdWords[id];
+            this.createdWords[id].gameObject.name = "word_" + id + "_" + text;
+            createdWord.startPosition = pos;
+            createdWord.setWord(text);
+        }
+        else
+        {
+            var rock = Instantiate(word, Vector2.zero, Quaternion.identity); // Corrected instantiation
+            rock.name = "word_" + id + "_" + text;
+            rock.transform.SetParent(this.wordParent, true); // Set parent and keep local scale
+            rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
+            createdWord = rock.GetComponent<Word>();
+            createdWord.startPosition = pos;
+            createdWord.setWord(text);
+            this.createdWords.Add(createdWord);
+        }
     }
 
-    public void GetQuestionAnswer(Action finisedAction = null)
+    public void GetQuestionAnswer()
     {
         if (LoaderConfig.Instance == null || QuestionManager.Instance == null)
             return;
@@ -159,17 +176,8 @@ public class QuestionController : MonoBehaviour
             int questionCount = questionDataList.Data.Count;
             QuestionList qa = questionDataList.Data[this.currentQuestion.numberQuestion];
             this.currentQuestion.setNewQuestion(qa, questionCount);
+            this.allowCheckingWords = true;
             this.randAnswer();
-
-            /*if (this.currentQuestion.numberQuestion < questionDataList.Data.Count)
-            {
-                this.currentQuestion.numberQuestion += 1;
-            }
-            else
-            {
-                this.currentQuestion.numberQuestion = 0;
-            }*/
-
         }
         catch (Exception e)
         {
@@ -192,6 +200,14 @@ public class CurrentQuestion
     public string[] answersChoics;
     public RawImage questionImage;
     private AspectRatioFitter aspecRatioFitter = null;
+
+    public enum QuestionType
+    {
+        None = 0,
+        Text = 1,
+        Picture = 2,
+        Audio = 3,
+    }
 
     public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0)
     {
@@ -234,13 +250,4 @@ public class CurrentQuestion
         else
             this.numberQuestion = 0;
     }
-}
-
-
-public enum QuestionType
-{
-    None=0,
-    Text=1,
-    Picture=2,
-    Audio=3,
 }
