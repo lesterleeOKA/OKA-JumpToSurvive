@@ -12,6 +12,10 @@ public class LoaderConfig : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 0; 
+        Application.targetFrameRate = 60;
+        Application.runInBackground = true;
+
         if (Instance == null)
             Instance = this;
 
