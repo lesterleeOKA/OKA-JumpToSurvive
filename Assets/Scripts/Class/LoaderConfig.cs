@@ -6,6 +6,8 @@ public class LoaderConfig : MonoBehaviour
     public static LoaderConfig Instance = null;
     public string unitKey = string.Empty;
     public float gameTime;
+    public bool showFPS = false;
+    public string testURL = string.Empty;
 
 
     private void Awake()
@@ -18,7 +20,7 @@ public class LoaderConfig : MonoBehaviour
 
     private void Start()
     {
-        string currentURL = Application.absoluteURL;
+        string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
         if (LogController.Instance != null) LogController.Instance.debug("currentURL: " + currentURL);
         if (string.IsNullOrEmpty(this.unitKey)) this.unitKey = ParseURLParams(currentURL);
         if (QuestionManager.Instance != null) QuestionManager.Instance.LoadQuestionFile(this.unitKey);
@@ -56,6 +58,7 @@ public class LoaderConfig : MonoBehaviour
                             case "gameTime":
                                 this.gameTime = float.Parse(value);
                                 if (LogController.Instance != null) LogController.Instance.debug("Game Time: " + this.GameTime);
+                                this.showFPS = true;
                                 break;
                         }
                     }
