@@ -18,9 +18,9 @@ public class AudioOnOff
 
     public void set(bool status)
     {
-        if (LoaderConfig.Instance != null)
+        if (AudioController.Instance != null)
         {
-            LoaderConfig.Instance.changeBGMStatus(status);
+            AudioController.Instance.changeBGMStatus(status);
         }
 
         if (AudioController.Instance != null)

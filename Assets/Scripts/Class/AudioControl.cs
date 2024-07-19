@@ -12,10 +12,10 @@ public class AudioControl : MonoBehaviour
         if (this.audioOnOffPanel != null) this.audioOnOffPanel.Init(false);
         this.setMutePanel(false);
 
-        if(LoaderConfig.Instance != null)
+        if(AudioController.Instance != null)
         {
-            if (this.muteBtn != null && this.audioSprites[LoaderConfig.Instance.audioStatus ? 0 : 1] != null)
-                this.muteBtn.sprite = this.audioSprites[LoaderConfig.Instance.audioStatus ? 0 : 1];
+            if (this.muteBtn != null && this.audioSprites[AudioController.Instance.audioStatus ? 0 : 1] != null)
+                this.muteBtn.sprite = this.audioSprites[AudioController.Instance.audioStatus ? 0 : 1];
         }
     }
 

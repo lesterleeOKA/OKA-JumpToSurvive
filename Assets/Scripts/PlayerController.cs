@@ -2,14 +2,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : UserData
 {
-    public int playerId = 0;
-    public Color32 playerColor = Color.white;
-    public Image playerIcon;
-    public int score = 0;
+    //public int playerId = 0;
+    //public Color32 playerColor = Color.white;
+    //public Image playerIcon;
+    //public int score = 0;
     public string answer = string.Empty;
-    public TextMeshProUGUI userName, scoreText, resultScore;
+    public TextMeshProUGUI userNameText, scoreText, resultScore;
     public Animator scoringAnimator;
     public Button jumpBtn;
     public Sprite[] characterSprites;
@@ -32,15 +32,15 @@ public class PlayerController : MonoBehaviour
 
         if(this.jumpBtn != null)
         {
-            this.jumpBtn.GetComponent<Image>().color = this.playerColor;
+            this.jumpBtn.GetComponent<Image>().color = this.PlayerColor;
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
 
-        if(this.userName != null && this.resultScore != null && this.playerIcon != null)
+        if(this.userNameText != null && this.resultScore != null && this.PlayerIcon != null)
         {
-            this.userName.color = this.playerColor;
-            this.playerIcon.color = this.playerColor;
-            this.resultScore.color = this.playerColor;
+            this.userNameText.color = this.PlayerColor;
+            this.PlayerIcon.color = this.PlayerColor;
+            this.resultScore.color = this.PlayerColor;
         }
 
         this.Init();
@@ -76,13 +76,13 @@ public class PlayerController : MonoBehaviour
         {
             if (this.scoreText != null && this.resultScore != null)
             {
-                this.score += 10;
+                this.Score += 10;
                 if(this.scoringAnimator != null)
                 {
                     this.scoringAnimator.SetTrigger("addScore");
                 }
-                this.scoreText.text = this.score.ToString();
-                this.resultScore.text = this.score.ToString();
+                this.scoreText.text = this.Score.ToString();
+                this.resultScore.text = this.Score.ToString();
             }
         }
 
@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
 
     void TriggerWord(string word)
     {
-        Debug.Log("word belong to player:" + this.playerId);
+        Debug.Log("word belong to player:" + this.UserId);
         this.setAnsswer(word);
         //QuestionController.Instance.randAnswer();
     }

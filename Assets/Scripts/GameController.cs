@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
     {
         if(!status) { 
             SetUI.Set(this.GameUILayer, false, 0f);
-            if (LoaderConfig.Instance != null) LoaderConfig.Instance.changeBGMStatus(false);
+            if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(false);
         }
         SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
         SetUI.Set(this.EndGameLayer, !status, !status ? 0.5f : 0f);
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
 
     public void retryGame()
     {
-        if (LoaderConfig.Instance != null) LoaderConfig.Instance.changeBGMStatus(true);
+        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
         SceneManager.LoadScene(2);
     }
 

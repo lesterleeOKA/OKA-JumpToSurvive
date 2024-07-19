@@ -7,6 +7,9 @@ public class AudioController : MonoBehaviour
     public static AudioController Instance = null;
     public AudioClip[] audioClips; // Array of audio clips to be played
     private AudioSource audioSource;
+    [SerializeField]
+    private AudioSource bgmAudioSource;
+    public bool audioStatus = false;
 
     private void Awake()
     {
@@ -22,7 +25,7 @@ public class AudioController : MonoBehaviour
 
     public void PlayAudio(int index, bool loop=false)
     {
-        if(!LoaderConfig.Instance.audioStatus)
+        if(!this.audioStatus)
             return;
 
         if (index < 0 || index >= audioClips.Length)
@@ -74,6 +77,15 @@ public class AudioController : MonoBehaviour
     public bool IsPlaying()
     {
         return audioSource.isPlaying;
+    }
+
+    public void changeBGMStatus(bool status)
+    {
+        if (this.bgmAudioSource != null)
+        {
+            this.audioStatus = status;
+            this.bgmAudioSource.enabled = this.audioStatus;
+        }
     }
 }
 

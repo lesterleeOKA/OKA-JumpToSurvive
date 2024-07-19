@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 public class LoaderConfig : MonoBehaviour
 {
     public static LoaderConfig Instance = null;
-    public bool audioStatus = false;
-    private AudioSource bgmAudio = null;
     public string unitKey = string.Empty;
     public float gameTime;
 
@@ -20,7 +18,6 @@ public class LoaderConfig : MonoBehaviour
 
     private void Start()
     {
-        if(this.bgmAudio  == null) this.bgmAudio = GetComponent<AudioSource>();
         string currentURL = Application.absoluteURL;
         if (LogController.Instance != null) LogController.Instance.debug("currentURL: " + currentURL);
         if (string.IsNullOrEmpty(this.unitKey)) this.unitKey = ParseURLParams(currentURL);
@@ -99,13 +96,5 @@ public class LoaderConfig : MonoBehaviour
         }
     }
 
-    public void changeBGMStatus(bool status)
-    {
-        if (this.bgmAudio != null)
-        {
-            this.audioStatus = status;
-            this.bgmAudio.enabled = this.audioStatus;
-        }
-    }
 }
 

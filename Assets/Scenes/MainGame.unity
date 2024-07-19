@@ -1195,14 +1195,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b81f87085b4b4f468f5940b0d5a5ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 1
+  userName: 
+  userId: 1
+  score: 0
   playerColor:
     serializedVersion: 2
     rgba: 4280558837
   playerIcon: {fileID: 263035649}
-  score: 0
   answer: 
-  userName: {fileID: 1471471884}
+  userNameText: {fileID: 1471471884}
   scoreText: {fileID: 1832779954}
   resultScore: {fileID: 359019534}
   scoringAnimator: {fileID: 567339331}
@@ -5627,14 +5628,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b81f87085b4b4f468f5940b0d5a5ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 2
+  userName: 
+  userId: 2
+  score: 0
   playerColor:
     serializedVersion: 2
     rgba: 4278777985
   playerIcon: {fileID: 2101068516}
-  score: 0
   answer: 
-  userName: {fileID: 1059713989}
+  userNameText: {fileID: 1059713989}
   scoreText: {fileID: 2086576125}
   resultScore: {fileID: 191627513}
   scoringAnimator: {fileID: 931282823}
@@ -6811,14 +6813,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b81f87085b4b4f468f5940b0d5a5ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 0
+  userName: 
+  userId: 0
+  score: 0
   playerColor:
     serializedVersion: 2
     rgba: 4293683477
   playerIcon: {fileID: 463747237}
-  score: 0
   answer: 
-  userName: {fileID: 1747116900}
+  userNameText: {fileID: 1747116900}
   scoreText: {fileID: 59497804}
   resultScore: {fileID: 1771891489}
   scoringAnimator: {fileID: 1820863998}
@@ -7521,14 +7524,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b81f87085b4b4f468f5940b0d5a5ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 3
+  userName: 
+  userId: 3
+  score: 0
   playerColor:
     serializedVersion: 2
     rgba: 4278233848
   playerIcon: {fileID: 46407515}
-  score: 0
   answer: 
-  userName: {fileID: 913754740}
+  userNameText: {fileID: 913754740}
   scoreText: {fileID: 495870583}
   resultScore: {fileID: 1227953132}
   scoringAnimator: {fileID: 1330459089}

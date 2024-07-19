@@ -34,7 +34,7 @@ public class Timer : MonoBehaviour
                     {
                         isSoundPlay = true;
 
-                        if (LoaderConfig.Instance.audioStatus)
+                        if (AudioController.Instance.audioStatus)
                         {
                             this.lastTenDingDing.Play();
                             this.lastTenDingDing.loop = true;
@@ -43,7 +43,7 @@ public class Timer : MonoBehaviour
                     }
                     else
                     {
-                        if (!LoaderConfig.Instance.audioStatus)
+                        if (!AudioController.Instance.audioStatus)
                         {
                             if(isSoundPlay)
                             {

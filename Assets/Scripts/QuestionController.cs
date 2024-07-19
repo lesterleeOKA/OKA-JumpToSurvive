@@ -102,7 +102,7 @@ public class QuestionController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         this.wordTriggering = true;
-        this.ShuffleArray(this.currentQuestion.answersChoics);
+        SortExtensions.ShuffleArray(this.currentQuestion.answersChoics);
         var answers = this.currentQuestion.answersChoics.Length;
         for (int i = 0; i < answers; i++)
         {
@@ -114,17 +114,6 @@ public class QuestionController : MonoBehaviour
                 yield return new WaitForSeconds(_delay);
                 if (i == answers - 1) this.wordTriggering = false;
             }
-        }
-    }
-
-    private void ShuffleArray<T>(T[] array)
-    {
-        for (int i = 0; i < array.Length; i++)
-        {
-            int randomIndex = UnityEngine.Random.Range(i, array.Length);
-            T temp = array[i];
-            array[i] = array[randomIndex];
-            array[randomIndex] = temp;
         }
     }
 
@@ -187,67 +176,3 @@ public class QuestionController : MonoBehaviour
     }
 }
 
-
-
-[Serializable]
-public class CurrentQuestion
-{
-    public int numberQuestion = 0;
-    public QuestionType questiontype = QuestionType.None;
-    public QuestionList qa = null;
-    public TextMeshProUGUI questionText;
-    public string correctAnswer;
-    public string[] answersChoics;
-    public RawImage questionImage;
-    private AspectRatioFitter aspecRatioFitter = null;
-
-    public enum QuestionType
-    {
-        None = 0,
-        Text = 1,
-        Picture = 2,
-        Audio = 3,
-    }
-
-    public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0)
-    {
-        if (qa == null) return;
-        this.qa = qa;
-
-        switch (qa.QuestionType)
-        {
-            case "Picture":
-                this.questiontype = QuestionType.Picture;
-                this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
-                var qaImage = qa.texture;
-
-                if (this.questionImage != null && qaImage != null)
-                {
-                    this.questionImage.texture = qaImage;
-                    this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
-                }
-                break;
-            case "Audio":
-                this.questiontype = QuestionType.Picture;
-                break;
-            case "Text":
-                this.questiontype = QuestionType.Text;
-                if (this.questionText != null) this.questionText.enabled = true;
-                if (this.questionText != null) this.questionText.text = qa.Question;
-                if (this.questionImage!= null)this.questionImage.enabled = false;
-                this.correctAnswer = qa.Answer;
-                this.answersChoics = qa.Answers;
-                break;
-        }
-
-        if (LogController.Instance != null)
-        {
-            LogController.Instance.debug($"Get new {nameof(this.questiontype)} question");
-        }
-
-        if(this.numberQuestion < totalQuestion-1)
-            this.numberQuestion += 1;
-        else
-            this.numberQuestion = 0;
-    }
-}

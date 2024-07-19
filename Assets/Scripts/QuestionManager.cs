@@ -7,15 +7,23 @@ using UnityEngine.Networking;
 public class QuestionManager : MonoBehaviour
 {
     public static QuestionManager Instance = null;
-    public QuestionData questionData;
     public string jsonFileName = "Question.json";
+    public LoadMethod loadMethod = LoadMethod.UnityWebRequest;
     public ImageType imageType = ImageType.jpg;
+    public QuestionData questionData;
+
 
 
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
+    }
+
+    public enum LoadMethod 
+    { 
+        www=0,
+        UnityWebRequest=1,
     }
 
 
@@ -42,24 +50,59 @@ public class QuestionManager : MonoBehaviour
         StartCoroutine(this.loadQuestionFile(unitKey));
     }
 
+
     IEnumerator loadQuestionFile(string unitKey = "")
     {
         var questionPath = System.IO.Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
-        WWW www = new WWW(questionPath);
-        yield return www;
 
-        if (!string.IsNullOrEmpty(www.error))
-        {
-            if (LogController.Instance != null) LogController.Instance.debugError($"Error loading question json: {www.error}");
+
+        switch (this.loadMethod) 
+        { 
+            case LoadMethod.www:
+                WWW www = new WWW(questionPath);
+                yield return www;
+
+                if (!string.IsNullOrEmpty(www.error))
+                {
+                    if (LogController.Instance != null) LogController.Instance.debugError($"Error loading question json: {www.error}");
+                }
+                else
+                {
+                    if (LogController.Instance != null) LogController.Instance.debug(questionPath);
+                    var json = www.text;
+                    this.questionData = JsonUtility.FromJson<QuestionData>(json);
+                    if (!string.IsNullOrEmpty(unitKey)) this.questionData.Data = this.questionData.Data.Where(q => q.QID.StartsWith(unitKey)).ToList();
+                    this.GetRandomQuestions();
+                }
+                break;
+            case LoadMethod.UnityWebRequest:
+                using (UnityWebRequest uwq = UnityWebRequest.Get(questionPath))
+                {
+                    yield return uwq.SendWebRequest();
+
+                    if (uwq.result != UnityWebRequest.Result.Success)
+                    {
+                        if (LogController.Instance != null)
+                            LogController.Instance.debugError($"Error loading question json: {uwq.error}");
+                    }
+                    else
+                    {
+                        if (LogController.Instance != null)
+                            LogController.Instance.debug(questionPath);
+
+                        var json = uwq.downloadHandler.text;
+                        this.questionData = JsonUtility.FromJson<QuestionData>(json);
+                        if (!string.IsNullOrEmpty(unitKey))
+                            this.questionData.Data = this.questionData.Data.Where(q => q.QID.StartsWith(unitKey)).ToList();
+
+                        this.GetRandomQuestions();
+                    }
+                }
+                break;
         }
-        else
-        {
-            if (LogController.Instance != null) LogController.Instance.debug(questionPath);
-            var json = www.text;
-            this.questionData = JsonUtility.FromJson<QuestionData>(json);
-            if (!string.IsNullOrEmpty(unitKey)) this.questionData.Data = this.questionData.Data.Where(q => q.QID.StartsWith(unitKey)).ToList();
-            this.GetRandomQuestions();
-        }
+
+
+       
     }
 
     /*private Sprite LoadImageToSprite(string folderName = "", string fileName = "")
@@ -107,7 +150,6 @@ public class QuestionManager : MonoBehaviour
     private IEnumerator LoadImageFromStreamingAssets(
     string folderName = "",
     string fileName = "",
-    //Action<Sprite> callback = null
     Action<Texture> callback = null)
     {
 
@@ -115,17 +157,11 @@ public class QuestionManager : MonoBehaviour
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imagePath))
         {
             yield return request.SendWebRequest();
-            //Sprite sprite = null;
-
             if (request.result == UnityWebRequest.Result.Success)
             {
-
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
-
                 if (texture != null)
                 {
-                    // sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                    // callback?.Invoke(sprite);
                     callback?.Invoke(texture);
                     Debug.Log($"Loaded Image : {texture.ToString()}");
                 }
@@ -180,20 +216,6 @@ public class QuestionManager : MonoBehaviour
 
     }
 
-    /*private void ShuffleQuestions()
-    {
-        this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
-
-        for (int i = 0; i < this.questionData.Data.Count; i++)
-        {
-            Question qa = this.questionData.Data[i];
-            string folderName = qa.QuestionType;
-            string qid = qa.QID;
-            this.questionData.Data[i].imageSprite = this.LoadImageToSprite(folderName, qid);
-        }
-
-    }*/
-
     private void ShuffleQuestions()
     {
         this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
@@ -205,6 +227,8 @@ public class QuestionManager : MonoBehaviour
             string qid = qa.QID;
             switch (qa.QuestionType)
             {
+                case "Text":
+                    break;
                 case "Picture":
                     StartCoroutine(
                        LoadImageFromStreamingAssets(
@@ -221,7 +245,6 @@ public class QuestionManager : MonoBehaviour
                             folderName, qid, (audio) =>
                             {
                                 qa.audioClip = audio;
-
                             }
                         )
                     );
