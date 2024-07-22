@@ -23,27 +23,32 @@ position: fixed;
 }
 
 #unity-logo {
-    width: 300px;
-    height: 300px;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+	width: auto;
+    height: calc(min(20vh, 20vw));
     background: url('ui_princewalk_apng.png') no-repeat center;
+	background-size: contain;
 }
 
 #unity-progress-bar-empty {
-    position: relative;
-    width: 350px;
-    height: 40px;
-    margin-top: 10px auto;
+	display: flex;
+	margin-top: -3vh;
+	left: 10px;
+	width: 100%;
+    height: calc(min(4vh, 4vw));
     background: url('ui_loadingborder.png') no-repeat center;
     background-size: cover;
     border: 1px;
 }
 
 #unity-progress-bar-full {
-    position: absolute;
-    top: 4px;
+    position: relative;
+    top: calc(min(0.4vh, 0.4vw));
     left: 5px;
     width: calc(100% - 8px);
-    height: 32px;
+    height: calc(min(3.2vh, 3.2vw));
     background: url('ui_loadingfill.png') no-repeat center;
     background-size: cover;
     overflow: hidden;
@@ -83,18 +88,18 @@ position: fixed;
 
 .container {
     display: flex;
-    margin-right: 10px;
     flex-direction: row;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 48px;
+	width: calc(min(35vh, 35vw));
+    font-size: calc(min(4.2vh, 4.2vw));
 }
 
 .text {
     margin-top: auto;
+	margin-left: 15px;
     display: inline-block;
     margin-right: 10px;
-
 }
 
 #loading {
