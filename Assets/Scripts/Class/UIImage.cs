@@ -56,4 +56,16 @@ public static class SetUI
             _cg.blocksRaycasts = _status;
         }
     }
+
+    public static void SetMove(CanvasGroup _cg = null, bool _status = false, Vector2 _targetPos= default, float _duration = 0f)
+    {
+        if (_cg != null)
+        {
+            _cg.DOFade(_status ? 1f : 0f, _duration);
+            _cg.transform.DOLocalMove(_targetPos, _duration);
+            _cg.interactable = _status;
+            _cg.blocksRaycasts = _status;
+        }
+    }
+
 }

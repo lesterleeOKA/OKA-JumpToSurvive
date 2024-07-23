@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class GameController : MonoBehaviour
     public HorizontalLayoutGroup layoutGroup;
     public Timer gameTimer;
     public CanvasGroup GameUILayer, TopUILayer, EndGameLayer;
+    private Vector2 originalGetScorePos = Vector2.zero;
+    public CanvasGroup getScorePopup;
+    public TextMeshProUGUI[] scoreEachQuestion;
 
     private void Awake()
     {
@@ -24,6 +28,8 @@ public class GameController : MonoBehaviour
         SetUI.Set(this.GameUILayer, true, 0f);
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.EndGameLayer, false, 0f);
+        SetUI.Set(this.getScorePopup, false, 0f);
+        if(this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
         this.RandomlySortChildObjects();
     }
 
@@ -44,14 +50,26 @@ public class GameController : MonoBehaviour
 
     public System.Collections.IEnumerator randomlySortChildObjects()
     {
+        bool showCorrect = false;
+        float delay = 1f;
         for (int i = 0; i < this.playersList.Count; i++)
         {
             var playerController = this.playersList[i].GetComponent<PlayerController>();
             if (playerController != null) {
-                playerController.checkAnswer();
+                playerController.checkAnswer(this.scoreEachQuestion[i]);
+
+                if(playerController.correct && !showCorrect) {
+                    SetUI.SetMove(this.getScorePopup, true, new Vector2(0f, 0f), 0.5f);
+                    delay = 2f;
+                    showCorrect = true;
+                }
             }
+
         }
-        yield return new WaitForSeconds(1f);
+
+        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(showCorrect ? 1 : 2);
+        yield return new WaitForSeconds(delay);
+        SetUI.SetMove(this.getScorePopup, false, this.originalGetScorePos, 0f);
         this.RandomlySortChildObjects();
         QuestionController.Instance.nextQuestion();
     }
@@ -98,6 +116,9 @@ public class GameController : MonoBehaviour
         foreach (var player in playersList)
         {
             previousSiblingIndices.Add(player.GetSiblingIndex());
+
+            if (player.GetComponent<PlayerController>() != null)
+                player.GetComponent<PlayerController>().correct = false;
         }
 
         // Refresh the layout to apply the changes
@@ -147,4 +168,6 @@ public class GameController : MonoBehaviour
         }
 #endif
     }
+
+
 }

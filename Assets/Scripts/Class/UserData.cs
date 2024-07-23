@@ -15,6 +15,8 @@ public class UserData: MonoBehaviour
     private Color32 playerColor = Color.white;
     [SerializeField]
     private Image playerIcon;
+    [SerializeField]
+    private Image scoringIcon;
 
     public string UserName
     {
@@ -44,5 +46,11 @@ public class UserData: MonoBehaviour
     {
         get { return this.playerIcon; }
         set { this.playerIcon = value; }
+    }
+
+    public Image ScoringIcon
+    {
+        get { return this.scoringIcon; }
+        set { this.scoringIcon = value; }
     }
 }

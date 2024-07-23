@@ -14,6 +14,7 @@ public class Word : MonoBehaviour
     private Collider2D col = null;
     private Rigidbody2D rockRigidbody = null;
     public float forceMagnitude = 500.0f; // Magnitude of the force applied to the rock
+    public AudioSource rockEffect;
 
 
     public void setWord(string _word)
@@ -26,6 +27,23 @@ public class Word : MonoBehaviour
             this.rectTransform.localPosition = this.startPosition;
             this.word.text = _word;
             this.MoveRock();
+            this.setAudioEffect(true);
+        }
+    }
+
+    public void setAudioEffect(bool status)
+    {
+        if(this.rockEffect != null)
+        {
+            if(status)
+            {
+                this.rockEffect.loop = true;
+                this.rockEffect.Play();
+            }
+            else
+            {
+                this.rockEffect.Stop();
+            }
         }
     }
 
@@ -73,6 +91,7 @@ public class Word : MonoBehaviour
         this.col.isTrigger = false;
         this.rockRigidbody.constraints = rockRigidbody.constraints & ~RigidbodyConstraints2D.FreezePositionY;
         this.rectTransform.localPosition = this.startPosition;
+        this.setAudioEffect(false);
     }
 
     public void reTrigger()

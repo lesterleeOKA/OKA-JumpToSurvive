@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using DG.Tweening;
 
 public class PlayerController : UserData
 {
@@ -8,9 +10,12 @@ public class PlayerController : UserData
     //public Color32 playerColor = Color.white;
     //public Image playerIcon;
     //public int score = 0;
+    public int bonnus = 4;
     public string answer = string.Empty;
+    public bool correct = false;
     public TextMeshProUGUI userNameText, scoreText, resultScore;
     public Animator scoringAnimator;
+    public TextMeshProUGUI scroingTxt;
     public Button jumpBtn;
     public Sprite[] characterSprites;
     public Character character;
@@ -20,9 +25,12 @@ public class PlayerController : UserData
     private Rigidbody2D rb = null;
     public CanvasGroup answerBox;
     public TextMeshProUGUI answerText;
+    private Image characterImage = null;
+    private AudioSource effect = null;
 
     void Start()
     {
+        if(this.effect == null) { this.effect = this.GetComponent<AudioSource>(); }
         if(this.character != null) {  
             rb = this.character.GetComponent<Rigidbody2D>();
             this.character.enterGround += this.SetCharacterSprite;
@@ -36,13 +44,15 @@ public class PlayerController : UserData
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
 
-        if(this.userNameText != null && this.resultScore != null && this.PlayerIcon != null)
+        if(this.userNameText != null && this.resultScore != null)
         {
             this.userNameText.color = this.PlayerColor;
-            this.PlayerIcon.color = this.PlayerColor;
+            if (this.PlayerIcon != null) this.PlayerIcon.sprite = this.characterSprites[0];
+            if (this.ScoringIcon != null) this.ScoringIcon.sprite = this.characterSprites[0];
             this.resultScore.color = this.PlayerColor;
         }
 
+        this.characterImage = this.character.gameObject.GetComponent<Image>();
         this.Init();
     }
 
@@ -50,6 +60,7 @@ public class PlayerController : UserData
     {
         this.setAnsswer("");
         this.SetCharacterSprite(0);
+        this.bonnus = 4;
     }
 
     public void setAnsswer(string word)
@@ -65,26 +76,43 @@ public class PlayerController : UserData
             SetUI.Set(this.answerBox, true, 0f);
             this.answer = word;
             if (this.answerText != null) this.answerText.text = this.answer;
+
+            if (this.answer != QuestionController.Instance.currentQuestion.correctAnswer)
+                StartCoroutine(showHurt());
         }
     }
 
 
-    public void checkAnswer()
+    public void checkAnswer(TextMeshProUGUI answeredEffectTxt)
     {
-        if(QuestionController.Instance == null) return;
+        if(QuestionController.Instance == null || this.scroingTxt == null || this.resultScore == null || this.scoringAnimator == null || answeredEffectTxt == null) return;
         if(this.answer == QuestionController.Instance.currentQuestion.correctAnswer)
         {
-            if (this.scoreText != null && this.resultScore != null)
+            this.correct = true;
+            int mark = 10 * this.bonnus;
+            this.Score += mark;
+            answeredEffectTxt.text = "+" + mark;
+            this.scroingTxt.text = "+" + mark;
+            this.scoringAnimator.SetTrigger("addScore");
+        }
+        else
+        {
+            if (this.Score >= 10)
             {
-                this.Score += 10;
-                if(this.scoringAnimator != null)
-                {
-                    this.scoringAnimator.SetTrigger("addScore");
-                }
-                this.scoreText.text = this.Score.ToString();
-                this.resultScore.text = this.Score.ToString();
+                this.Score -= 10;
+                answeredEffectTxt.text = "-10";
+                this.scroingTxt.text = "-10";
+                this.scoringAnimator.SetTrigger("addScore");
+            }
+            else
+            {
+                answeredEffectTxt.text = "0";
+                this.scroingTxt.text = "0";
             }
         }
+
+        this.scoreText.text = this.Score.ToString();
+        this.resultScore.text = this.Score.ToString();
 
         this.Init();
     }
@@ -113,7 +141,8 @@ public class PlayerController : UserData
         {
             if (this.character.isGrounded &&
                StartGame.Instance.startedGame &&
-               !QuestionController.Instance.moveTonextQuestion)
+               !QuestionController.Instance.moveTonextQuestion &&
+               this.characterImage.sprite != this.characterSprites[2])
             {
                 this.jumpBtn.interactable = true;
             }
@@ -134,15 +163,26 @@ public class PlayerController : UserData
     void SetCharacterSprite(int id)
     {
         //Debug.Log(id);
-        if(this.characterSprites[id] != null)
-            this.character.gameObject.GetComponent<Image>().sprite = this.characterSprites[id];
+        if(this.characterSprites[id] != null && this.characterImage.sprite != this.characterSprites[2])
+            this.characterImage.sprite = this.characterSprites[id];
     }
+
 
     void TriggerWord(string word)
     {
         Debug.Log("word belong to player:" + this.UserId);
         this.setAnsswer(word);
         //QuestionController.Instance.randAnswer();
+    }
+
+    IEnumerator showHurt()
+    {
+        if(this.bonnus > 0) this.bonnus -= 1;
+        this.effect.Play();
+        this.SetCharacterSprite(2);
+        this.character.transform.DOShakePosition(0.3f, new Vector3(20f, 0f), 20).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo).SetAutoKill(true);
+        yield return new WaitForSeconds(1f);
+        this.characterImage.sprite = this.characterSprites[0];
     }
 
     private void OnApplicationQuit()
