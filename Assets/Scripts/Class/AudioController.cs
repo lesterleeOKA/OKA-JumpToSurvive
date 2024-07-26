@@ -20,7 +20,7 @@ public class AudioController : MonoBehaviour
     }
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        this.audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayAudio(int index, bool loop=false)
@@ -34,49 +34,49 @@ public class AudioController : MonoBehaviour
             return;
         }
 
-        audioSource.clip = audioClips[index];
-        audioSource.Play();
-        audioSource.loop = loop;
+        this.audioSource.clip = audioClips[index];
+        this.audioSource.Play();
+        this.audioSource.loop = loop;
     }
 
     public void PauseAudio()
     {
-        audioSource.Pause();
+        this.audioSource.Pause();
     }
 
     public void ResumeAudio()
     {
-        audioSource.UnPause();
+        this.audioSource.UnPause();
     }
 
     public void StopAudio()
     {
-        audioSource.Stop();
+        this.audioSource.Stop();
     }
 
     public void SetVolume(float volume)
     {
-        audioSource.volume = volume;
+        this.audioSource.volume = volume;
     }
 
     public void SetPitch(float pitch)
     {
-        audioSource.pitch = pitch;
+        this.audioSource.pitch = pitch;
     }
 
     public float GetCurrentTime()
     {
-        return audioSource.time;
+        return this.audioSource.time;
     }
 
     public float GetTotalDuration()
     {
-        return audioSource.clip.length;
+        return this.audioSource.clip.length;
     }
 
     public bool IsPlaying()
     {
-        return audioSource.isPlaying;
+        return this.audioSource.isPlaying;
     }
 
     public void changeBGMStatus(bool status)
@@ -86,6 +86,11 @@ public class AudioController : MonoBehaviour
             this.audioStatus = status;
             this.bgmAudioSource.enabled = this.audioStatus;
         }
+    }
+
+    public void showResultAudio(bool success)
+    {
+        this.PlayAudio(success ? 6: 7);
     }
 }
 

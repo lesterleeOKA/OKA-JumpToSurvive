@@ -61,8 +61,6 @@ public class Timer : MonoBehaviour
             {
                 this.currentTime = 0f;
                 this.UpdateTimerText();
-                if (AudioController.Instance != null) 
-                    AudioController.Instance.StopAudio();
                 this.endGame = true;
                 this.lastTenDingDing.Stop();
                 if (this.finishedEvent != null) this.finishedEvent.Invoke();

@@ -16,7 +16,7 @@ public class QuestionController : MonoBehaviour
     public CurrentQuestion currentQuestion;
     public bool wordTriggering = false;
     public bool moveTonextQuestion = true;
-    private bool allowCheckingWords = true;
+    public bool allowCheckingWords = true;
     public float delayToNextQuestion = 2f;
     private float count = 0f;
 
@@ -34,13 +34,26 @@ public class QuestionController : MonoBehaviour
         this.count = this.delayToNextQuestion;
     }
 
+    public void killAllWords()
+    {
+        for (int i = 0; i < this.createdWords.Count; i++)
+        {
+            var word = this.createdWords[i].gameObject;
+            if (word != null)
+            {
+               Destroy(word);            
+            }
+        }
+        this.createdWords.Clear();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("q") && !this.wordTriggering)
+        /*if (Input.GetKeyDown("q") && !this.wordTriggering)
         {
             StartCoroutine(reTriggerWords());
-        }
+        }*/
 
         if(GameController.Instance != null && StartGame.Instance != null && this.createdWords != null)
         {
@@ -72,10 +85,10 @@ public class QuestionController : MonoBehaviour
         this.GetQuestionAnswer();
     }
 
-    private IEnumerator reTriggerWords()
+    /*private IEnumerator reTriggerWords()
     {
         this.wordTriggering = true;
-        float _delay = UnityEngine.Random.Range(0.8f, 2f);
+        float _delay = UnityEngine.Random.Range(0.7f, 1.5f);
         var answers = this.createdWords.Count;
         for (int i = 0; i < this.createdWords.Count; i++)
         {
@@ -89,7 +102,7 @@ public class QuestionController : MonoBehaviour
                 if(i == answers - 1) this.wordTriggering = false;
             }
         }
-    }
+    }*/
 
     public void randAnswer()
     {
@@ -108,7 +121,7 @@ public class QuestionController : MonoBehaviour
         {
             var answer = this.currentQuestion.answersChoics[i];
             float _delay = UnityEngine.Random.Range(1f, 3f);
-            if (!string.IsNullOrEmpty(answer))
+            if (!string.IsNullOrEmpty(answer) && !GameController.Instance.gameTimer.endGame)
             {
                 this.InstantiateWord(answer, i);
                 yield return new WaitForSeconds(_delay);

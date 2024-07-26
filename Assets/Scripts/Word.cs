@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Word : MonoBehaviour
 {
@@ -15,11 +16,13 @@ public class Word : MonoBehaviour
     private Rigidbody2D rockRigidbody = null;
     public float forceMagnitude = 500.0f; // Magnitude of the force applied to the rock
     public AudioSource rockEffect;
+    public Image rockImg;
 
 
     public void setWord(string _word)
     {
         if(this.word != null) {
+            //if(this.rockImg != null) this.rockImg.color = new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
             this.rectTransform = GetComponent<RectTransform>();
             this.rockRigidbody = GetComponent<Rigidbody2D>();
             this.col = GetComponent<Collider2D>();
@@ -52,11 +55,18 @@ public class Word : MonoBehaviour
         if (rockRigidbody == null) return;
         this.allowMove = true;
         this.rockRigidbody.isKinematic = false;
-        Vector2 direction = (endPosition - startPosition).normalized;
+        /*Vector2 direction = (endPosition - startPosition).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x);
-        //this.forceMagnitude = Random.Range(300f, 500f);
+        // Increase the angle of the projectile
+        angle += Mathf.Deg2Rad * 30f; // Increase the angle by 30 degrees
+
+        // Calculate the force magnitude with a lower value
+        this.forceMagnitude = Random.Range(300f, 400f); // Decrease the force magnitude
+
+        // Calculate the force vector
         Vector2 force = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized * this.forceMagnitude;
-        //this.rockRigidbody.AddRelativeForce(force);
+        this.rockRigidbody.AddRelativeForce(force);*/
+
     }
 
     void FixedUpdate()
@@ -70,6 +80,7 @@ public class Word : MonoBehaviour
 
         var distance = Vector2.Distance(rectTransform.localPosition, endPosition);
         //Debug.Log(distance);
+
         if (distance < this.checkEndDistance)
         {
             this.resetPosition();
@@ -78,12 +89,17 @@ public class Word : MonoBehaviour
         {
             this.rectTransform.localPosition = Vector2.MoveTowards(this.rectTransform.localPosition, endPosition, this.forceMagnitude * Time.deltaTime);
         }
+
+        if(AudioController.Instance.audioStatus != this.rockEffect.enabled)
+        {
+            this.setAudioEffect(AudioController.Instance.audioStatus);
+        }
     }
 
     public void resetPosition()
     {
         if (this.rectTransform == null) return;
-
+        //if (this.rockImg != null) this.rockImg.color = new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
         this.allowMove = false;
         this.rockRigidbody.velocity = Vector2.zero;
         this.rockRigidbody.angularVelocity = 0.0f;

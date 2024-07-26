@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -13,10 +12,10 @@ public class GameController : MonoBehaviour
     public List<RectTransform> playersList = new List<RectTransform>();
     public HorizontalLayoutGroup layoutGroup;
     public Timer gameTimer;
-    public CanvasGroup GameUILayer, TopUILayer, EndGameLayer;
+    public CanvasGroup GameUILayer, TopUILayer;
     private Vector2 originalGetScorePos = Vector2.zero;
     public CanvasGroup getScorePopup;
-    public TextMeshProUGUI[] scoreEachQuestion;
+    public EndGamePage endGamePage;
 
     private void Awake()
     {
@@ -27,20 +26,39 @@ public class GameController : MonoBehaviour
     {
         SetUI.Set(this.GameUILayer, true, 0f);
         SetUI.Set(this.TopUILayer, false, 0f);
-        SetUI.Set(this.EndGameLayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         if(this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
         this.RandomlySortChildObjects();
+        this.endGamePage.init();
     }
 
     public void enterGame(bool status)
     {
-        if(!status) { 
-            SetUI.Set(this.GameUILayer, false, 0f);
-            if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(false);
-        }
         SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
-        SetUI.Set(this.EndGameLayer, !status, !status ? 0.5f : 0f);
+
+        if (!status)
+        {
+            SetUI.Set(this.GameUILayer, false, 0f);
+            QuestionController.Instance.killAllWords();
+
+
+            bool showSuccess = false;
+            for (int i = 0; i < this.playersList.Count; i++)
+            {
+                var playerController = this.playersList[i].GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    if (playerController.Score >= 30)
+                    {
+                        showSuccess = true;
+                    }
+
+                    this.endGamePage.updateFinalScore(i, playerController.Score);
+                }
+            }
+
+            this.endGamePage.setStatus(true, showSuccess);
+        }
     }
 
     public void resetPlayers()
@@ -56,9 +74,9 @@ public class GameController : MonoBehaviour
         {
             var playerController = this.playersList[i].GetComponent<PlayerController>();
             if (playerController != null) {
-                playerController.checkAnswer(this.scoreEachQuestion[i]);
+                playerController.checkAnswer();
 
-                if(playerController.correct && !showCorrect) {
+                if(playerController.scoring.correct && !showCorrect) {
                     SetUI.SetMove(this.getScorePopup, true, new Vector2(0f, 0f), 0.5f);
                     delay = 2f;
                     showCorrect = true;
@@ -118,7 +136,7 @@ public class GameController : MonoBehaviour
             previousSiblingIndices.Add(player.GetSiblingIndex());
 
             if (player.GetComponent<PlayerController>() != null)
-                player.GetComponent<PlayerController>().correct = false;
+                player.GetComponent<PlayerController>().scoring.correct = false;
         }
 
         // Refresh the layout to apply the changes

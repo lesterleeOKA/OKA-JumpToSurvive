@@ -6,16 +6,9 @@ using DG.Tweening;
 
 public class PlayerController : UserData
 {
-    //public int playerId = 0;
-    //public Color32 playerColor = Color.white;
-    //public Image playerIcon;
-    //public int score = 0;
-    public int bonnus = 4;
+    public Scoring scoring;
     public string answer = string.Empty;
-    public bool correct = false;
-    public TextMeshProUGUI userNameText, scoreText, resultScore;
-    public Animator scoringAnimator;
-    public TextMeshProUGUI scroingTxt;
+    public TextMeshProUGUI userNameText;
     public Button jumpBtn;
     public Sprite[] characterSprites;
     public Character character;
@@ -27,6 +20,7 @@ public class PlayerController : UserData
     public TextMeshProUGUI answerText;
     private Image characterImage = null;
     private AudioSource effect = null;
+    public ParticleSystem jumpup_particle;
 
     void Start()
     {
@@ -44,12 +38,14 @@ public class PlayerController : UserData
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
 
-        if(this.userNameText != null && this.resultScore != null)
+        if(this.userNameText != null)
         {
             this.userNameText.color = this.PlayerColor;
-            if (this.PlayerIcon != null) this.PlayerIcon.sprite = this.characterSprites[0];
-            if (this.ScoringIcon != null) this.ScoringIcon.sprite = this.characterSprites[0];
-            this.resultScore.color = this.PlayerColor;
+            for(int i=0;i < this.PlayerIcons.Length; i++)
+            {
+                if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
+            }
+            this.scoring.init(this.PlayerColor);
         }
 
         this.characterImage = this.character.gameObject.GetComponent<Image>();
@@ -60,7 +56,7 @@ public class PlayerController : UserData
     {
         this.setAnsswer("");
         this.SetCharacterSprite(0);
-        this.bonnus = 4;
+        this.scoring.bonnus = 4;
     }
 
     public void setAnsswer(string word)
@@ -83,37 +79,12 @@ public class PlayerController : UserData
     }
 
 
-    public void checkAnswer(TextMeshProUGUI answeredEffectTxt)
+    public void checkAnswer()
     {
-        if(QuestionController.Instance == null || this.scroingTxt == null || this.resultScore == null || this.scoringAnimator == null || answeredEffectTxt == null) return;
-        if(this.answer == QuestionController.Instance.currentQuestion.correctAnswer)
-        {
-            this.correct = true;
-            int mark = 10 * this.bonnus;
-            this.Score += mark;
-            answeredEffectTxt.text = "+" + mark;
-            this.scroingTxt.text = "+" + mark;
-            this.scoringAnimator.SetTrigger("addScore");
-        }
-        else
-        {
-            if (this.Score >= 10)
-            {
-                this.Score -= 10;
-                answeredEffectTxt.text = "-10";
-                this.scroingTxt.text = "-10";
-                this.scoringAnimator.SetTrigger("addScore");
-            }
-            else
-            {
-                answeredEffectTxt.text = "0";
-                this.scroingTxt.text = "0";
-            }
-        }
-
-        this.scoreText.text = this.Score.ToString();
-        this.resultScore.text = this.Score.ToString();
-
+        int currentScore = this.Score;
+        int resultScore = this.scoring.score(this.answer, currentScore);
+        this.Score = resultScore;
+        Debug.Log("Add marks" + this.Score);
         this.Init();
     }
 
@@ -141,7 +112,7 @@ public class PlayerController : UserData
         {
             if (this.character.isGrounded &&
                StartGame.Instance.startedGame &&
-               !QuestionController.Instance.moveTonextQuestion &&
+               QuestionController.Instance.allowCheckingWords &&
                this.characterImage.sprite != this.characterSprites[2])
             {
                 this.jumpBtn.interactable = true;
@@ -158,6 +129,7 @@ public class PlayerController : UserData
         if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
         this.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         this.rb.velocity = new Vector2(this.rb.velocity.x, this.rb.velocity.y * jumpSpeedMultiplier);
+        if(this.jumpup_particle != null) this.jumpup_particle.Play();
     }
 
     void SetCharacterSprite(int id)
@@ -177,8 +149,8 @@ public class PlayerController : UserData
 
     IEnumerator showHurt()
     {
-        if(this.bonnus > 0) this.bonnus -= 1;
-        this.effect.Play();
+        if(this.scoring.bonnus > 1) this.scoring.bonnus -= 1;
+        if(AudioController.Instance.audioStatus) this.effect.Play();
         this.SetCharacterSprite(2);
         this.character.transform.DOShakePosition(0.3f, new Vector3(20f, 0f), 20).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo).SetAutoKill(true);
         yield return new WaitForSeconds(1f);
