@@ -10,14 +10,13 @@ public class Scoring
     public TextMeshProUGUI answeredEffectTxt;
     public Animator scoringAnimator;
 
-    public void init(Color32 color)
+    public void init()
     {
         if (this.scoreTxt != null) this.scoreTxt.text = "0";
         if (this.scoringTxt != null) this.scoreTxt.text = "0";
         if (this.answeredEffectTxt != null) this.answeredEffectTxt.text = "0";
         if (this.resultScoreTxt != null) { 
             this.scoreTxt.text = "0";
-            this.resultScoreTxt.color = color;
         }
     }
 

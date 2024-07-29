@@ -45,7 +45,7 @@ public class PlayerController : UserData
             {
                 if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
             }
-            this.scoring.init(this.PlayerColor);
+            this.scoring.init();
         }
 
         this.characterImage = this.character.gameObject.GetComponent<Image>();
