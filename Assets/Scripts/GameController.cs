@@ -162,7 +162,7 @@ public class GameController : MonoBehaviour
         {
             string absoluteUrl = Application.absoluteURL;
             Uri url = new Uri(absoluteUrl);
-            Debug.Log("Host Name:" + url.Host);
+            if (LogController.Instance != null) LogController.Instance.debug("Host Name:" + url.Host);
             return url.Host;
         }
     }
@@ -176,7 +176,7 @@ public class GameController : MonoBehaviour
         {
             string baseUrl = this.GetCurrentDomainName;
             string newUrl = $"https://{baseUrl}/RainbowOne/webapp/OKAGames/SelectGames/";
-            Debug.Log("full url:" + newUrl);
+            if (LogController.Instance != null) LogController.Instance.debug("full url:" + newUrl);
             Application.ExternalEval($"location.href = '{newUrl}', '_self'");
         }
         else if (hostname.Contains("www.rainbowone.app"))

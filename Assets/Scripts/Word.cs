@@ -79,8 +79,6 @@ public class Word : MonoBehaviour
         }
 
         var distance = Vector2.Distance(rectTransform.localPosition, endPosition);
-        //Debug.Log(distance);
-
         if (distance < this.checkEndDistance)
         {
             this.resetPosition();
@@ -117,7 +115,6 @@ public class Word : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log(collision.collider.tag);
         if (collision.collider.tag.Contains("Ground"))
         {
             this.col.isTrigger = true;

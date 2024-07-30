@@ -84,20 +84,13 @@ public class PlayerController : UserData
         int currentScore = this.Score;
         int resultScore = this.scoring.score(this.answer, currentScore);
         this.Score = resultScore;
-        Debug.Log("Add marks" + this.Score);
+        if (LogController.Instance != null) LogController.Instance.debug("Add marks" + this.Score);
         this.Init();
     }
 
     void FixedUpdate()
     {
         if(this.character == null || rb == null) return;
-        // Jump if the player presses the jump button and is grounded
-       /* if (Input.GetKeyDown("space"))
-        {
-            //Debug.Log("Jumped");
-            Jump();
-        }*/
-
         if (rb.velocity.y < 0)
         {
             rb.gravityScale = this.downGravity;
@@ -134,7 +127,6 @@ public class PlayerController : UserData
 
     void SetCharacterSprite(int id)
     {
-        //Debug.Log(id);
         if(this.characterSprites[id] != null && this.characterImage.sprite != this.characterSprites[2])
             this.characterImage.sprite = this.characterSprites[id];
     }
@@ -142,7 +134,8 @@ public class PlayerController : UserData
 
     void TriggerWord(string word)
     {
-        Debug.Log("word belong to player:" + this.UserId);
+        if (LogController.Instance != null) 
+            LogController.Instance.debug("word belong to player:" + this.UserId);
         this.setAnsswer(word);
         //QuestionController.Instance.randAnswer();
     }

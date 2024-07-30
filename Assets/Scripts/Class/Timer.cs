@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,7 @@ public class Timer : MonoBehaviour
     public bool endGame = false;
     public UnityEvent finishedEvent;
     private AudioSource lastTenDingDing = null;
+    private Tween timerScaleTween = null;
 
     private void Start()
     {
@@ -39,7 +41,11 @@ public class Timer : MonoBehaviour
                             this.lastTenDingDing.Play();
                             this.lastTenDingDing.loop = true;
                         }
-                        this.timer.color = Color.red;                  
+
+                        if(this.timer.color == Color.white && this.timerScaleTween == null) {
+                            this.timerScaleTween = this.timer.transform.DOScale(0.8f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+                            this.timer.color = Color.red;
+                        }
                     }
                     else
                     {
@@ -59,6 +65,7 @@ public class Timer : MonoBehaviour
             }
             else
             {
+                if (this.timerScaleTween != null && this.timerScaleTween.IsActive()) this.timerScaleTween.Kill();
                 this.currentTime = 0f;
                 this.UpdateTimerText();
                 this.endGame = true;
@@ -78,7 +85,7 @@ public class Timer : MonoBehaviour
         else
             this.currentTime = this.gameDuration;
 
-        UpdateTimerText();    
+        this.UpdateTimerText();    
     }
     private void UpdateTimerText()
     {

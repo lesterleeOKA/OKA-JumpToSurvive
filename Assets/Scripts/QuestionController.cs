@@ -81,7 +81,8 @@ public class QuestionController : MonoBehaviour
 
     public void nextQuestion()
     {
-        Debug.Log("next question");
+        if (LogController.Instance != null)
+            LogController.Instance.debug("next question");
         this.GetQuestionAnswer();
     }
 

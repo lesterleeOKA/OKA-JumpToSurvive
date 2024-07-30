@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoaderConfig : MonoBehaviour
+public class LoaderConfig : GameSetting
 {
     public static LoaderConfig Instance = null;
     public string unitKey = string.Empty;
@@ -10,16 +10,12 @@ public class LoaderConfig : MonoBehaviour
     public string testURL = string.Empty;
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        QualitySettings.vSyncCount = 0; 
-        Application.targetFrameRate = 60;
-        Application.runInBackground = true;
-
         if (Instance == null)
             Instance = this;
 
-        DontDestroyOnLoad(this);
+        base.Awake();
     }
 
     private void Start()

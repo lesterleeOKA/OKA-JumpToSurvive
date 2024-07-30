@@ -12,8 +12,6 @@ public class QuestionManager : MonoBehaviour
     public ImageType imageType = ImageType.jpg;
     public QuestionData questionData;
 
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -163,12 +161,14 @@ public class QuestionManager : MonoBehaviour
                 if (texture != null)
                 {
                     callback?.Invoke(texture);
-                    Debug.Log($"Loaded Image : {texture.ToString()}");
+                    if (LogController.Instance != null) 
+                        LogController.Instance.debug($"Loaded Image : {texture.ToString()}");
                 }
             }
             else
             {
-                Debug.LogError($"Error loading image:{request.error}");
+                if (LogController.Instance != null)
+                    LogController.Instance.debugError($"Error loading image:{request.error}");
             }
         }
 
@@ -204,12 +204,14 @@ public class QuestionManager : MonoBehaviour
         if (audioClip != null)
         {
             // Use the loaded sprite
-            Debug.Log("Audio loaded successfully!");
+            if (LogController.Instance != null)
+                LogController.Instance.debug("Audio loaded successfully!");
             callback(audioClip);
         }
         else
         {
-            Debug.LogError($"Failed to load Audio from path: {Path}");
+            if (LogController.Instance != null)
+                LogController.Instance.debugError($"Failed to load Audio from path: {Path}");
         }
 
         yield return null;
