@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class Scoring
 {
+    public bool usingDeductLogic = false;
     public int bonnus = 4;
     public bool correct = false;
     public TextMeshProUGUI scoreTxt, scoringTxt, resultScoreTxt;
@@ -44,22 +45,25 @@ public class Scoring
                     _playerScore += mark;
                     answeredEffectTxt.text = "+" + mark;
                     this.scoringTxt.text = "+" + mark;
-                    this.scoringAnimator.SetTrigger("addScore");
+                    //this.scoringAnimator.SetTrigger("addScore");
                 }
                 else
                 {
-                    if (_playerScore >= 10)
+                    if (this.usingDeductLogic)
                     {
-                        _playerScore -= 10;
-                        this.answeredEffectTxt.text = "-10";
-                        this.scoringTxt.text = "-10";
-                        this.scoringAnimator.SetTrigger("addScore");
-                    }
-                    else
-                    {
-                        _playerScore = 0;
-                        this.answeredEffectTxt.text = "0";
-                        this.scoringTxt.text = "0";
+                        if (_playerScore >= 10)
+                        {
+                            _playerScore -= 10;
+                            this.answeredEffectTxt.text = "-10";
+                            this.scoringTxt.text = "-10";
+                            //this.scoringAnimator.SetTrigger("addScore");
+                        }
+                        else
+                        {
+                            _playerScore = 0;
+                            this.answeredEffectTxt.text = "0";
+                            this.scoringTxt.text = "0";
+                        }
                     }
                 }
             }

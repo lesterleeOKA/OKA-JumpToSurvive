@@ -56,7 +56,7 @@ public class PlayerController : UserData
     {
         this.setAnsswer("");
         this.SetCharacterSprite(0);
-        this.scoring.bonnus = 4;
+        this.scoring.bonnus = 1;
     }
 
     public void setAnsswer(string word)
