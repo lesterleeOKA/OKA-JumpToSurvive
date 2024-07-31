@@ -73,8 +73,8 @@ public class PlayerController : UserData
             this.answer = word;
             if (this.answerText != null) this.answerText.text = this.answer;
 
-            if (this.answer != QuestionController.Instance.currentQuestion.correctAnswer)
-                StartCoroutine(showHurt());
+            //if (this.answer != QuestionController.Instance.currentQuestion.correctAnswer)
+              //  StartCoroutine(showHurt());
         }
     }
 
@@ -101,12 +101,13 @@ public class PlayerController : UserData
         }
 
 
-        if(this.jumpBtn != null)
+        if(this.jumpBtn != null && this.answerText != null)
         {
             if (this.character.isGrounded &&
                StartGame.Instance.startedGame &&
                QuestionController.Instance.allowCheckingWords &&
-               this.characterImage.sprite != this.characterSprites[2])
+               this.characterImage.sprite != this.characterSprites[2] &&
+                string.IsNullOrEmpty(this.answerText.text))
             {
                 this.jumpBtn.interactable = true;
             }
@@ -137,6 +138,7 @@ public class PlayerController : UserData
         if (LogController.Instance != null) 
             LogController.Instance.debug("word belong to player:" + this.UserId);
         this.setAnsswer(word);
+        if (AudioController.Instance.audioStatus) this.effect.Play();
         //QuestionController.Instance.randAnswer();
     }
 

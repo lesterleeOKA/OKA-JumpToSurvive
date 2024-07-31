@@ -24,7 +24,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        SetUI.Set(this.GameUILayer, true, 0f);
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         if(this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
@@ -35,10 +34,9 @@ public class GameController : MonoBehaviour
     public void enterGame(bool status)
     {
         SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
-
+        SetUI.Set(this.GameUILayer, status, status ? 0.5f : 0f);
         if (!status)
         {
-            SetUI.Set(this.GameUILayer, false, 0f);
             QuestionController.Instance.killAllWords();
 
 

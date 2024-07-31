@@ -352,7 +352,7 @@ MonoBehaviour:
   endPosition: {x: 1600, y: -535}
   allowMove: 0
   forceMagnitude: 500
-  rockEffect: {fileID: 7818505974269032587}
+  objectEffect: {fileID: 7818505974269032587}
   rockImg: {fileID: 5206152627806296023}
 --- !u!82 &7818505974269032587
 AudioSource:

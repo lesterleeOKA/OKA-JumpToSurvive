@@ -15,14 +15,13 @@ public class Word : MonoBehaviour
     private Collider2D col = null;
     private Rigidbody2D rockRigidbody = null;
     public float forceMagnitude = 500.0f; // Magnitude of the force applied to the rock
-    public AudioSource rockEffect;
+    public AudioSource objectEffect;
     public Image rockImg;
 
 
     public void setWord(string _word)
     {
         if(this.word != null) {
-            //if(this.rockImg != null) this.rockImg.color = new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
             this.rectTransform = GetComponent<RectTransform>();
             this.rockRigidbody = GetComponent<Rigidbody2D>();
             this.col = GetComponent<Collider2D>();
@@ -36,16 +35,16 @@ public class Word : MonoBehaviour
 
     public void setAudioEffect(bool status)
     {
-        if(this.rockEffect != null)
+        if(this.objectEffect != null)
         {
             if(status)
             {
-                this.rockEffect.loop = true;
-                this.rockEffect.Play();
+                this.objectEffect.loop = true;
+                this.objectEffect.Play();
             }
             else
             {
-                this.rockEffect.Stop();
+                this.objectEffect.Stop();
             }
         }
     }
@@ -55,18 +54,6 @@ public class Word : MonoBehaviour
         if (rockRigidbody == null) return;
         this.allowMove = true;
         this.rockRigidbody.isKinematic = false;
-        /*Vector2 direction = (endPosition - startPosition).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x);
-        // Increase the angle of the projectile
-        angle += Mathf.Deg2Rad * 30f; // Increase the angle by 30 degrees
-
-        // Calculate the force magnitude with a lower value
-        this.forceMagnitude = Random.Range(300f, 400f); // Decrease the force magnitude
-
-        // Calculate the force vector
-        Vector2 force = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized * this.forceMagnitude;
-        this.rockRigidbody.AddRelativeForce(force);*/
-
     }
 
     void FixedUpdate()
@@ -88,7 +75,7 @@ public class Word : MonoBehaviour
             this.rectTransform.localPosition = Vector2.MoveTowards(this.rectTransform.localPosition, endPosition, this.forceMagnitude * Time.deltaTime);
         }
 
-        if(AudioController.Instance.audioStatus != this.rockEffect.enabled)
+        if(AudioController.Instance.audioStatus != this.objectEffect.enabled)
         {
             this.setAudioEffect(AudioController.Instance.audioStatus);
         }
@@ -97,7 +84,6 @@ public class Word : MonoBehaviour
     public void resetPosition()
     {
         if (this.rectTransform == null) return;
-        //if (this.rockImg != null) this.rockImg.color = new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
         this.allowMove = false;
         this.rockRigidbody.velocity = Vector2.zero;
         this.rockRigidbody.angularVelocity = 0.0f;
