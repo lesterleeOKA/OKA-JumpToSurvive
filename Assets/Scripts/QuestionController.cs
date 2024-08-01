@@ -8,8 +8,8 @@ public class QuestionController : MonoBehaviour
 {
     public static QuestionController Instance = null;
     public float starPositionX;
-    public Vector2 startPositionY;
-    public Vector2 speedRange;
+    public float[] startPositionY = new float[2]{0f, 165f};
+    public float[] speedRange = new float[2]{150f, 500f};
     public Transform wordParent;
     public GameObject word;
     public List<Bird> createdWords = new List<Bird>();
@@ -70,7 +70,7 @@ public class QuestionController : MonoBehaviour
                     else
                     {
                         this.count = this.delayToNextQuestion;
-                        if (GameController.Instance != null) GameController.Instance.resetPlayers();
+                        if (GameController.Instance != null) GameController.Instance.checkPlayerAnswer();
                         this.moveTonextQuestion = false;
                         this.allowCheckingWords = false;
                     }
@@ -134,11 +134,12 @@ public class QuestionController : MonoBehaviour
     void InstantiateWord(string text, int id)
     {
         // Instantiate the prefab at the current transform position and rotation
-        float minY = startPositionY.x; //min
-        float maxY = startPositionY.y; //max
+        float minY = startPositionY[0]; //min
+        float maxY = startPositionY[1]; //max
         float posY = UnityEngine.Random.Range(minY, maxY); // Corrected range
         Vector2 pos = new Vector2(this.starPositionX, posY);
-        float speed = UnityEngine.Random.Range(this.speedRange.x, this.speedRange.y);
+        float speed = UnityEngine.Random.Range(this.speedRange[0], this.speedRange[1]);
+        Material birdOutline = new Material(Shader.Find("Hidden/GlobalOutline"));
 
         Bird createdWord;
 
@@ -148,7 +149,7 @@ public class QuestionController : MonoBehaviour
             this.createdWords[id].gameObject.name = "word_" + id + "_" + text;
             createdWord.startPosition = pos;
             createdWord.speed = speed;
-            createdWord.setWord(text);
+            createdWord.setWord(text, id);
         }
         else
         {
@@ -158,7 +159,7 @@ public class QuestionController : MonoBehaviour
             rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
             createdWord = rock.GetComponent<Bird>();
             createdWord.startPosition = pos;
-            createdWord.setWord(text);
+            createdWord.setWord(text, id, birdOutline);
             this.createdWords.Add(createdWord);
         }
     }

@@ -133,11 +133,11 @@ public class PlayerController : UserData
     }
 
 
-    void TriggerWord(string word)
+    void TriggerWord(Bird bird)
     {
         if (LogController.Instance != null) 
             LogController.Instance.debug("word belong to player:" + this.UserId);
-        this.setAnsswer(word);
+        this.setAnsswer(bird.word.text);
         if (AudioController.Instance.audioStatus) this.effect.Play();
         //QuestionController.Instance.randAnswer();
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
@@ -27,7 +28,7 @@ public class GameController : MonoBehaviour
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         if(this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
-        this.RandomlySortChildObjects();
+        //this.RandomlySortChildObjects();
         this.endGamePage.init();
     }
 
@@ -59,12 +60,12 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void resetPlayers()
+    public void checkPlayerAnswer()
     {
-        StartCoroutine(randomlySortChildObjects());
+        StartCoroutine(checkAllAnswer());
     }
 
-    public System.Collections.IEnumerator randomlySortChildObjects()
+    private IEnumerator checkAllAnswer()
     {
         bool showCorrect = false;
         float delay = 1f;
@@ -86,7 +87,17 @@ public class GameController : MonoBehaviour
         if (AudioController.Instance != null) AudioController.Instance.PlayAudio(showCorrect ? 1 : 2);
         yield return new WaitForSeconds(delay);
         SetUI.SetMove(this.getScorePopup, false, this.originalGetScorePos, 0f);
-        this.RandomlySortChildObjects();
+        //this.RandomlySortChildObjects();
+
+        for (int i = 0; i < this.playersList.Count; i++)
+        {
+            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.scoring.correct = false;
+            }
+
+        }
         QuestionController.Instance.nextQuestion();
     }
 
