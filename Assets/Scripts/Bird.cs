@@ -30,15 +30,10 @@ public class Bird : Item
             this.rectTransform.localPosition = this.startPosition;
             this.endPosition = new Vector3(this.endPosition.x, this.startPosition.y);
             this.word.text = _word;
-            this.Moving();
+            this.allowMove = true;
             this.setAudioEffect(true);
             this.setOutline(false);
         }
-    }
-
-    void Moving()
-    {
-        this.allowMove = true;
     }
 
     void Update()
@@ -65,7 +60,7 @@ public class Bird : Item
     {
         if (this.rectTransform == null) return;
         this.allowMove = false;
-        this.col.isTrigger = false;
+        //this.col.isTrigger = false;
         this.rectTransform.localPosition = this.startPosition;
         this.setAudioEffect(false);
         this.setOutline(false);
@@ -74,6 +69,6 @@ public class Bird : Item
 
     public void reTrigger()
     {
-        this.Moving();
+        this.allowMove = true;
     }
 }

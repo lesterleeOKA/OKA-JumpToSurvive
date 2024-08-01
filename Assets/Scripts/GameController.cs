@@ -60,6 +60,20 @@ public class GameController : MonoBehaviour
         }
     }
 
+
+    public void showAllCharacterAnswer()
+    {
+        for (int i = 0; i < this.playersList.Count; i++)
+        {
+            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+               playerController.showCharacterAnswer();
+            }
+
+        }
+    }
+
     public void checkPlayerAnswer()
     {
         StartCoroutine(checkAllAnswer());

@@ -15,10 +15,11 @@ public class QuestionController : MonoBehaviour
     public List<Bird> createdWords = new List<Bird>();
     public CurrentQuestion currentQuestion;
     public bool wordTriggering = false;
-    public bool moveTonextQuestion = true;
+    public bool moveTonextQuestion = false;
     public bool allowCheckingWords = true;
+    public bool showAnswers = false;
     public float delayToNextQuestion = 2f;
-    private float count = 0f;
+    public float count = 0f;
 
     private void Awake()
     {
@@ -65,13 +66,17 @@ public class QuestionController : MonoBehaviour
                 {
                     if(this.count > 0f)
                     {
+                        if (GameController.Instance != null && !this.showAnswers) { 
+                            GameController.Instance.showAllCharacterAnswer();
+                            this.showAnswers = true;
+                        }
+
                         this.count -= Time.deltaTime;
                     }
                     else
                     {
                         this.count = this.delayToNextQuestion;
                         if (GameController.Instance != null) GameController.Instance.checkPlayerAnswer();
-                        this.moveTonextQuestion = false;
                         this.allowCheckingWords = false;
                     }
                 }
@@ -118,38 +123,38 @@ public class QuestionController : MonoBehaviour
         this.wordTriggering = true;
         SortExtensions.ShuffleArray(this.currentQuestion.answersChoics);
         var answers = this.currentQuestion.answersChoics.Length;
+
+        float minY = startPositionY[0]; //min
+        float maxY = startPositionY[1]; //max
+        float posY = UnityEngine.Random.Range(minY, maxY);
         for (int i = 0; i < answers; i++)
         {
             var answer = this.currentQuestion.answersChoics[i];
             float _delay = UnityEngine.Random.Range(1f, 3f);
             if (!string.IsNullOrEmpty(answer) && !GameController.Instance.gameTimer.endGame)
             {
-                this.InstantiateWord(answer, i);
+                this.InstantiateWord(answer, i, posY);
                 yield return new WaitForSeconds(_delay);
                 if (i == answers - 1) this.wordTriggering = false;
             }
         }
     }
 
-    void InstantiateWord(string text, int id)
+    void InstantiateWord(string text, int id, float posY)
     {
         // Instantiate the prefab at the current transform position and rotation
-        float minY = startPositionY[0]; //min
-        float maxY = startPositionY[1]; //max
-        float posY = UnityEngine.Random.Range(minY, maxY); // Corrected range
         Vector2 pos = new Vector2(this.starPositionX, posY);
         float speed = UnityEngine.Random.Range(this.speedRange[0], this.speedRange[1]);
         Material birdOutline = new Material(Shader.Find("Hidden/GlobalOutline"));
 
         Bird createdWord;
-
         if (this.createdWords.Count == this.currentQuestion.answersChoics.Length)
         {
             createdWord = this.createdWords[id];
             this.createdWords[id].gameObject.name = "word_" + id + "_" + text;
             createdWord.startPosition = pos;
             createdWord.speed = speed;
-            createdWord.setWord(text, id);
+            createdWord.setWord(text, id + 1);
         }
         else
         {
@@ -158,9 +163,15 @@ public class QuestionController : MonoBehaviour
             rock.transform.SetParent(this.wordParent, true); // Set parent and keep local scale
             rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
             createdWord = rock.GetComponent<Bird>();
+            createdWord.speed = speed;
             createdWord.startPosition = pos;
-            createdWord.setWord(text, id, birdOutline);
+            createdWord.setWord(text, id + 1, birdOutline);
             this.createdWords.Add(createdWord);
+        }
+
+        if(id == 0) { 
+            this.allowCheckingWords = true;
+            this.showAnswers = false;
         }
     }
 
@@ -182,7 +193,7 @@ public class QuestionController : MonoBehaviour
             int questionCount = questionDataList.Data.Count;
             QuestionList qa = questionDataList.Data[this.currentQuestion.numberQuestion];
             this.currentQuestion.setNewQuestion(qa, questionCount);
-            this.allowCheckingWords = true;
+            this.moveTonextQuestion = false;
             this.randAnswer();
         }
         catch (Exception e)

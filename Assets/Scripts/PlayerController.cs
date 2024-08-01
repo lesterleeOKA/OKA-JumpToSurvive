@@ -69,7 +69,7 @@ public class PlayerController : UserData
         }
         else
         {
-            SetUI.Set(this.answerBox, true, 0f);
+            //SetUI.Set(this.answerBox, true, 0f);
             this.answer = word;
             if (this.answerText != null) this.answerText.text = this.answer;
 
@@ -78,6 +78,12 @@ public class PlayerController : UserData
         }
     }
 
+    public void showCharacterAnswer()
+    {
+        if (!string.IsNullOrEmpty(this.answer)) {
+            SetUI.Set(this.answerBox, true, 0f);
+        }
+    }
 
     public void checkAnswer()
     {
