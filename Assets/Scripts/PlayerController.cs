@@ -40,7 +40,7 @@ public class PlayerController : UserData
 
         if(this.userNameText != null)
         {
-            this.userNameText.color = this.PlayerColor;
+            //this.userNameText.color = this.PlayerColor;
             for(int i=0;i < this.PlayerIcons.Length; i++)
             {
                 if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
