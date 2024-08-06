@@ -20,11 +20,16 @@ public class LoaderConfig : GameSetting
 
     private void Start()
     {
+        this.LoadQuestions();
+        this.changeScene(1);
+    }
+
+    public void LoadQuestions()
+    {
         string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
         if (LogController.Instance != null) LogController.Instance.debug("currentURL: " + currentURL);
         if (string.IsNullOrEmpty(this.unitKey)) this.unitKey = ParseURLParams(currentURL);
         if (QuestionManager.Instance != null) QuestionManager.Instance.LoadQuestionFile(this.unitKey);
-        this.changeScene(1);
     }
 
 
