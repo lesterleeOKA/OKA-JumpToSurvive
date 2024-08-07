@@ -202,5 +202,10 @@ public class QuestionController : MonoBehaviour
         }
 
     }
+
+    public void PlayCurrentQuestionAudio()
+    {
+        this.currentQuestion.playAudio();
+    }
 }
 

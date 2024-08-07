@@ -27,9 +27,15 @@ public class LoaderConfig : GameSetting
     public void LoadQuestions()
     {
         string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
-        if (LogController.Instance != null) LogController.Instance.debug("currentURL: " + currentURL);
-        if (string.IsNullOrEmpty(this.unitKey)) this.unitKey = ParseURLParams(currentURL);
-        if (QuestionManager.Instance != null) QuestionManager.Instance.LoadQuestionFile(this.unitKey);
+        LogController.Instance?.debug("currentURL: " + currentURL);
+        if (string.IsNullOrEmpty(this.unitKey)) {
+
+            this.unitKey = ParseURLParams(currentURL);
+        }
+        else
+        {
+            QuestionManager.Instance?.LoadQuestionFile(this.unitKey);
+        }
     }
 
 
@@ -49,7 +55,7 @@ public class LoaderConfig : GameSetting
                 {
                     string key = keyValue[0];
                     string value = keyValue[1];
-                    if (LogController.Instance != null) LogController.Instance.debug($"Parameter Key: {key}, Value: {value}");
+                    LogController.Instance?.debug($"Parameter Key: {key}, Value: {value}");
 
                     if (!string.IsNullOrEmpty(value))
                     {
@@ -58,11 +64,11 @@ public class LoaderConfig : GameSetting
                         {
                             case "unit":
                                 this.unitKey = value;
-                                if (LogController.Instance != null) LogController.Instance.debug("Current Game Unit: " + this.CurrentUnit);
+                                LogController.Instance?.debug("Current Game Unit: " + this.CurrentUnit);
                                 break;
                             case "gameTime":
                                 this.gameTime = float.Parse(value);
-                                if (LogController.Instance != null) LogController.Instance.debug("Game Time: " + this.GameTime);
+                                LogController.Instance?.debug("Game Time: " + this.GameTime);
                                 this.showFPS = true;
                                 break;
                         }
@@ -70,6 +76,7 @@ public class LoaderConfig : GameSetting
                 }
             }
         }
+        QuestionManager.Instance?.LoadQuestionFile(this.unitKey);
         return unitKey;
     }
 

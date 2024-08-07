@@ -3,26 +3,266 @@
     {
       "QID": "p1u1-a1",
 	  "QuestionType": "Text",
-      "Question": "What is the color of apple?",
+    "Question": "What is the color of apple?",
 	  "Answers": [
-          "red",
-          "blue",
-          "purple",
-		  "black"
+       "red",
+       "blue",
+       "purple",
+		   "black"
       ],
       "Answer": "red"
     },
-	{
-      "QID": "p1u1-a2",
-	  "QuestionType": "Text",
+	  {
+        "QID": "p1u1-a2",
+	    "QuestionType": "Text",
       "Question": "What is the color of banana?",
-	  "Answers": [
-          "red",
-          "yellow",
-          "purple",
-		  "black"
+	    "Answers": [
+         "red",
+         "yellow",
+         "purple",
+		     "black"
+        ],
+        "Answer": "yellow"
+      },
+	  {
+      "QID": "p6u1-c1",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Consern",
+        "Concern",
+        "Conxern",
+        "Conncern"
       ],
-      "Answer": "yellow"
+      "Answer": "Concern"
+    },
+    {
+      "QID": "p6u1-c2",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Purform",
+        "Perfune",
+        "Parform",
+        "Perform"
+      ],
+      "Answer": "Perform"
+    },
+    {
+      "QID": "p6u1-c3",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Aed",
+        "Ald",
+        "Aad",
+        "Aid"
+      ],
+      "Answer": "Aid"
+    },
+    {
+      "QID": "p6u1-c4",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Sponser",
+        "Sponcer",
+        "Sponsar",
+        "Sponsor"
+      ],
+      "Answer": "Sponsor"
+    },
+    {
+      "QID": "p6u1-c5",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Prepare",
+        "Preepare",
+        "Prep",
+        "Prepair"
+      ],
+      "Answer": "Prepare"
+    },
+    {
+      "QID": "p6u1-c6",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Donate",
+        "Donut",
+        "Donute",
+        "Danube"
+      ],
+      "Answer": "Donate"
+    },
+    {
+      "QID": "p6u1-c7",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Volanteer",
+        "Volantis",
+        "Volunteer",
+        "Volume"
+      ],
+      "Answer": "Volunteer"
+    },
+    {
+      "QID": "p6u1-c8",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Assist",
+        "Assixt",
+        "Ascist",
+        "Azziz"
+      ],
+      "Answer": "Assist"
+    },
+    {
+      "QID": "p6u1-c9",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Walkathon",
+        "Talkathon",
+        "Speakathon",
+        "Sleepathon"
+      ],
+      "Answer": "Walkathon"
+    },
+    {
+      "QID": "p6u1-c10",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Gift",
+        "Givt",
+        "Gipht",
+        "Grift"
+      ],
+      "Answer": "Gift"
+    },
+    {
+      "QID": "p6u1-c11",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Charrity",
+        "Chairity",
+        "Charety",
+        "Charity"
+      ],
+      "Answer": "Charity"
+    },
+    {
+      "QID": "p6u1-c12",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Suppose",
+        "Suport",
+        "Subport",
+        "Support"
+      ],
+      "Answer": "Support"
+    },
+    {
+      "QID": "p6u1-c13",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Reffle",
+        "Roffle",
+        "Raffle",
+        "Riffle"
+      ],
+      "Answer": "Raffle"
+    },
+    {
+      "QID": "p6u1-c14",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Adipt",
+        "Adoph",
+        "Adorpt",
+        "Adopt"
+      ],
+      "Answer": "Adopt"
+    },
+    {
+      "QID": "p6u1-c15",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Abandon",
+        "Abanddon",
+        "Abaddon",
+        "Aband"
+      ],
+      "Answer": "Abandon"
+    },
+    {
+      "QID": "p6u1-c16",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Honeless",
+        "Homeless",
+        "Whomeless",
+        "Homless"
+      ],
+      "Answer": "Homeless"
+    },
+    {
+      "QID": "p6u1-c17",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Organaize",
+        "Org",
+        "Organize",
+        "Orgenize"
+      ],
+      "Answer": "Organize"
+    },
+    {
+      "QID": "p6u1-c18",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Fand",
+        "Faund",
+        "Fiund",
+        "Fund"
+      ],
+      "Answer": "Fund"
+    },
+    {
+      "QID": "p6u1-c19",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Aelderly",
+        "Alderly",
+        "Ilderly",
+        "Elderly"
+      ],
+      "Answer": "Elderly"
+    },
+    {
+      "QID": "p6u1-c20",
+      "QuestionType": "Audio",
+      "Question": "",
+      "Answers": [
+        "Colect",
+        "Collect",
+        "Collekt",
+        "Corlect"
+      ],
+      "Answer": "Collect"
     }
   ]
 

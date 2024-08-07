@@ -9,7 +9,9 @@ public class QuestionManager : MonoBehaviour
     public static QuestionManager Instance = null;
     public string jsonFileName = "Question.json";
     public LoadMethod loadMethod = LoadMethod.UnityWebRequest;
+    public LoadFileMethod loadFileMethod = LoadFileMethod.StreamingAssets;
     public ImageType imageType = ImageType.jpg;
+    public AudioFormat audioFormat = AudioFormat.mp3;
     public QuestionData questionData;
 
     private void Awake()
@@ -24,6 +26,11 @@ public class QuestionManager : MonoBehaviour
         UnityWebRequest=1,
     }
 
+    public enum LoadFileMethod
+    {
+        Resources = 0,
+        StreamingAssets = 1,
+    }
 
     public enum ImageType
     {
@@ -32,15 +39,38 @@ public class QuestionManager : MonoBehaviour
         png
     }
 
-    string GetExtension()
+    public enum AudioFormat
     {
-        return this.imageType switch
+        none,
+        mp3,
+        wav
+    }
+
+    string ImageExtension
+    {
+        get { 
+            return this.imageType switch
+            {
+                ImageType.none => "",
+                ImageType.jpg => ".jpg",
+                ImageType.png => ".png",
+                _ => throw new ArgumentOutOfRangeException(nameof(imageType), imageType, "Invalid image type.")
+            };
+        }
+    }
+
+    string AudioExtension
+    {
+        get
         {
-            ImageType.none => "",
-            ImageType.jpg => ".jpg",
-            ImageType.png => ".png",
-            _ => throw new ArgumentOutOfRangeException(nameof(imageType), imageType, "Invalid image type.")
-        };
+            return this.audioFormat switch
+            {
+                AudioFormat.none => "",
+                AudioFormat.mp3 => ".mp3",
+                AudioFormat.wav => ".wav",
+                _ => throw new ArgumentOutOfRangeException(nameof(audioFormat), audioFormat, "Invalid audio type.")
+            };
+        }
     }
 
     public void LoadQuestionFile(string unitKey = "")
@@ -69,7 +99,11 @@ public class QuestionManager : MonoBehaviour
                     if (LogController.Instance != null) LogController.Instance.debug(questionPath);
                     var json = www.text;
                     this.questionData = JsonUtility.FromJson<QuestionData>(json);
-                    if (!string.IsNullOrEmpty(unitKey)) this.questionData.Data = this.questionData.Data.Where(q => q.QID.StartsWith(unitKey)).ToList();
+                    if (!string.IsNullOrEmpty(unitKey)) { 
+                        this.questionData.Data = this.questionData.Data.Where(q => q.QID != null && q.QID.StartsWith(unitKey)).ToList();
+                    }
+
+                    if (LogController.Instance != null) LogController.Instance.debug($"loaded questions: {json}");
                     this.GetRandomQuestions();
                 }
                 break;
@@ -90,68 +124,40 @@ public class QuestionManager : MonoBehaviour
 
                         var json = uwq.downloadHandler.text;
                         this.questionData = JsonUtility.FromJson<QuestionData>(json);
-                        if (!string.IsNullOrEmpty(unitKey))
-                            this.questionData.Data = this.questionData.Data.Where(q => q.QID.StartsWith(unitKey)).ToList();
+                        if (!string.IsNullOrEmpty(unitKey)) { 
+                            this.questionData.Data = this.questionData.Data.Where(q => q.QID != null && q.QID.StartsWith(unitKey)).ToList();
+                        }
 
+                        if (LogController.Instance != null) { 
+                            LogController.Instance.debug($"loaded questions: {json}");
+                            LogController.Instance.debug($"loaded filtered questions: {this.questionData.Data.Count}");
+                        }
                         this.GetRandomQuestions();
                     }
                 }
                 break;
-        }
-
-
-       
+        }       
     }
 
-    /*private Sprite LoadImageToSprite(string folderName = "", string fileName = "")
+    private IEnumerator loadImage(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
-        var imagePath = System.IO.Path.Combine(Application.streamingAssetsPath, folderName + "/" + fileName + this.GetExtension());
-        WWW www = new WWW(imagePath);
-
-        Sprite sprite = null;
-
-        try
+        switch (this.loadFileMethod)
         {
-            // Wait for the WWW request to complete
-            while (!www.isDone) { }
-
-            if (!string.IsNullOrEmpty(www.error))
-            {
-                if (LogController.Instance != null) LogController.Instance.debugError($"Error loading image: {www.error}");
-            }
-            else
-            {
-                if (LogController.Instance != null) LogController.Instance.debug(imagePath);
-
-                Texture2D texture = www.texture;
-                if (texture != null)
-                {
-                    sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                }
-            }
+            case LoadFileMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
+            case LoadFileMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
+            default: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
         }
-        catch (Exception e)
-        {
-            if (LogController.Instance != null)
-            {
-                LogController.Instance.debugError($"Exception loading image: {e.Message}");
-            }
-        }
-        finally
-        {
-            www.Dispose();
-        }
-
-        return sprite;
     }
-    */
+
+
+
     private IEnumerator LoadImageFromStreamingAssets(
     string folderName = "",
     string fileName = "",
     Action<Texture> callback = null)
     {
 
-        var imagePath = System.IO.Path.Combine(Application.streamingAssetsPath, folderName + "/" + fileName + this.GetExtension());
+        var imagePath = System.IO.Path.Combine(Application.streamingAssetsPath, folderName + "/" + fileName + this.ImageExtension);
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imagePath))
         {
             yield return request.SendWebRequest();
@@ -175,18 +181,17 @@ public class QuestionManager : MonoBehaviour
     }
 
 
-    private IEnumerator LoadImageFromResources(string folderName = "", string fileName = "", Action<Sprite> callback = null)
+    private IEnumerator LoadImageFromResources(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
-        //var imagePath = folderName + "/" + fileName + this.GetExtension();
         // Load the image from the "Resources" folder
         var imagePath = folderName + "/" + fileName;
-        Sprite sprite = Resources.Load<Sprite>(imagePath);
+        Texture texture = Resources.Load<Texture>(imagePath);
 
-        if (sprite != null)
+        if (texture != null)
         {
             // Use the loaded sprite
             Debug.Log("Image loaded successfully!");
-            callback(sprite);
+            callback(texture);
         }
         else
         {
@@ -196,27 +201,92 @@ public class QuestionManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator loadAudio(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
+    {
+        switch (this.loadFileMethod)
+        {
+            case LoadFileMethod.StreamingAssets: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
+            case LoadFileMethod.Resources: return this.LoadAudioFromResources(folderName, fileName, callback);
+            default: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
+        }
+    }
+
+    private IEnumerator LoadAudioFromStreamingAssets(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
+    {
+        string path = System.IO.Path.Combine(Application.streamingAssetsPath, folderName, fileName + this.AudioExtension);
+
+        switch (this.loadMethod)
+        {
+            case LoadMethod.www:
+                using (WWW www = new WWW(path))
+                {
+                    yield return www;
+
+                    if (string.IsNullOrEmpty(www.error))
+                    {
+                        AudioClip audioClip = www.GetAudioClip();
+
+                        if (audioClip != null && audioClip.length > 0)
+                        {
+                            LogController.Instance?.debug("Audio loaded successfully!");
+                            callback?.Invoke(audioClip);
+                        }
+                        else
+                        {
+                            LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: Audio clip is null or empty");
+                        }
+                    }
+                    else
+                    {
+                        LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {www.error}");
+                    }
+                }
+                break;
+            case LoadMethod.UnityWebRequest:
+                using (UnityWebRequest uwq = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
+                {
+                    yield return uwq.SendWebRequest();
+
+                    if (uwq.result == UnityWebRequest.Result.Success)
+                    {
+                        AudioClip audioClip = DownloadHandlerAudioClip.GetContent(uwq);
+
+                        if (audioClip != null && audioClip.length > 0)
+                        {
+                            LogController.Instance?.debug("Audio loaded successfully!");
+                            callback?.Invoke(audioClip);
+                        }
+                    }
+                    else
+                    {
+                        LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {uwq.error}");
+                    }
+                }
+                break;
+        }   
+    }
+
+
     private IEnumerator LoadAudioFromResources(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
         var Path = folderName + "/" + fileName;
+
         AudioClip audioClip = Resources.Load<AudioClip>(Path);
 
-        if (audioClip != null)
+        if (audioClip != null && audioClip.length > 0)
         {
             // Use the loaded sprite
-            if (LogController.Instance != null)
-                LogController.Instance.debug("Audio loaded successfully!");
+            LogController.Instance?.debug("Audio loaded successfully!");
             callback(audioClip);
         }
         else
         {
-            if (LogController.Instance != null)
-                LogController.Instance.debugError($"Failed to load Audio from path: {Path}");
+            LogController.Instance?.debugError($"Failed to load Audio from path: {Path}");
         }
 
         yield return null;
-
     }
+
 
     private void ShuffleQuestions()
     {
@@ -233,8 +303,8 @@ public class QuestionManager : MonoBehaviour
                     break;
                 case "Picture":
                     StartCoroutine(
-                       LoadImageFromStreamingAssets(
-                           "Picture", qid, tex =>
+                       this.loadImage(
+                           folderName, qid, tex =>
                            {
                                qa.texture = tex;
                            }
@@ -243,7 +313,7 @@ public class QuestionManager : MonoBehaviour
                     break;
                 case "Audio":
                     StartCoroutine(
-                        LoadAudioFromResources(
+                        this.loadAudio(
                             folderName, qid, (audio) =>
                             {
                                 qa.audioClip = audio;

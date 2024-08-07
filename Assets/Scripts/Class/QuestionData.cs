@@ -32,6 +32,7 @@ public class CurrentQuestion
     public string correctAnswer;
     public string[] answersChoics;
     public RawImage questionImage;
+    public Button audioPlayBtn;
     private AspectRatioFitter aspecRatioFitter = null;
 
     public enum QuestionType
@@ -61,7 +62,14 @@ public class CurrentQuestion
                 }
                 break;
             case "Audio":
-                this.questiontype = QuestionType.Picture;
+                if (this.questionText != null) this.questionText.enabled = false;
+                if (this.questionText != null) this.questionText.text = "";
+                var audioCg = this.audioPlayBtn.GetComponent<CanvasGroup>();
+                SetUI.Set(audioCg, true, 0f);
+                this.questiontype = QuestionType.Audio;
+                this.correctAnswer = qa.Answer;
+                this.answersChoics = qa.Answers;
+                this.playAudio();
                 break;
             case "Text":
                 this.questiontype = QuestionType.Text;
@@ -82,6 +90,15 @@ public class CurrentQuestion
             this.numberQuestion += 1;
         else
             this.numberQuestion = 0;
+    }
+
+    public void playAudio()
+    {
+        if(this.audioPlayBtn != null && this.qa.audioClip != null)
+        {
+            this.audioPlayBtn.GetComponent<AudioSource>().clip = this.qa.audioClip;
+            this.audioPlayBtn.GetComponent<AudioSource>().Play();
+        }
     }
 }
 
