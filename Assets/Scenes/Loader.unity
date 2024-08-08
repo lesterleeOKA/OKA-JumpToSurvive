@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -488,7 +488,7 @@ MonoBehaviour:
   unitKey: 
   gameTime: 0
   showFPS: 0
-  testURL: 
+  testURL: http://localhost/JumpToSurvive/?unit=p6u1-c
 --- !u!114 &1694491774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,8 +518,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFileName: Question.json
+  UnitKey: 
   loadMethod: 1
-  loadFileMethod: 0
+  loadFileMethod: 1
   imageType: 1
   audioFormat: 1
   questionData:

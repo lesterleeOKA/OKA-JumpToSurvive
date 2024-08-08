@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -43,7 +44,7 @@ public class QuestionManager : MonoBehaviour
     {
         none,
         mp3,
-        wav
+       /* wav*/
     }
 
     string ImageExtension
@@ -67,7 +68,7 @@ public class QuestionManager : MonoBehaviour
             {
                 AudioFormat.none => "",
                 AudioFormat.mp3 => ".mp3",
-                AudioFormat.wav => ".wav",
+                //AudioFormat.wav => ".wav",
                 _ => throw new ArgumentOutOfRangeException(nameof(audioFormat), audioFormat, "Invalid audio type.")
             };
         }
@@ -81,8 +82,7 @@ public class QuestionManager : MonoBehaviour
 
     IEnumerator loadQuestionFile(string unitKey = "")
     {
-        var questionPath = System.IO.Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
-
+        var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
 
         switch (this.loadMethod) 
         { 
@@ -157,7 +157,7 @@ public class QuestionManager : MonoBehaviour
     Action<Texture> callback = null)
     {
 
-        var imagePath = System.IO.Path.Combine(Application.streamingAssetsPath, folderName + "/" + fileName + this.ImageExtension);
+        var imagePath =  Path.Combine(Application.streamingAssetsPath, folderName + "/" + fileName + this.ImageExtension);
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imagePath))
         {
             yield return request.SendWebRequest();
@@ -207,13 +207,14 @@ public class QuestionManager : MonoBehaviour
         {
             case LoadFileMethod.StreamingAssets: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
             case LoadFileMethod.Resources: return this.LoadAudioFromResources(folderName, fileName, callback);
+            //case LoadFileMethod.AssetsBundle: return this.LoadAudioFromAssetsBundle(folderName, fileName, callback);
             default: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
         }
     }
 
     private IEnumerator LoadAudioFromStreamingAssets(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
-        string path = System.IO.Path.Combine(Application.streamingAssetsPath, folderName, fileName + this.AudioExtension);
+        string path = Path.Combine(Application.streamingAssetsPath, folderName, fileName + this.AudioExtension);
 
         switch (this.loadMethod)
         {
@@ -243,7 +244,34 @@ public class QuestionManager : MonoBehaviour
                 }
                 break;
             case LoadMethod.UnityWebRequest:
-                using (UnityWebRequest uwq = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
+                using (UnityWebRequest uwq = UnityWebRequest.Get(path))
+                {
+                    yield return uwq.SendWebRequest();
+
+                    if (uwq.result == UnityWebRequest.Result.Success)
+                    {
+                        byte[] results = uwq.downloadHandler.data;
+                        var memStream = new MemoryStream(results);
+                        var mpgFile = new NLayer.MpegFile(memStream);
+                        var samples = new float[mpgFile.Length];
+                        mpgFile.ReadSamples(samples, 0, (int)mpgFile.Length);
+
+                        var audioClip = AudioClip.Create(fileName, samples.Length, mpgFile.Channels, mpgFile.SampleRate, false);
+                        audioClip.SetData(samples, 0);
+
+                        if (audioClip != null)
+                        {
+                            LogController.Instance?.debug("Audio loaded successfully!");
+                            callback?.Invoke(audioClip);
+                        }
+                    }
+                    else
+                    {
+                        LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {uwq.error}");
+                    }
+                }
+              
+                /*using (UnityWebRequest uwq = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
                 {
                     yield return uwq.SendWebRequest();
 
@@ -261,7 +289,7 @@ public class QuestionManager : MonoBehaviour
                     {
                         LogController.Instance?.debugError($"Failed to load Audio from path: {path}, Error: {uwq.error}");
                     }
-                }
+                }*/
                 break;
         }   
     }
@@ -286,6 +314,35 @@ public class QuestionManager : MonoBehaviour
 
         yield return null;
     }
+
+    /*private AssetBundle assetBundle = null;
+    private IEnumerator LoadAudioFromAssetsBundle(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
+    {
+
+        if (this.assetBundle == null)
+        {
+            var assetBundlePath = Path.Combine(Application.streamingAssetsPath, "audio." + this.UnitKey);
+            this.assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+        }
+
+        if (this.assetBundle != null)
+        {
+            AudioClip audioClip = assetBundle.LoadAsset<AudioClip>(fileName);
+
+            if (audioClip != null && audioClip.length > 0)
+            {
+                // Use the loaded audio clip
+                LogController.Instance?.debug(fileName + "loaded successfully!");
+                callback(audioClip);
+            }
+            else
+            {
+                LogController.Instance?.debugError($"Failed to load Audio asset: {fileName}");
+            }
+        }
+
+        yield return null;
+    }*/
 
 
     private void ShuffleQuestions()
