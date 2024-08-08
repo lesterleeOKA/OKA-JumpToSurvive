@@ -9,9 +9,11 @@ public class QuestionManager : MonoBehaviour
 {
     public static QuestionManager Instance = null;
     public string jsonFileName = "Question.json";
+    public string UnitKey;
     public LoadMethod loadMethod = LoadMethod.UnityWebRequest;
-    public LoadFileMethod loadFileMethod = LoadFileMethod.StreamingAssets;
+    public LoadImageMethod loadImageMethod = LoadImageMethod.StreamingAssets;
     public ImageType imageType = ImageType.jpg;
+    public LoadAudioMethod loadAudioMethod = LoadAudioMethod.StreamingAssets;
     public AudioFormat audioFormat = AudioFormat.mp3;
     public QuestionData questionData;
 
@@ -27,7 +29,14 @@ public class QuestionManager : MonoBehaviour
         UnityWebRequest=1,
     }
 
-    public enum LoadFileMethod
+    public enum LoadImageMethod
+    {
+        Resources = 0,
+        StreamingAssets = 1,
+        AssetsBundle = 2
+    }
+
+    public enum LoadAudioMethod
     {
         Resources = 0,
         StreamingAssets = 1,
@@ -76,6 +85,7 @@ public class QuestionManager : MonoBehaviour
 
     public void LoadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
+        this.UnitKey = unitKey;
         StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
     }
 
@@ -141,15 +151,14 @@ public class QuestionManager : MonoBehaviour
 
     private IEnumerator loadImage(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
-        switch (this.loadFileMethod)
+        switch (this.loadImageMethod)
         {
-            case LoadFileMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
-            case LoadFileMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
+            case LoadImageMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
+            case LoadImageMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
+            case LoadImageMethod.AssetsBundle: return this.LoadImageFromAssetsBundle(folderName, fileName, callback);
             default: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
         }
     }
-
-
 
     private IEnumerator LoadImageFromStreamingAssets(
     string folderName = "",
@@ -166,6 +175,9 @@ public class QuestionManager : MonoBehaviour
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
                 if (texture != null)
                 {
+                    texture.filterMode = FilterMode.Bilinear;
+                    texture.wrapMode = TextureWrapMode.Clamp;
+
                     callback?.Invoke(texture);
                     if (LogController.Instance != null) 
                         LogController.Instance.debug($"Loaded Image : {texture.ToString()}");
@@ -201,12 +213,40 @@ public class QuestionManager : MonoBehaviour
         yield return null;
     }
 
+    private AssetBundle assetBundle = null;
+    private IEnumerator LoadImageFromAssetsBundle(string folderName = "", string fileName = "", Action<Texture> callback = null)
+    {
+
+        if (this.assetBundle == null)
+        {
+            var assetBundlePath = Path.Combine(Application.streamingAssetsPath, "picture." + this.UnitKey);
+            this.assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+        }
+
+        if (this.assetBundle != null)
+        {
+            Texture texture = assetBundle.LoadAsset<Texture>(fileName);
+
+            if (texture != null)
+            {
+                // Use the loaded audio clip
+                LogController.Instance?.debug(fileName + "loaded successfully!");
+                callback(texture);
+            }
+            else
+            {
+                LogController.Instance?.debugError($"Failed to load Image asset: {fileName}");
+            }
+        }
+        yield return null;
+    }
+
     private IEnumerator loadAudio(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
-        switch (this.loadFileMethod)
+        switch (this.loadAudioMethod)
         {
-            case LoadFileMethod.StreamingAssets: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
-            case LoadFileMethod.Resources: return this.LoadAudioFromResources(folderName, fileName, callback);
+            case LoadAudioMethod.StreamingAssets: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
+            case LoadAudioMethod.Resources: return this.LoadAudioFromResources(folderName, fileName, callback);
             //case LoadFileMethod.AssetsBundle: return this.LoadAudioFromAssetsBundle(folderName, fileName, callback);
             default: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
         }
