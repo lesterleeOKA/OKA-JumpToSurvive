@@ -57,6 +57,27 @@ public static class SetUI
         }
     }
 
+    public static void SetGroup(CanvasGroup[] _cgs = null, int _showId=-1, float _duration = 0f)
+    {
+        for (int i = 0; i < _cgs.Length; i++) {
+            if (_cgs[i] != null) {
+
+                if (i == _showId)
+                {
+                    _cgs[_showId].DOFade(1f, _duration);
+                    _cgs[_showId].interactable = true;
+                    _cgs[_showId].blocksRaycasts = true;
+                }
+                else
+                {
+                    _cgs[i].DOFade(0f, _duration);
+                    _cgs[i].interactable = false;
+                    _cgs[i].blocksRaycasts = false;
+                }
+            }
+        }
+    }
+
     public static void SetMove(CanvasGroup _cg = null, bool _status = false, Vector2 _targetPos= default, float _duration = 0f)
     {
         if (_cg != null)

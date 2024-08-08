@@ -2,29 +2,29 @@
   "Data": [
     {
       "QID": "p1u1-a1",
-	  "QuestionType": "Text",
-    "Question": "What is the color of apple?",
-	  "Answers": [
-       "red",
-       "blue",
-       "purple",
-		   "black"
+      "QuestionType": "Text",
+      "Question": "What is the color of apple?",
+      "Answers": [
+        "red",
+        "blue",
+        "purple",
+        "black"
       ],
       "Answer": "red"
     },
-	  {
-        "QID": "p1u1-a2",
-	    "QuestionType": "Text",
+    {
+      "QID": "p1u1-a2",
+      "QuestionType": "Text",
       "Question": "What is the color of banana?",
-	    "Answers": [
-         "red",
-         "yellow",
-         "purple",
-		     "black"
-        ],
-        "Answer": "yellow"
-      },
-	  {
+      "Answers": [
+        "red",
+        "yellow",
+        "purple",
+        "black"
+      ],
+      "Answer": "yellow"
+    },
+    {
       "QID": "p6u1-c1",
       "QuestionType": "Audio",
       "Question": "",
@@ -263,6 +263,246 @@
         "Corlect"
       ],
       "Answer": "Collect"
+    },
+    {
+      "QID": "p6u6-c1",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "umbrella",
+        "skirt",
+        "cheongsam",
+        "robe"
+      ],
+      "Answer": "cheongsam"
+    },
+    {
+      "QID": "p6u6-c2",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "poncho",
+        "towel",
+        "rug",
+        "handkerchief"
+      ],
+      "Answer": "poncho"
+    },
+    {
+      "QID": "p6u6-c3",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "kaiser",
+        "kimono",
+        "komodo",
+        "katana"
+      ],
+      "Answer": "kimono"
+    },
+    {
+      "QID": "p6u6-c4",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "skirt",
+        "kilt",
+        "dress",
+        "garter"
+      ],
+      "Answer": "kilt"
+    },
+    {
+      "QID": "p6u6-c5",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "hijab",
+        "headband",
+        "scarf",
+        "hat"
+      ],
+      "Answer": "hijab"
+    },
+    {
+      "QID": "p6u6-c6",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "V-neck",
+        "tank top",
+        "T-shirt",
+        "changshan"
+      ],
+      "Answer": "changshan"
+    },
+    {
+      "QID": "p6u6-c7",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "African drum",
+        "American drum",
+        "Asian drum",
+        "Australian drum"
+      ],
+      "Answer": "African drum"
+    },
+    {
+      "QID": "p6u6-c8",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "stamper",
+        "simba",
+        "timber",
+        "samba"
+      ],
+      "Answer": "samba"
+    },
+    {
+      "QID": "p6u6-c9",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "abs dance",
+        "belly dance",
+        "tummy dance",
+        "stomach dance"
+      ],
+      "Answer": "belly dance"
+    },
+    {
+      "QID": "p6u6-c10",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "haka",
+        "hark",
+        "hike",
+        "hokum"
+      ],
+      "Answer": "haka"
+    },
+    {
+      "QID": "p6u6-c11",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "Chinese opera",
+        "Italian opera",
+        "Spanish opera",
+        "Flemish opera"
+      ],
+      "Answer": "Chinese opera"
+    },
+    {
+      "QID": "p6u6-c12",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "salsa sauce",
+        "salsa dance",
+        "salsa dip",
+        "salsa chips"
+      ],
+      "Answer": "salsa dance"
+    },
+    {
+      "QID": "p6u6-c13",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "jacuzzi",
+        "gas",
+        "jams",
+        "jazz"
+      ],
+      "Answer": "jazz"
+    },
+    {
+      "QID": "p6u6-c14",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "mochi",
+        "kimchi",
+        "sushi",
+        "sashimi"
+      ],
+      "Answer": "kimchi"
+    },
+    {
+      "QID": "p6u6-c15",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "arm wrestling",
+        "Greek wrestling",
+        "sumo-wrestling",
+        "WWE wrestling"
+      ],
+      "Answer": "sumo-wrestling"
+    },
+    {
+      "QID": "p6u6-c16",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "cruises",
+        "cuisines",
+        "karmas",
+        "corndogs"
+      ],
+      "Answer": "cuisines"
+    },
+    {
+      "QID": "p6u6-c17",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "languages",
+        "languishes",
+        "lampreys",
+        "lunges"
+      ],
+      "Answer": "languages"
+    },
+    {
+      "QID": "p6u6-c18",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "releggings",
+        "relics",
+        "religieuse",
+        "religions"
+      ],
+      "Answer": "religions"
+    },
+    {
+      "QID": "p6u6-c19",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "customary",
+        "costumes",
+        "customs",
+        "costs"
+      ],
+      "Answer": "costumes"
+    },
+    {
+      "QID": "p6u6-c20",
+      "QuestionType": "Picture",
+      "Question": "",
+      "Answers": [
+        "transportations",
+        "traditions",
+        "transitions",
+        "trepidations"
+      ],
+      "Answer": "traditions"
     }
   ]
 

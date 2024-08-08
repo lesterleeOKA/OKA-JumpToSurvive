@@ -74,13 +74,13 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    public void LoadQuestionFile(string unitKey = "")
+    public void LoadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
-        StartCoroutine(this.loadQuestionFile(unitKey));
+        StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
     }
 
 
-    IEnumerator loadQuestionFile(string unitKey = "")
+    IEnumerator loadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
         var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
 
@@ -103,8 +103,8 @@ public class QuestionManager : MonoBehaviour
                         this.questionData.Data = this.questionData.Data.Where(q => q.QID != null && q.QID.StartsWith(unitKey)).ToList();
                     }
 
-                    if (LogController.Instance != null) LogController.Instance.debug($"loaded questions: {json}");
-                    this.GetRandomQuestions();
+                    //if (LogController.Instance != null) LogController.Instance.debug($"loaded questions: {json}");
+                    this.GetRandomQuestions(onCompleted);
                 }
                 break;
             case LoadMethod.UnityWebRequest:
@@ -129,10 +129,10 @@ public class QuestionManager : MonoBehaviour
                         }
 
                         if (LogController.Instance != null) { 
-                            LogController.Instance.debug($"loaded questions: {json}");
+                            //LogController.Instance.debug($"loaded questions: {json}");
                             LogController.Instance.debug($"loaded filtered questions: {this.questionData.Data.Count}");
                         }
-                        this.GetRandomQuestions();
+                        this.GetRandomQuestions(onCompleted);
                     }
                 }
                 break;
@@ -345,11 +345,14 @@ public class QuestionManager : MonoBehaviour
     }*/
 
 
-    private void ShuffleQuestions()
+    private void ShuffleQuestions(Action onComplete = null)
     {
         this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
 
-        for (int i = 0; i < this.questionData.Data.Count; i++)
+        int totalItems = this.questionData.Data.Count;
+        int loadedItems = 0;
+
+        for (int i = 0; i < totalItems; i++)
         {
             var qa = this.questionData.Data[i];
             string folderName = qa.QuestionType;
@@ -357,6 +360,8 @@ public class QuestionManager : MonoBehaviour
             switch (qa.QuestionType)
             {
                 case "Text":
+                    loadedItems++;
+                    if (loadedItems == totalItems) onComplete?.Invoke();
                     break;
                 case "Picture":
                     StartCoroutine(
@@ -364,6 +369,8 @@ public class QuestionManager : MonoBehaviour
                            folderName, qid, tex =>
                            {
                                qa.texture = tex;
+                               loadedItems++;
+                               if (loadedItems == totalItems) onComplete?.Invoke();
                            }
                         )
                      );
@@ -374,20 +381,21 @@ public class QuestionManager : MonoBehaviour
                             folderName, qid, (audio) =>
                             {
                                 qa.audioClip = audio;
+                                loadedItems++;
+                                if (loadedItems == totalItems) onComplete?.Invoke();
                             }
                         )
                     );
                     break;
             }
-
         }
     }
 
-    private void GetRandomQuestions()
+    private void GetRandomQuestions(Action onCompleted = null)
     {
         if (this.questionData.Data.Count > 1 && this.questionData.Data[0] != this.questionData.Data[this.questionData.Data.Count - 1])
         {
-            this.ShuffleQuestions();
+            this.ShuffleQuestions(onCompleted);
         }
     }
 }

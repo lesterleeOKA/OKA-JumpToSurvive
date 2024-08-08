@@ -21,7 +21,6 @@ public class LoaderConfig : GameSetting
     private void Start()
     {
         this.LoadQuestions();
-        this.changeScene(1);
     }
 
     public void LoadQuestions()
@@ -34,7 +33,7 @@ public class LoaderConfig : GameSetting
         }
         else
         {
-            QuestionManager.Instance?.LoadQuestionFile(this.unitKey);
+            QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.changeScene(1));
         }
     }
 
@@ -76,7 +75,7 @@ public class LoaderConfig : GameSetting
                 }
             }
         }
-        QuestionManager.Instance?.LoadQuestionFile(this.unitKey);
+        QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.changeScene(1));
         return unitKey;
     }
 

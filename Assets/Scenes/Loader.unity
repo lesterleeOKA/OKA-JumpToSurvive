@@ -488,7 +488,7 @@ MonoBehaviour:
   unitKey: 
   gameTime: 0
   showFPS: 0
-  testURL: http://localhost/JumpToSurvive/?unit=p6u1-c
+  testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +518,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFileName: Question.json
-  UnitKey: 
   loadMethod: 1
   loadFileMethod: 1
   imageType: 1

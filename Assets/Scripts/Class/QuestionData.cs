@@ -31,6 +31,7 @@ public class CurrentQuestion
     public TextMeshProUGUI questionText;
     public string correctAnswer;
     public string[] answersChoics;
+    public CanvasGroup[] questionBgs;
     public RawImage questionImage;
     public Button audioPlayBtn;
     private AspectRatioFitter aspecRatioFitter = null;
@@ -51,27 +52,36 @@ public class CurrentQuestion
         switch (qa.QuestionType)
         {
             case "Picture":
+                SetUI.SetGroup(this.questionBgs, 0, 0f);
                 this.questiontype = QuestionType.Picture;
-                this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
                 var qaImage = qa.texture;
-
+                if (this.questionText != null) this.questionText.enabled = false;
+                if (this.questionText != null) this.questionText.text = "";
+                SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
+                this.correctAnswer = qa.Answer;
+                this.answersChoics = qa.Answers;
                 if (this.questionImage != null && qaImage != null)
                 {
+                    this.questionImage.enabled = true;
+                    this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
                     this.questionImage.texture = qaImage;
                     this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
                 }
                 break;
             case "Audio":
+                SetUI.SetGroup(this.questionBgs, 1, 0f);
                 if (this.questionText != null) this.questionText.enabled = false;
                 if (this.questionText != null) this.questionText.text = "";
-                var audioCg = this.audioPlayBtn.GetComponent<CanvasGroup>();
-                SetUI.Set(audioCg, true, 0f);
+                if (this.questionImage != null) this.questionImage.enabled = false;
+                SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
                 this.questiontype = QuestionType.Audio;
                 this.correctAnswer = qa.Answer;
                 this.answersChoics = qa.Answers;
                 this.playAudio();
                 break;
             case "Text":
+                SetUI.SetGroup(this.questionBgs, 2, 0f);
+                SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
                 this.questiontype = QuestionType.Text;
                 if (this.questionText != null) this.questionText.enabled = true;
                 if (this.questionText != null) this.questionText.text = qa.Question;
