@@ -12,7 +12,8 @@ public class CreateAssetBundles
         Debug.Log("created to " + assetBundleDirectoryPath);
         try
         {
-            BuildPipeline.BuildAssetBundles(assetBundleDirectoryPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+            //BuildPipeline.BuildAssetBundles(assetBundleDirectoryPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+            BuildPipeline.BuildAssetBundles(assetBundleDirectoryPath, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.WebGL);
         }
         catch (Exception e)
         {

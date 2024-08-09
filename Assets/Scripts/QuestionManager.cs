@@ -4,18 +4,21 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Text.RegularExpressions;
 
 public class QuestionManager : MonoBehaviour
 {
     public static QuestionManager Instance = null;
     public string jsonFileName = "Question.json";
-    public string UnitKey;
     public LoadMethod loadMethod = LoadMethod.UnityWebRequest;
     public LoadImageMethod loadImageMethod = LoadImageMethod.StreamingAssets;
     public ImageType imageType = ImageType.jpg;
     public LoadAudioMethod loadAudioMethod = LoadAudioMethod.StreamingAssets;
     public AudioFormat audioFormat = AudioFormat.mp3;
     public QuestionData questionData;
+    private AssetBundle assetBundle = null;
+    [HideInInspector]
+    public Texture[] allTextures;
 
     private void Awake()
     {
@@ -85,7 +88,6 @@ public class QuestionManager : MonoBehaviour
 
     public void LoadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
-        this.UnitKey = unitKey;
         StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
     }
 
@@ -113,6 +115,11 @@ public class QuestionManager : MonoBehaviour
                         this.questionData.Data = this.questionData.Data.Where(q => q.QID != null && q.QID.StartsWith(unitKey)).ToList();
                     }
 
+                    if (this.questionData.Data[0].QuestionType == "Picture" && this.loadImageMethod == LoadImageMethod.AssetsBundle)
+                    {
+                        yield return this.loadImageAssetBundleFile(this.questionData.Data[0].QID);
+                    }
+
                     //if (LogController.Instance != null) LogController.Instance.debug($"loaded questions: {json}");
                     this.GetRandomQuestions(onCompleted);
                 }
@@ -138,6 +145,11 @@ public class QuestionManager : MonoBehaviour
                             this.questionData.Data = this.questionData.Data.Where(q => q.QID != null && q.QID.StartsWith(unitKey)).ToList();
                         }
 
+                        if (this.questionData.Data[0].QuestionType == "Picture" && this.loadImageMethod == LoadImageMethod.AssetsBundle)
+                        {
+                            yield return this.loadImageAssetBundleFile(this.questionData.Data[0].QID);
+                        }
+
                         if (LogController.Instance != null) { 
                             //LogController.Instance.debug($"loaded questions: {json}");
                             LogController.Instance.debug($"loaded filtered questions: {this.questionData.Data.Count}");
@@ -146,7 +158,7 @@ public class QuestionManager : MonoBehaviour
                     }
                 }
                 break;
-        }       
+        }
     }
 
     private IEnumerator loadImage(string folderName = "", string fileName = "", Action<Texture> callback = null)
@@ -155,7 +167,7 @@ public class QuestionManager : MonoBehaviour
         {
             case LoadImageMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
             case LoadImageMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
-            case LoadImageMethod.AssetsBundle: return this.LoadImageFromAssetsBundle(folderName, fileName, callback);
+            case LoadImageMethod.AssetsBundle: return this.LoadImageFromAssetsBundle(fileName, callback);
             default: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
         }
     }
@@ -180,7 +192,7 @@ public class QuestionManager : MonoBehaviour
 
                     callback?.Invoke(texture);
                     if (LogController.Instance != null) 
-                        LogController.Instance.debug($"Loaded Image : {texture.ToString()}");
+                        LogController.Instance.debug($"Loaded Image : {fileName}");
                 }
             }
             else
@@ -213,32 +225,59 @@ public class QuestionManager : MonoBehaviour
         yield return null;
     }
 
-    private AssetBundle assetBundle = null;
-    private IEnumerator LoadImageFromAssetsBundle(string folderName = "", string fileName = "", Action<Texture> callback = null)
+    private IEnumerator loadImageAssetBundleFile(string fileName = "")
     {
-
         if (this.assetBundle == null)
         {
-            var assetBundlePath = Path.Combine(Application.streamingAssetsPath, "picture." + this.UnitKey);
-            this.assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-        }
 
+            string unitKey = Regex.Replace(fileName, @"-c\d+", "-c");
+            var assetBundlePath = Path.Combine(Application.streamingAssetsPath, "picture." + unitKey);
+
+#if UNITY_WEBG && !UNITY_EDITOR
+            using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(assetBundlePath))
+            {
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    this.assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+                    this.allTextures = this.assetBundle.LoadAllAssets<Texture>();
+                    LogController.Instance?.debug($"downloaded AssetBundle: {this.assetBundle}");
+                }
+                else
+                {
+                    LogController.Instance?.debugError($"Failed to download AssetBundle: {request.error}");
+                    yield break; // Exit if the download failed
+                }
+            }
+#else
+            var assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
+            yield return assetBundleCreateRequest;
+            this.assetBundle = assetBundleCreateRequest.assetBundle;
+            this.allTextures = this.assetBundle.LoadAllAssets<Texture>();
+#endif
+        }
+    }
+
+    private IEnumerator LoadImageFromAssetsBundle(string fileName = "", Action<Texture> callback = null)
+    {
         if (this.assetBundle != null)
         {
-            Texture texture = assetBundle.LoadAsset<Texture>(fileName);
+            //Texture texture = assetBundle.LoadAsset<Texture>(fileName);
+            Texture texture = Array.Find(this.allTextures, t => t.name == fileName);
 
             if (texture != null)
             {
-                // Use the loaded audio clip
-                LogController.Instance?.debug(fileName + "loaded successfully!");
+                LogController.Instance?.debug(fileName + " loaded successfully!");
                 callback(texture);
             }
             else
             {
                 LogController.Instance?.debugError($"Failed to load Image asset: {fileName}");
             }
+
+            yield return null;
         }
-        yield return null;
     }
 
     private IEnumerator loadAudio(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
