@@ -69,8 +69,11 @@ public class PlayerController : UserData
         }
         else
         {
-            //SetUI.Set(this.answerBox, true, 0f);
             this.answer = word;
+            if (!string.IsNullOrEmpty(this.answer))
+            {
+                SetUI.Set(this.answerBox, true, 0.5f);
+            }
             if (this.answerText != null) this.answerText.text = this.answer;
 
             //if (this.answer != QuestionController.Instance.currentQuestion.correctAnswer)

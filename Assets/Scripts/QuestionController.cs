@@ -17,7 +17,7 @@ public class QuestionController : MonoBehaviour
     public bool wordTriggering = false;
     public bool moveTonextQuestion = false;
     public bool allowCheckingWords = true;
-    public bool showAnswers = false;
+   // public bool showAnswers = false;
     public float delayToNextQuestion = 2f;
     public float count = 0f;
 
@@ -66,10 +66,10 @@ public class QuestionController : MonoBehaviour
                 {
                     if(this.count > 0f)
                     {
-                        if (GameController.Instance != null && !this.showAnswers) { 
+                       /* if (GameController.Instance != null && !this.showAnswers) { 
                             GameController.Instance.showAllCharacterAnswer();
                             this.showAnswers = true;
-                        }
+                        }*/
 
                         this.count -= Time.deltaTime;
                     }
@@ -171,7 +171,7 @@ public class QuestionController : MonoBehaviour
 
         if(id == 0) { 
             this.allowCheckingWords = true;
-            this.showAnswers = false;
+            //this.showAnswers = false;
         }
     }
 

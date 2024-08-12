@@ -65,6 +65,15 @@ public class CurrentQuestion
                     this.questionImage.enabled = true;
                     this.aspecRatioFitter = this.questionImage.GetComponent<AspectRatioFitter>();
                     this.questionImage.texture = qaImage;
+                    var width = this.questionImage.GetComponent<RectTransform>().sizeDelta.x;
+                    if (qaImage.width > qaImage.height)
+                    {
+                        this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 250f);
+                    }
+                    else
+                    {
+                        this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 330f);
+                    }
                     this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
                 }
                 break;
