@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Data.Common;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -19,6 +21,8 @@ public class QuestionManager : MonoBehaviour
     private AssetBundle assetBundle = null;
     [HideInInspector]
     public Texture[] allTextures;
+    public int totalItems;
+    public int loadedItems;
 
     private void Awake()
     {
@@ -204,6 +208,61 @@ public class QuestionManager : MonoBehaviour
 
     }
 
+    /*private async void loadImage(string folderName = "", string fileName = "", Action<Texture> callback = null)
+    {
+        switch (this.loadImageMethod)
+        {
+            case LoadImageMethod.StreamingAssets: 
+                await this.LoadImageFromStreamingAssetsAsync(folderName, fileName, callback);
+                break;
+            default:
+                await this.LoadImageFromStreamingAssetsAsync(folderName, fileName, callback);
+                break;
+        }
+    }
+
+    private async Task LoadImageFromStreamingAssetsAsync(
+    string folderName = "",
+    string fileName = "",
+    Action<Texture> callback = null)
+    {
+        var imagePath = Path.Combine(Application.streamingAssetsPath, folderName, fileName + this.ImageExtension);
+
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imagePath))
+        {
+            var operation = request.SendWebRequest();
+
+            // Create a TaskCompletionSource to await the operation
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+
+            operation.completed += (op) =>
+            {
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    taskCompletionSource.SetResult(true);
+                }
+                else
+                {
+                    taskCompletionSource.SetException(new Exception(request.error));
+                }
+            };
+
+            // Await the task
+            await taskCompletionSource.Task;
+
+            // Handle the response
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            if (texture != null)
+            {
+                texture.filterMode = FilterMode.Bilinear;
+                texture.wrapMode = TextureWrapMode.Clamp;
+
+                callback?.Invoke(texture);
+                LogController.Instance?.debug($"Loaded Image: {fileName}");
+            }
+        }
+    }*/
+
 
     private IEnumerator LoadImageFromResources(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
@@ -233,7 +292,7 @@ public class QuestionManager : MonoBehaviour
             string unitKey = Regex.Replace(fileName, @"-c\d+", "-c");
             var assetBundlePath = Path.Combine(Application.streamingAssetsPath, "picture." + unitKey);
 
-#if UNITY_WEBG && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR
             using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(assetBundlePath))
             {
                 yield return request.SendWebRequest();
@@ -423,45 +482,63 @@ public class QuestionManager : MonoBehaviour
         yield return null;
     }*/
 
+    void updateWebglLoadingBarStatus(string status ="")
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval($"updateLoadingText('{status}')");
+#endif
+    }
 
     private void ShuffleQuestions(Action onComplete = null)
     {
         this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
 
-        int totalItems = this.questionData.Data.Count;
-        int loadedItems = 0;
+        this.totalItems = this.questionData.Data.Count;
+        this.loadedItems = 0;
 
-        for (int i = 0; i < totalItems; i++)
+        for (int i = 0; i < this.totalItems; i++)
         {
             var qa = this.questionData.Data[i];
             string folderName = qa.QuestionType;
             string qid = qa.QID;
+
             switch (qa.QuestionType)
             {
                 case "Text":
-                    loadedItems++;
-                    if (loadedItems == totalItems) onComplete?.Invoke();
+                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Question");
+                    this.loadedItems++;
+                    if (this.loadedItems == this.totalItems) onComplete?.Invoke();
                     break;
                 case "Picture":
-                    StartCoroutine(
-                       this.loadImage(
+                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Images");
+                     StartCoroutine(
+                        this.loadImage(
+                            folderName, qid, tex =>
+                            {
+                                qa.texture = tex;
+                                this.loadedItems++;
+                                if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                            }
+                         )
+                      );
+                    /*this.loadImage(
                            folderName, qid, tex =>
                            {
                                qa.texture = tex;
-                               loadedItems++;
-                               if (loadedItems == totalItems) onComplete?.Invoke();
+                               this.loadedItems++;
+                               if (this.loadedItems == this.totalItems) onComplete?.Invoke();
                            }
-                        )
-                     );
+                        );*/
                     break;
                 case "Audio":
+                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Audio");
                     StartCoroutine(
                         this.loadAudio(
                             folderName, qid, (audio) =>
                             {
                                 qa.audioClip = audio;
-                                loadedItems++;
-                                if (loadedItems == totalItems) onComplete?.Invoke();
+                                this.loadedItems++;
+                                if (this.loadedItems == this.totalItems) onComplete?.Invoke();
                             }
                         )
                     );

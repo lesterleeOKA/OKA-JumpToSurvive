@@ -15,7 +15,7 @@
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
 		<div class="container">
-			 <p class="text">Now Loading</p>
+			 <p class="text" id="loadingText">Now Loading</p>
 			 <div id="loading" class="loading-animation"></div>
 		</div>     
         <div id="unity-progress-bar-empty">
@@ -108,12 +108,22 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          loadingBar.style.display = "none";
+          //loadingBar.style.display = "none";
+		  unityInstance.SendMessage('Loader', 'LoadQuestions');
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
+	  
+	  function onQuestionsLoaded() {
+		loadingBar.style.display = "none";
+		console.log("Questions loaded, loading bar hidden.");
+      }
+	  function updateLoadingText(newText) {
+		const loadingTextElement = document.getElementById("loadingText");
+		loadingTextElement.textContent = newText;
+	  }
     </script>
   </body>
 </html>

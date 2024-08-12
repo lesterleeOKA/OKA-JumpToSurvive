@@ -20,7 +20,9 @@ public class LoaderConfig : GameSetting
 
     private void Start()
     {
-        this.LoadQuestions();
+#if UNITY_EDITOR
+       // this.LoadQuestions();
+#endif
     }
 
     public void LoadQuestions()
@@ -28,13 +30,21 @@ public class LoaderConfig : GameSetting
         string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
         LogController.Instance?.debug("currentURL: " + currentURL);
         if (string.IsNullOrEmpty(this.unitKey)) {
-
             this.unitKey = ParseURLParams(currentURL);
         }
         else
         {
-            QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.changeScene(1));
+            QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.finishedLoadQuestion());
         }
+    }
+
+    void finishedLoadQuestion()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval("onQuestionsLoaded()");     
+#endif
+
+        this.changeScene(1);
     }
 
 
@@ -75,7 +85,7 @@ public class LoaderConfig : GameSetting
                 }
             }
         }
-        QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.changeScene(1));
+        QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.finishedLoadQuestion());
         return unitKey;
     }
 
