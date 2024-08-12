@@ -5,8 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Data.Common;
 
 public class QuestionManager : MonoBehaviour
 {

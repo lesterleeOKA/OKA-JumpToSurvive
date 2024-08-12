@@ -21,7 +21,7 @@ public class LoaderConfig : GameSetting
     private void Start()
     {
 #if UNITY_EDITOR
-       // this.LoadQuestions();
+        this.LoadQuestions();
 #endif
     }
 
