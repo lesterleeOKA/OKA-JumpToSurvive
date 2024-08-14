@@ -19,10 +19,10 @@ public class FPSCounter : MonoBehaviour
     {
         if(this.fpsCg != null)
         {
-            this.fpsCg.alpha = LoaderConfig.Instance.showFPS ? 1f: 0f;
+            this.fpsCg.alpha = LoaderConfig.Instance.ShowFPS ? 1f: 0f;
         }
 
-        if(this.fpsText != null && LoaderConfig.Instance.showFPS)
+        if(this.fpsText != null && LoaderConfig.Instance.ShowFPS)
         {
             time += Time.unscaledDeltaTime;
             ++frames;

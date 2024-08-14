@@ -5,8 +5,6 @@ public class LoaderConfig : GameSetting
 {
     public static LoaderConfig Instance = null;
     public string unitKey = string.Empty;
-    public float gameTime;
-    public bool showFPS = false;
     public string testURL = string.Empty;
 
 
@@ -76,9 +74,9 @@ public class LoaderConfig : GameSetting
                                 LogController.Instance?.debug("Current Game Unit: " + this.CurrentUnit);
                                 break;
                             case "gameTime":
-                                this.gameTime = float.Parse(value);
+                                this.GameTime = float.Parse(value);
                                 LogController.Instance?.debug("Game Time: " + this.GameTime);
-                                this.showFPS = true;
+                                this.ShowFPS = true;
                                 break;
                         }
                     }
@@ -94,30 +92,10 @@ public class LoaderConfig : GameSetting
         SceneManager.LoadScene(sceneId);
     }
 
-
     public string CurrentUnit
     {
-        get
-        {
-            return this.unitKey;
-        }
-        set
-        {
-            this.unitKey = value;
-        }
-    }
-
-
-    public float GameTime
-    {
-        get
-        {
-            return this.gameTime;
-        }
-        set
-        {
-            this.gameTime = value;
-        }
+        get { return this.unitKey; }
+        set { this.unitKey = value; }
     }
 
 }

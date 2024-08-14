@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -485,9 +485,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7aeaaec4193fb4dbfba870d9a3929c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitKey: p6u6-c
+  gameSetup:
+    loadMethod: 1
+    loadImageMethod: 1
+    imageType: 2
+    allTextures: []
+    bgTexture: {fileID: 2800000, guid: 80d2e9bcd5453df46a852715faf67eb4, type: 3}
+    gameBackground: {fileID: 0}
   gameTime: 0
   showFPS: 0
+  unitKey: 
   testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:
@@ -517,15 +524,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eecec10ea23a904e99a992e3ecacada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFileName: Question.json
   loadMethod: 1
-  loadImageMethod: 1
-  imageType: 1
-  loadAudioMethod: 1
-  audioFormat: 1
+  jsonFileName: Question.json
+  loadImage:
+    loadMethod: 1
+    loadImageMethod: 1
+    imageType: 1
+    allTextures: []
+  loadAudio:
+    loadMethod: 1
+    loadAudioMethod: 1
+    audioFormat: 1
   questionData:
     Data: []
-  allTextures: []
   totalItems: 0
   loadedItems: 0
 --- !u!82 &1694491776

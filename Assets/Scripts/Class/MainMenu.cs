@@ -5,10 +5,13 @@ public class MainMenu : MonoBehaviour
 {
     public CanvasGroup gameStartPanel;
     public AudioOnOff audioOnOffPanel;
-
-    private void Start()
+    private void Awake()
     {
         Time.timeScale = 1f;
+        LoaderConfig.Instance?.InitialGameBackground();
+    }
+    private void Start()
+    {
         this.audioOnOffPanel.Init(true);
         SetUI.Set(this.gameStartPanel, false, 0f);
         if (this.gameStartPanel != null) this.gameStartPanel.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0f);

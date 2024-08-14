@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         if(Instance == null) Instance = this;
+        LoaderConfig.Instance?.InitialGameBackground();
     }
 
     private void Start()

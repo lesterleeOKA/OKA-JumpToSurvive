@@ -64,7 +64,7 @@ public class Bird : Item
         this.rectTransform.localPosition = this.startPosition;
         this.setAudioEffect(false);
         this.setOutline(false);
-        if (this.birdSprite != null) this.birdSprite.sortingOrder = 5;
+        if (this.birdSprite != null) this.birdSprite.sortingOrder = 11;
     }
 
     public void reTrigger()
