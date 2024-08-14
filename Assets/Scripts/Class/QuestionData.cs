@@ -22,6 +22,14 @@ public class QuestionList
     public AudioClip audioClip;
 }
 
+public enum QuestionType
+{
+    None = 0,
+    Text = 1,
+    Picture = 2,
+    Audio = 3,
+}
+
 [Serializable]
 public class CurrentQuestion
 {
@@ -35,14 +43,6 @@ public class CurrentQuestion
     public RawImage questionImage;
     public Button audioPlayBtn;
     private AspectRatioFitter aspecRatioFitter = null;
-
-    public enum QuestionType
-    {
-        None = 0,
-        Text = 1,
-        Picture = 2,
-        Audio = 3,
-    }
 
     public void setNewQuestion(QuestionList qa = null, int totalQuestion = 0)
     {
