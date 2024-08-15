@@ -47,11 +47,11 @@ public class QuestionManager : MonoBehaviour
 
                 if (!string.IsNullOrEmpty(www.error))
                 {
-                    if (LogController.Instance != null) LogController.Instance.debugError($"Error loading question json: {www.error}");
+                    LogController.Instance?.debugError($"Error loading question json: {www.error}");
                 }
                 else
                 {
-                    if (LogController.Instance != null) LogController.Instance.debug(questionPath);
+                    LogController.Instance?.debug(questionPath);
                     var json = www.text;
                     this.questionData = JsonUtility.FromJson<QuestionData>(json);
                     if (!string.IsNullOrEmpty(unitKey)) { 
@@ -63,7 +63,7 @@ public class QuestionManager : MonoBehaviour
                         yield return this.loadImage.loadImageAssetBundleFile(this.questionData.Data[0].QID);
                     }
 
-                    //if (LogController.Instance != null) LogController.Instance.debug($"loaded questions: {json}");
+                    LogController.Instance?.debug($"loaded filtered questions: {this.questionData.Data.Count}");
                     this.GetRandomQuestions(onCompleted);
                 }
                 break;
@@ -74,14 +74,11 @@ public class QuestionManager : MonoBehaviour
 
                     if (uwq.result != UnityWebRequest.Result.Success)
                     {
-                        if (LogController.Instance != null)
-                            LogController.Instance.debugError($"Error loading question json: {uwq.error}");
+                        LogController.Instance?.debugError($"Error loading question json: {uwq.error}");
                     }
                     else
                     {
-                        if (LogController.Instance != null)
-                            LogController.Instance.debug(questionPath);
-
+                        LogController.Instance?.debug(questionPath);
                         var json = uwq.downloadHandler.text;
                         this.questionData = JsonUtility.FromJson<QuestionData>(json);
                         if (!string.IsNullOrEmpty(unitKey)) { 
@@ -93,22 +90,13 @@ public class QuestionManager : MonoBehaviour
                             yield return this.loadImage.loadImageAssetBundleFile(this.questionData.Data[0].QID);
                         }
 
-                        if (LogController.Instance != null) { 
-                            //LogController.Instance.debug($"loaded questions: {json}");
-                            LogController.Instance.debug($"loaded filtered questions: {this.questionData.Data.Count}");
-                        }
+                        //LogController.Instance.debug($"loaded questions: {json}");
+                        LogController.Instance?.debug($"loaded filtered questions: {this.questionData.Data.Count}");
                         this.GetRandomQuestions(onCompleted);
                     }
                 }
                 break;
         }
-    }
- 
-    void updateWebglLoadingBarStatus(string status ="")
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval($"updateLoadingText('{status}')");
-#endif
     }
 
     private void ShuffleQuestions(Action onComplete = null)
@@ -127,12 +115,12 @@ public class QuestionManager : MonoBehaviour
             switch (qa.QuestionType)
             {
                 case "Text":
-                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Question");
+                    ExternalCaller.UpdateLoadBarStatus("Loading Question");
                     this.loadedItems++;
                     if (this.loadedItems == this.totalItems) onComplete?.Invoke();
                     break;
                 case "Picture":
-                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Images");
+                    ExternalCaller.UpdateLoadBarStatus("Loading Images");
                      StartCoroutine(
                         this.loadImage.Load(
                             folderName, qid, tex =>
@@ -145,7 +133,7 @@ public class QuestionManager : MonoBehaviour
                       );
                     break;
                 case "Audio":
-                    if (i == 0) this.updateWebglLoadingBarStatus("Loading Audio");
+                    ExternalCaller.UpdateLoadBarStatus("Loading Audio");
                     StartCoroutine(
                         this.loadAudio.Load(
                             folderName, qid, (audio) =>

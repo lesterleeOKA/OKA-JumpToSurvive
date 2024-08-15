@@ -37,8 +37,10 @@ public class GameSetting : MonoBehaviour
 
 [System.Serializable]
 public class GameSetup: LoadImage
-{ 
+{
+    [Tooltip("Default Game Background Texture")]
     public Texture bgTexture;
+    [Tooltip("Find Tag name of GameBackground in different scene")]
     public RawImage gameBackground;
     public float gameTime;
     public bool showFPS = false;

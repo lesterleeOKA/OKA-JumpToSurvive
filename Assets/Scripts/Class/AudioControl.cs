@@ -46,7 +46,7 @@ public class AudioControl : MonoBehaviour
 
     public void playBtnClick()
     {
-        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
+        AudioController.Instance?.PlayAudio(0);
     }
 
     void gameStatus(bool status)

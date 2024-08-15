@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -180,35 +179,9 @@ public class GameController : MonoBehaviour
         return false;
     }
 
-    public string GetCurrentDomainName
-    {
-        get
-        {
-            string absoluteUrl = Application.absoluteURL;
-            Uri url = new Uri(absoluteUrl);
-            if (LogController.Instance != null) LogController.Instance.debug("Host Name:" + url.Host);
-            return url.Host;
-        }
-    }
-
     public void BackToWebpage()
     {
-#if !UNITY_EDITOR
-        string hostname = this.GetCurrentDomainName;
-
-        if (hostname.Contains("dev.openknowledge.hk"))
-        {
-            string baseUrl = this.GetCurrentDomainName;
-            string newUrl = $"https://{baseUrl}/RainbowOne/webapp/OKAGames/SelectGames/";
-            if (LogController.Instance != null) LogController.Instance.debug("full url:" + newUrl);
-            Application.ExternalEval($"location.href = '{newUrl}', '_self'");
-        }
-        else if (hostname.Contains("www.rainbowone.app"))
-        {
-            string Production = "https://www.starwishparty.com/";
-            Application.ExternalEval($"location.href = '{Production}', '_self'");
-        }
-#endif
+        ExternalCaller.BackToHomeUrlPage();
     }
 
 

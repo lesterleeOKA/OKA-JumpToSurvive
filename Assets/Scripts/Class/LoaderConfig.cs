@@ -38,10 +38,7 @@ public class LoaderConfig : GameSetting
 
     void finishedLoadQuestion()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval("onQuestionsLoaded()");     
-#endif
-
+        ExternalCaller.HiddenLoadingBar();
         this.changeScene(1);
     }
 

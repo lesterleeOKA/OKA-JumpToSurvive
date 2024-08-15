@@ -1,9 +1,9 @@
 using UnityEngine;
-using DG.Tweening;
 
 public class MainMenu : MonoBehaviour
 {
     public CanvasGroup gameStartPanel;
+    public float instructionPanelStartPosY = 200f;
     public AudioOnOff audioOnOffPanel;
     private void Awake()
     {
@@ -13,39 +13,31 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         this.audioOnOffPanel.Init(true);
-        SetUI.Set(this.gameStartPanel, false, 0f);
-        if (this.gameStartPanel != null) this.gameStartPanel.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0f);
+        SetUI.SetMove(this.gameStartPanel, false, new Vector2(0f, this.instructionPanelStartPosY), 0f);
     }
 
     public void MusicOnbutton()
     {
         this.audioOnOffPanel.set(true);
         this.audioOnOffPanel.setPanel(false);
-        SetUI.Set(this.gameStartPanel, true, 1f);
-        if (this.gameStartPanel != null) gameStartPanel.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
+        SetUI.SetMove(this.gameStartPanel, true, Vector2.zero, 0.5f);
     }
     public void MusicOffbutton()
     {
         this.audioOnOffPanel.set(false);
         this.audioOnOffPanel.setPanel(false);
-        SetUI.Set(this.gameStartPanel, true, 1f);
-        if (this.gameStartPanel != null) gameStartPanel.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
+        SetUI.SetMove(this.gameStartPanel, true, Vector2.zero, 0.5f);
     }
 
     public void StartGame()
     {
-        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
-        SetUI.Set(this.gameStartPanel, false, 0.5f);
-        this.gameStart();
-        /*if (this.gameStartPanel != null) { 
-            this.gameStartPanel.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.5f).OnComplete(()=> this.gameStart());
-        }*/
+        AudioController.Instance?.PlayAudio(0);
+        SetUI.SetMove(this.gameStartPanel, false, new Vector2(0f, this.instructionPanelStartPosY), 0.5f, ()=> this.gameStart());
     }
 
     void gameStart()
     {
-        if (LogController.Instance != null) LogController.Instance.debug("Start Game.");
-        if (LoaderConfig.Instance != null)
-            LoaderConfig.Instance.changeScene(2);
+        LogController.Instance?.debug("Start Game.");
+        LoaderConfig.Instance?.changeScene(2);
     }
 }

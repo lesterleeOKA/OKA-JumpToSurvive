@@ -45,11 +45,14 @@ public class UIImage
 
 public static class SetUI
 {
-    public static void Set(CanvasGroup _cg=null, bool _status=false, float _duration=0f)
+    public static void Set(CanvasGroup _cg=null, bool _status=false, float _duration=0f, Action _onComplete = null)
     {
         if (_cg != null)
         {
-            _cg.DOFade(_status? 1f : 0f, _duration);
+            _cg.DOFade(_status? 1f : 0f, _duration).OnComplete(()=> { 
+                if (_onComplete != null) 
+                    _onComplete.Invoke(); 
+            });
             _cg.interactable = _status;
             _cg.blocksRaycasts = _status;
         }
@@ -76,12 +79,15 @@ public static class SetUI
         }
     }
 
-    public static void SetMove(CanvasGroup _cg = null, bool _status = false, Vector2 _targetPos= default, float _duration = 0f)
+    public static void SetMove(CanvasGroup _cg = null, bool _status = false, Vector2 _targetPos= default, float _duration = 0f, Action _onComplete = null)
     {
         if (_cg != null)
         {
             _cg.DOFade(_status ? 1f : 0f, _duration);
-            _cg.transform.DOLocalMove(_targetPos, _duration);
+            _cg.transform.DOLocalMove(_targetPos, _duration).OnComplete(() => {
+                if (_onComplete != null)
+                    _onComplete.Invoke();
+            });
             _cg.interactable = _status;
             _cg.blocksRaycasts = _status;
         }
