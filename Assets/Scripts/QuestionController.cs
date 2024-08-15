@@ -76,7 +76,7 @@ public class QuestionController : MonoBehaviour
                     else
                     {
                         this.count = this.delayToNextQuestion;
-                        if (GameController.Instance != null) GameController.Instance.checkPlayerAnswer();
+                        GameController.Instance?.checkPlayerAnswer();
                         this.allowCheckingWords = false;
                     }
                 }
@@ -86,8 +86,7 @@ public class QuestionController : MonoBehaviour
 
     public void nextQuestion()
     {
-        if (LogController.Instance != null)
-            LogController.Instance.debug("next question");
+        LogController.Instance?.debug("next question");
         this.GetQuestionAnswer();
     }
 
@@ -112,7 +111,7 @@ public class QuestionController : MonoBehaviour
 
     public void randAnswer()
     {
-        if (this.currentQuestion.qa == null || String.IsNullOrEmpty(this.currentQuestion.qa.QID)) return;
+        if (this.currentQuestion.qa == null || string.IsNullOrEmpty(this.currentQuestion.qa.QID)) return;
         //this.createdWords.Clear();
         StartCoroutine(this.InstantiateWordsWithDelay());     
     }
@@ -183,7 +182,7 @@ public class QuestionController : MonoBehaviour
         try
         {
             var questionDataList = QuestionManager.Instance.questionData;
-            if (LogController.Instance != null) LogController.Instance.debug("Loaded questions:" + questionDataList.Data.Count);
+            LogController.Instance?.debug("Loaded questions:" + questionDataList.Data.Count);
             if (questionDataList == null || questionDataList.Data == null || questionDataList.Data.Count == 0)
             {
                 return;
@@ -198,7 +197,7 @@ public class QuestionController : MonoBehaviour
         }
         catch (Exception e)
         {
-            if (LogController.Instance != null) LogController.Instance.debugError(e.Message);
+            LogController.Instance?.debugError(e.Message);
         }
 
     }

@@ -93,7 +93,7 @@ public class PlayerController : UserData
         int currentScore = this.Score;
         int resultScore = this.scoring.score(this.answer, currentScore);
         this.Score = resultScore;
-        if (LogController.Instance != null) LogController.Instance.debug("Add marks" + this.Score);
+        LogController.Instance?.debug("Add marks" + this.Score);
         this.Init();
     }
 
@@ -144,8 +144,7 @@ public class PlayerController : UserData
 
     void TriggerWord(Bird bird)
     {
-        if (LogController.Instance != null) 
-            LogController.Instance.debug("word belong to player:" + this.UserId);
+        LogController.Instance?.debug("word belong to player:" + this.UserId);
         this.setAnsswer(bird.word.text);
         if (AudioController.Instance.audioStatus) this.effect.Play();
         //QuestionController.Instance.randAnswer();

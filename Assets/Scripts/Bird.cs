@@ -8,6 +8,7 @@ public class Bird : Item
     public float speed = 200f;
     public SpriteRenderer birdSprite;
     public Material birdOutline;
+    public int originalSortOrder = 10;
 
     public void setOutline(bool status)
     {
@@ -21,7 +22,8 @@ public class Bird : Item
         if (this.word != null)
         {
             if(_birdOutline != null) this.birdOutline = _birdOutline;
-            if(this.birdSprite != null) { 
+            if(this.birdSprite != null) {
+                this.birdSprite.sortingOrder = this.originalSortOrder;
                 this.birdSprite.material = this.birdOutline;
                 this.birdSprite.sortingOrder += birdOrder;
             }
@@ -64,7 +66,7 @@ public class Bird : Item
         this.rectTransform.localPosition = this.startPosition;
         this.setAudioEffect(false);
         this.setOutline(false);
-        if (this.birdSprite != null) this.birdSprite.sortingOrder = 11;
+        if (this.birdSprite != null) this.birdSprite.sortingOrder = this.originalSortOrder;
     }
 
     public void reTrigger()

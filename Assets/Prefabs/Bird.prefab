@@ -397,7 +397,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: de062921819ded1429dc0455d2bbc258, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -472,6 +472,7 @@ MonoBehaviour:
   speed: 200
   birdSprite: {fileID: 4960979630659049729}
   birdOutline: {fileID: 0}
+  originalSortOrder: 11
 --- !u!82 &7511128853026474188
 AudioSource:
   m_ObjectHideFlags: 0

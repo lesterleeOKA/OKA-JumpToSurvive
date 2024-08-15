@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -492,9 +492,9 @@ MonoBehaviour:
     allTextures: []
     bgTexture: {fileID: 2800000, guid: 80d2e9bcd5453df46a852715faf67eb4, type: 3}
     gameBackground: {fileID: 0}
-  gameTime: 0
-  showFPS: 0
-  unitKey: 
+    gameTime: 0
+    showFPS: 0
+  unitKey: p6u6-c
   testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:

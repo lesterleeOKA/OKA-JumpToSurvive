@@ -1,5 +1,3 @@
-using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -30,7 +28,7 @@ public class AudioController : MonoBehaviour
 
         if (index < 0 || index >= audioClips.Length)
         {
-            if(LogController.Instance != null) LogController.Instance.debugError("Audio clip index out of range.");
+            LogController.Instance?.debugError("Audio clip index out of range.");
             return;
         }
 
