@@ -10,23 +10,19 @@ public class NumberCounter : MonoBehaviour
     public float Duration = 1f;
     public string NumberFormat = "N0";
     private int _value;
+    public AudioSource scoringEffect;
+
     public int Value
     {
-        get
-        {
-            return _value;
-        }
-        set
-        {
-            UpdateText(value);
-            _value = value;
-        }
+        get { return _value; }
+        set { UpdateText(value); _value = value; }
     }
+
     private Coroutine CountingCoroutine;
 
     private void Awake()
     {
-        Text = GetComponent<TextMeshProUGUI>();
+        if(this.Text == null) Text = GetComponent<TextMeshProUGUI>();
     }
 
     private void UpdateText(int newValue)
@@ -37,17 +33,22 @@ public class NumberCounter : MonoBehaviour
 
     private IEnumerator CountText(int newValue)
     {
+        Text.color = Color.yellow;
+
         WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+
         int previousValue = _value;
         int stepAmount;
 
         if (newValue - previousValue < 0)
         {
-            stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
+            stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration));
+            // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
         }
         else
         {
-            stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
+            stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
         }
 
         if (previousValue < newValue)
@@ -61,7 +62,7 @@ public class NumberCounter : MonoBehaviour
                 }
 
                 Text.SetText(previousValue.ToString(NumberFormat));
-
+                if (this.scoringEffect != null) this.scoringEffect.Play();
                 yield return Wait;
             }
         }
@@ -76,9 +77,11 @@ public class NumberCounter : MonoBehaviour
                 }
 
                 Text.SetText(previousValue.ToString(NumberFormat));
-
-                yield return Wait;
+                if (this.scoringEffect != null) this.scoringEffect.Play();
+                yield return Wait;            
             }
         }
+
+        Text.color = Color.white;
     }
 }

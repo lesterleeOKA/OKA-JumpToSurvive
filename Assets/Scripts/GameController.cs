@@ -98,7 +98,7 @@ public class GameController : MonoBehaviour
 
         }
 
-        if (AudioController.Instance != null) AudioController.Instance.PlayAudio(showCorrect ? 1 : 2);
+        AudioController.Instance?.PlayAudio(showCorrect ? 1 : 2);
         yield return new WaitForSeconds(delay);
         SetUI.SetMove(this.getScorePopup, false, this.originalGetScorePos, 0f);
         //this.RandomlySortChildObjects();

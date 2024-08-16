@@ -27,7 +27,7 @@ public class Scoring
         int _score = _playerScore;
         if (QuestionController.Instance == null || this.scoringTxt == null || this.resultScoreTxt == null || this.scoringAnimator == null || answeredEffectTxt == null) {
 
-            if(LogController.Instance != null) LogController.Instance.debugError("One or more required components are missing.");
+            LogController.Instance?.debugError("One or more required components are missing.");
             return _score;
         }
 
@@ -68,7 +68,8 @@ public class Scoring
                 }
             }
 
-            this.scoreTxt.text = _playerScore.ToString();
+            //this.scoreTxt.text = _playerScore.ToString();
+            this.scoreTxt.GetComponent<NumberCounter>().Value = _playerScore;
             //this.resultScoreTxt.text = _playerScore.ToString();
 
             _score = _playerScore;
