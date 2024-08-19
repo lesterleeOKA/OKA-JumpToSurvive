@@ -10,6 +10,8 @@ public class Timer : MonoBehaviour
     public float currentTime = 0f;
     public TextMeshProUGUI timer = null;
     bool isSoundPlay=false;
+    [SerializeField]
+    private Color32 pinkColor = Color.yellow;
     public bool endGame = false;
     public UnityEvent finishedEvent;
     private AudioSource lastTenDingDing = null;
@@ -44,7 +46,7 @@ public class Timer : MonoBehaviour
 
                         if(this.timer.color == Color.white && this.timerScaleTween == null) {
                             this.timerScaleTween = this.timer.transform.DOScale(0.8f, 0.5f).SetLoops(-1, LoopType.Yoyo);
-                            this.timer.color = Color.red;
+                            this.timer.color = this.pinkColor;
                         }
                     }
                     else
