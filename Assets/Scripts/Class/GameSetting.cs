@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,17 @@ public class GameSetting : MonoBehaviour
         Application.targetFrameRate = 60;
         Application.runInBackground = true;
         DontDestroyOnLoad(this);
+    }
 
+    public void InitialGameSetup(Action onCompleted = null)
+    {
+        //Download game background image
         StartCoroutine(this.gameSetup.Load("GameUI", "bg", _bgTexture =>
         {
+            LogController.Instance?.debug($"Downloaded bg Image!!");
+            ExternalCaller.UpdateLoadBarStatus("Loading Bg");
             this.gameSetup.bgTexture = _bgTexture;
+            onCompleted?.Invoke();
         }));
     }
 

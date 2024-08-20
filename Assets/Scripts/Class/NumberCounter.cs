@@ -62,7 +62,11 @@ public class NumberCounter : MonoBehaviour
                 }
 
                 Text.SetText(previousValue.ToString(NumberFormat));
-                if (this.scoringEffect != null) this.scoringEffect.Play();
+                if (previousValue % 2 == 0)
+                {
+                    // Play scoring effect for even value
+                    if (this.scoringEffect != null && AudioController.Instance.audioStatus) this.scoringEffect.Play();
+                }
                 yield return Wait;
             }
         }
@@ -77,7 +81,11 @@ public class NumberCounter : MonoBehaviour
                 }
 
                 Text.SetText(previousValue.ToString(NumberFormat));
-                if (this.scoringEffect != null) this.scoringEffect.Play();
+                if (previousValue % 2 == 0)
+                {
+                    // Play scoring effect for even value
+                    if (this.scoringEffect != null && AudioController.Instance.audioStatus) this.scoringEffect.Play();
+                }
                 yield return Wait;            
             }
         }

@@ -62,14 +62,12 @@ public class LoadImage: Downloader
                         texture.wrapMode = TextureWrapMode.Clamp;
 
                         callback?.Invoke(texture);
-                        if (LogController.Instance != null)
-                            LogController.Instance.debug($"Loaded Image : {fileName}");
+                        LogController.Instance?.debug($"Loaded Image : {fileName}");
                     }
                 }
                 else
                 {
-                    if (LogController.Instance != null)
-                        LogController.Instance.debugError($"Error loading image:{www.error}");
+                    LogController.Instance?.debugError($"Error loading image:{www.error}");
                 }
                 break;
             case LoadMethod.UnityWebRequest:
@@ -85,14 +83,12 @@ public class LoadImage: Downloader
                             texture.wrapMode = TextureWrapMode.Clamp;
 
                             callback?.Invoke(texture);
-                            if (LogController.Instance != null)
-                                LogController.Instance.debug($"Loaded Image : {fileName}");
+                            LogController.Instance?.debug($"Loaded Image : {fileName}");
                         }
                     }
                     else
                     {
-                        if (LogController.Instance != null)
-                            LogController.Instance.debugError($"Error loading image:{request.error}");
+                        LogController.Instance?.debugError($"Error loading image:{request.error}");
                     }
                 }
                 break;

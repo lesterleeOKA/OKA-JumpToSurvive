@@ -25,15 +25,20 @@ public class LoaderConfig : GameSetting
 
     public void LoadQuestions()
     {
-        string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
-        LogController.Instance?.debug("currentURL: " + currentURL);
-        if (string.IsNullOrEmpty(this.unitKey)) {
-            this.unitKey = ParseURLParams(currentURL);
-        }
-        else
+        //Download Game settings variable first, next stage will get all variables from api, then to load the questions
+        this.InitialGameSetup(()=>
         {
-            QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.finishedLoadQuestion());
-        }
+            string currentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
+            LogController.Instance?.debug("currentURL: " + currentURL);
+            if (string.IsNullOrEmpty(this.unitKey))
+            {
+                this.unitKey = ParseURLParams(currentURL);
+            }
+            else
+            {
+                QuestionManager.Instance?.LoadQuestionFile(unitKey, () => this.finishedLoadQuestion());
+            }
+        });    
     }
 
     void finishedLoadQuestion()
@@ -46,7 +51,7 @@ public class LoaderConfig : GameSetting
     string ParseURLParams(string url)
     {
         string[] urlParts = url.Split('?');
-        string unitKey = "";
+        string _unitKey = "";
         if (urlParts.Length > 1)
         {
             string queryString = urlParts[1];
@@ -67,8 +72,8 @@ public class LoaderConfig : GameSetting
                         switch (key)
                         {
                             case "unit":
-                                this.unitKey = value;
-                                LogController.Instance?.debug("Current Game Unit: " + this.CurrentUnit);
+                                _unitKey = value;
+                                LogController.Instance?.debug("Current Game Unit: " + _unitKey);
                                 break;
                             case "gameTime":
                                 this.GameTime = float.Parse(value);
@@ -80,19 +85,13 @@ public class LoaderConfig : GameSetting
                 }
             }
         }
-        QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.finishedLoadQuestion());
-        return unitKey;
+        QuestionManager.Instance?.LoadQuestionFile(_unitKey, () => this.finishedLoadQuestion());
+        return _unitKey;
     }
 
     public void changeScene(int sceneId)
     {
         SceneManager.LoadScene(sceneId);
-    }
-
-    public string CurrentUnit
-    {
-        get { return this.unitKey; }
-        set { this.unitKey = value; }
     }
 
 }
