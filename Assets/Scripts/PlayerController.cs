@@ -8,7 +8,7 @@ public class PlayerController : UserData
 {
     public Scoring scoring;
     public string answer = string.Empty;
-    public TextMeshProUGUI userNameText;
+    public TextMeshProUGUI userNameText, playerButtonText;
     public Button jumpBtn;
     public Sprite[] characterSprites;
     public Character character;
@@ -21,6 +21,7 @@ public class PlayerController : UserData
     private Image characterImage = null;
     private AudioSource effect = null;
     public ParticleSystem jumpup_particle;
+    private CanvasGroup jumpBtnGroup = null;
 
     void Start()
     {
@@ -34,19 +35,18 @@ public class PlayerController : UserData
 
         if(this.jumpBtn != null)
         {
+            this.jumpBtnGroup = this.jumpBtn.GetComponent<CanvasGroup>();
             this.jumpBtn.GetComponent<Image>().color = this.PlayerColor;
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
 
-        if(this.userNameText != null)
+        if (this.userNameText != null) this.userNameText.color = this.PlayerColor;
+        if (this.playerButtonText != null) this.playerButtonText.color = this.PlayerColor;
+        for (int i = 0; i < this.PlayerIcons.Length; i++)
         {
-            //this.userNameText.color = this.PlayerColor;
-            for(int i=0;i < this.PlayerIcons.Length; i++)
-            {
-                if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
-            }
-            this.scoring.init();
+            if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
         }
+        this.scoring.init();
 
         this.characterImage = this.character.gameObject.GetComponent<Image>();
         this.Init();
@@ -118,11 +118,15 @@ public class PlayerController : UserData
                this.characterImage.sprite != this.characterSprites[2] &&
                 string.IsNullOrEmpty(this.answerText.text))
             {
-                this.jumpBtn.interactable = true;
+                this.jumpBtnGroup.alpha = 1f;
+                this.jumpBtnGroup.interactable = true;
+                this.jumpBtnGroup.blocksRaycasts = true;
             }
             else
             {
-                this.jumpBtn.interactable = false;
+                this.jumpBtnGroup.alpha = 0.75f;
+                this.jumpBtnGroup.interactable = false;
+                this.jumpBtnGroup.blocksRaycasts = false;
             }
         }
     }
