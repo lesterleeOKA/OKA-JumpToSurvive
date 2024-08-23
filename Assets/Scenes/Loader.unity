@@ -494,7 +494,7 @@ MonoBehaviour:
     gameBackground: {fileID: 0}
     gameTime: 0
     showFPS: 0
-  unitKey: p1u1
+  unitKey: 
   testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:
