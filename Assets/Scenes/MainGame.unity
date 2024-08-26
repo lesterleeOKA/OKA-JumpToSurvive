@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1790,7 +1790,7 @@ MonoBehaviour:
   character: {fileID: 552696949}
   jumpSpeedMultiplier: 2.2
   jumpForce: 4
-  downGravity: 4
+  downGravity: 18
   answerBox: {fileID: 1531590089}
   answerText: {fileID: 1668249804}
   jumpup_particle: {fileID: 531219187}
@@ -1804,7 +1804,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a58a5e66321aa1946a269212a586014f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b668ecc93830ecf478ac37af64c55ff5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2371,7 +2371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.900024, y: 11.98}
+  m_AnchoredPosition: {x: -24.900024, y: 11.979996}
   m_SizeDelta: {x: -190.28, y: -181.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &365331385
@@ -2784,10 +2784,10 @@ RectTransform:
   - {fileID: 1832779953}
   m_Father: {fileID: 185446983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &409923030
 MonoBehaviour:
@@ -4756,7 +4756,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -122.880615, y: -0.57624817}
+  m_Offset: {x: -122.880615, y: -1567.1007}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4767,7 +4767,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3737.5625, y: 279.89725}
+  m_Size: {x: 3737.5625, y: 3412.9465}
   m_EdgeRadius: 0
 --- !u!114 &577400310
 MonoBehaviour:
@@ -5018,10 +5018,10 @@ RectTransform:
   - {fileID: 2086576124}
   m_Father: {fileID: 185446983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 880, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &640963222
 MonoBehaviour:
@@ -14528,10 +14528,10 @@ RectTransform:
   - {fileID: 495870582}
   m_Father: {fileID: 185446983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1220, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1057786636
 MonoBehaviour:
@@ -15962,7 +15962,7 @@ MonoBehaviour:
   character: {fileID: 1684514520}
   jumpSpeedMultiplier: 2.2
   jumpForce: 4
-  downGravity: 4
+  downGravity: 18
   answerBox: {fileID: 2107644004}
   answerText: {fileID: 451125569}
   jumpup_particle: {fileID: 997175960}
@@ -15976,7 +15976,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a58a5e66321aa1946a269212a586014f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b668ecc93830ecf478ac37af64c55ff5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -19350,7 +19350,7 @@ MonoBehaviour:
   character: {fileID: 1585326172}
   jumpSpeedMultiplier: 2.2
   jumpForce: 4
-  downGravity: 4
+  downGravity: 18
   answerBox: {fileID: 565837096}
   answerText: {fileID: 1546100170}
   jumpup_particle: {fileID: 2001986590}
@@ -19364,7 +19364,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a58a5e66321aa1946a269212a586014f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b668ecc93830ecf478ac37af64c55ff5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -20447,7 +20447,7 @@ MonoBehaviour:
   character: {fileID: 2059016910}
   jumpSpeedMultiplier: 2.2
   jumpForce: 4
-  downGravity: 4
+  downGravity: 18
   answerBox: {fileID: 1501309998}
   answerText: {fileID: 1059339956}
   jumpup_particle: {fileID: 2035571398}
@@ -20461,7 +20461,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a58a5e66321aa1946a269212a586014f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b668ecc93830ecf478ac37af64c55ff5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -24714,10 +24714,10 @@ RectTransform:
   - {fileID: 59497803}
   m_Father: {fileID: 185446983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1959487056
 MonoBehaviour:
