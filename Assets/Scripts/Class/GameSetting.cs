@@ -68,3 +68,14 @@ public class GameSetup: LoadImage
         }
     }
 }
+
+
+public static class APIConstant
+{
+    public static string GameDataAPI {
+        get
+        {
+            return "https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json=[1]&jwt=";
+        }
+    }
+}

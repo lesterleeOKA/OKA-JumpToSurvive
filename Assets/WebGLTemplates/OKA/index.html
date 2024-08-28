@@ -37,7 +37,7 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var warningBanner = document.querySelector("#unity-warning");
-
+		
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -102,6 +102,7 @@
       }
 
       loadingBar.style.display = "block";
+	  
 
       var script = document.createElement("script");
       script.src = loaderUrl;
@@ -110,7 +111,8 @@
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           //loadingBar.style.display = "none";
-		  unityInstance.SendMessage('Loader', 'LoadQuestions');
+		  //unityInstance.SendMessage('Loader', 'LoadQuestions');
+		  unityInstance.SendMessage('Loader', 'LoadGameData');
         }).catch((message) => {
           alert(message);
         });
