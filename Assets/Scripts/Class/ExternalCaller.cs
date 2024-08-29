@@ -31,6 +31,10 @@ public static class ExternalCaller
             string Production = "https://www.starwishparty.com/";
             Application.ExternalEval($"location.href = '{Production}', '_self'");
         }
+        else
+        {
+            Application.ExternalEval($"location.hash = 'exit'");
+        }
 #endif
     }
 

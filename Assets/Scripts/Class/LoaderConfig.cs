@@ -17,7 +17,8 @@ public class LoaderConfig : GameSetting
     public string unitKey = string.Empty;
     public string testURL = string.Empty;
     public int maxRetries = 10;
-    public Text debugBox;
+    public CanvasGroup debugLayer;
+    private Text debugText = null;
 
     protected override void Awake()
     {
@@ -35,6 +36,12 @@ public class LoaderConfig : GameSetting
 
     private void Start()
     {
+
+        if(this.debugLayer != null)
+        {
+            this.debugText = this.debugLayer.GetComponentInChildren<Text>();
+        }
+
 #if UNITY_EDITOR
         this.LoadGameData();
 #endif
@@ -43,10 +50,10 @@ public class LoaderConfig : GameSetting
     private bool showingDebugBox = false;
     public void Update()
     {
-        if(this.debugBox != null && Input.GetKeyDown("d"))
+        if(this.debugLayer != null && Input.GetKeyDown("d"))
         {
             showingDebugBox = !showingDebugBox;
-            SetUI.Set(this.debugBox.GetComponent<CanvasGroup>(), showingDebugBox, 0f);
+            SetUI.Set(this.debugLayer.GetComponent<CanvasGroup>(), showingDebugBox, 0f);
         }
     }
 
@@ -57,7 +64,7 @@ public class LoaderConfig : GameSetting
 
     private IEnumerator PostGameSetting()
     {
-        ExternalCaller.UpdateLoadBarStatus("Loading UserData");
+        ExternalCaller.UpdateLoadBarStatus("Loading Data");
         this.GetParseURLParams();
         string api = APIConstant.GameDataAPI + this.jwt;
         WWWForm form = new WWWForm();
@@ -99,9 +106,9 @@ public class LoaderConfig : GameSetting
                         this.accountData = jsonNode["account"].ToString(); // Account json data;
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
 
-                        this.debugBox.text += "Question Data: " + this.questionData + "\n\n ";
-                        this.debugBox.text += "Account: " + this.accountData + "\n\n ";
-                        this.debugBox.text += "Photo: " + this.photoDataUrl;
+                        this.debugText.text += "Question Data: " + this.questionData + "\n\n ";
+                        this.debugText.text += "Account: " + this.accountData + "\n\n ";
+                        this.debugText.text += "Photo: " + this.photoDataUrl;
 
                         //Eg
                         Debug.Log(jsonNode["account"]["display_name"].ToString());
