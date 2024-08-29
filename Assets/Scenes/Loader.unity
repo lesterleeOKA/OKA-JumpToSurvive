@@ -665,9 +665,9 @@ MonoBehaviour:
     gameTime: 0
     showFPS: 0
   unitKey: 
-  testURL: https://dev.openknowledge.hk//RainbowOne/webapp/OKAGames/JumpToWin/?unit=p6u1-c
+  testURL: 
   apiManager:
-    jwt: eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUxMS1kOTI0YWZmMWFiNmU5ZjNhMzIwYjlkNDY2MTdjNmUwMGM3OGQyZDQwZjk2NzFlMmRlMWJiYmVjYmIzMjczMWM0IiwiZXhwaXJlcyI6MTcyNTQxODg0MCwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjQtMDgtMjggMDM6MDA6NDAgR01UIiwidWlkIjoiNTExIiwidXNlcl9yb2xlIjoiMyIsInNjaG9vbF9pZCI6IjI3MiIsImlwIjoiMTY5LjI1NC4xMjkuNSIsInZlcnNpb24iOm51bGwsImRldmljZSI6Im1hYyJ9.1AQpIu0wVekblcVn1TliPNP7ddgeFisf33TmRa4r3ys
+    jwt: 
     gameSettingJson: 
     questionJson: 
     accountJson: 
