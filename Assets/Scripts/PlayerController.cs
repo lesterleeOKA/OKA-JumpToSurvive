@@ -8,8 +8,9 @@ public class PlayerController : UserData
 {
     public Scoring scoring;
     public string answer = string.Empty;
-    public TextMeshProUGUI userNameText, playerButtonText;
+    public TextMeshProUGUI userNameText, displayPlayerName, playerButtonText;
     public Button jumpBtn;
+    public Sprite defaultIcon;
     public Sprite[] characterSprites;
     public Character character;
     public float jumpSpeedMultiplier = 5f;
@@ -44,7 +45,7 @@ public class PlayerController : UserData
         if (this.playerButtonText != null) this.playerButtonText.color = this.PlayerColor;
         for (int i = 0; i < this.PlayerIcons.Length; i++)
         {
-            if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.characterSprites[0];
+            if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.defaultIcon;
         }
         this.scoring.init();
 
@@ -57,6 +58,26 @@ public class PlayerController : UserData
         this.setAnsswer("");
         this.SetCharacterSprite(0);
         this.scoring.bonnus = 1;
+    }
+
+    public void updatePlayerIcon()
+    {
+        if (LoaderConfig.Instance.apiManager.peopleIcon != null)
+        {
+            var icon = this.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
+
+            var _playerName = LoaderConfig.Instance.apiManager.loginName;
+            if(this.displayPlayerName != null) this.displayPlayerName.text = _playerName;
+
+            for (int i = 0; i < this.PlayerIcons.Length; i++)
+            {
+                if (this.PlayerIcons[i] != null)
+                {
+                    this.PlayerIcons[i].sprite = icon;
+                }
+            }
+
+        }
     }
 
     public void setAnsswer(string word)
@@ -162,6 +183,12 @@ public class PlayerController : UserData
         this.character.transform.DOShakePosition(0.3f, new Vector3(20f, 0f), 20).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo).SetAutoKill(true);
         yield return new WaitForSeconds(1f);
         this.characterImage.sprite = this.characterSprites[0];
+    }
+
+    private Sprite ConvertTextureToSprite(Texture2D texture)
+    {
+        // Create a sprite from the texture
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
     private void OnApplicationQuit()

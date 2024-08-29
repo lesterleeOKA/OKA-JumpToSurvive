@@ -35,6 +35,7 @@ public class LoadImage: Downloader
             case LoadImageMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
             case LoadImageMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
             case LoadImageMethod.AssetsBundle: return this.LoadImageFromAssetsBundle(fileName, callback);
+            case LoadImageMethod.Url: return this.LoadImageFromURL(fileName, callback);
             default: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
         }
     }
@@ -173,6 +174,34 @@ public class LoadImage: Downloader
         }
     }
 
+    private IEnumerator LoadImageFromURL(string url, Action<Texture> callback = null)
+    {
+        LogController.Instance?.debug($"Loading Image from url : {url}");
+        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
+        {
+            // Send the request and wait for a response
+            yield return www.SendWebRequest();
+
+            // Check for errors
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"Error loading image: {www.error}");
+            }
+            else
+            {
+                // Get the texture and apply it to the target renderer
+                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                if (texture != null)
+                {
+                    texture.filterMode = FilterMode.Bilinear;
+                    texture.wrapMode = TextureWrapMode.Clamp;
+
+                    callback?.Invoke(texture);
+                    LogController.Instance?.debug($"Loaded Image from url : {url}");
+                }
+            }
+        }
+    }
 
     /*private async void loadImage(string folderName = "", string fileName = "", Action<Texture> callback = null)
 {
@@ -241,5 +270,6 @@ public enum LoadImageMethod
 {
     Resources = 0,
     StreamingAssets = 1,
-    AssetsBundle = 2
+    AssetsBundle = 2,
+    Url = 3
 }

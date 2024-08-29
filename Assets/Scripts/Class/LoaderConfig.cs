@@ -1,9 +1,5 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using SimpleJSON;
 
 
 public class LoaderConfig : GameSetting

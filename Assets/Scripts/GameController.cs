@@ -40,7 +40,6 @@ public class GameController : MonoBehaviour
         {
             QuestionController.Instance.killAllWords();
 
-
             bool showSuccess = false;
             for (int i = 0; i < this.playersList.Count; i++)
             {
@@ -57,6 +56,20 @@ public class GameController : MonoBehaviour
             }
 
             this.endGamePage.setStatus(true, showSuccess);
+        }
+        else
+        {
+            for (int i = 0; i < this.playersList.Count; i++)
+            {
+                if (i == 0)
+                {
+                    var playerController = this.playersList[i].GetComponent<PlayerController>();
+                    if (playerController != null)
+                    {
+                        playerController.updatePlayerIcon();
+                    }
+                }
+            }
         }
     }
 

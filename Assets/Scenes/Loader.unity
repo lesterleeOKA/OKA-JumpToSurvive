@@ -672,6 +672,13 @@ MonoBehaviour:
     questionJson: 
     accountJson: 
     photoDataUrl: 
+    loadPeopleIcon:
+      loadMethod: 1
+      loadImageMethod: 3
+      imageType: 2
+      allTextures: []
+    peopleIcon: {fileID: 0}
+    loginName: 
     maxRetries: 10
     debugLayer: {fileID: 364249476}
 --- !u!114 &1694491774
@@ -702,7 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eecec10ea23a904e99a992e3ecacada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadMethod: 1
+  loadMethod: 2
   jsonFileName: Question.json
   loadImage:
     loadMethod: 1

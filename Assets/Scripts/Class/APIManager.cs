@@ -18,6 +18,9 @@ public class APIManager
     public string accountJson = string.Empty;
     [Tooltip("Account Icon Image Url")]
     public string photoDataUrl = string.Empty;
+    public LoadImage loadPeopleIcon;
+    public Texture  peopleIcon;
+    public string loginName = string.Empty;
     public int maxRetries = 10;
     public CanvasGroup debugLayer;
     private Text debugText = null;
@@ -87,6 +90,29 @@ public class APIManager
                         this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
                         this.debugText.text += "Account: " + this.accountJson + "\n\n ";
                         this.debugText.text += "Photo: " + this.photoDataUrl;
+
+                        if (!string.IsNullOrEmpty(this.photoDataUrl))
+                        {
+                            string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
+
+                            string imageUrl = modifiedPhotoDataUrl;
+                            if (!modifiedPhotoDataUrl.StartsWith("https://"))
+                            {
+                                imageUrl = "https:" + modifiedPhotoDataUrl;
+                            }
+                            LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
+                            yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
+                            {
+                                LogController.Instance?.debug($"Downloaded People Icon!!");
+                                this.peopleIcon = _peopleIcon;
+                            });
+                        }
+
+                        if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
+                        {
+                            var name = jsonNode["account"]["display_name"].ToString();
+                            this.loginName = name.Replace("\"", "");
+                        }
 
                         //E.g
                         //Debug.Log(jsonNode["account"]["display_name"].ToString());
