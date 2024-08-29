@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GameSetting : MonoBehaviour
 {
+    public string currentURL;
     public GameSetup gameSetup;
     protected virtual void Awake()
     {
@@ -28,6 +29,11 @@ public class GameSetting : MonoBehaviour
     public void InitialGameBackground()
     {
         this.gameSetup.setBackground();
+    }
+    public string CurrentURL
+    {
+        set { this.currentURL = value; }
+        get { return this.currentURL; }
     }
 
     public float GameTime
@@ -72,6 +78,7 @@ public class GameSetup: LoadImage
 
 public static class APIConstant
 {
+    public static string QuestionDataHeaderName = "Data";
     public static string GameDataAPI {
         get
         {

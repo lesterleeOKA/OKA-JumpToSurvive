@@ -4,6 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class QuestionDataWrapper
+{
+    public QuestionList[] QuestionDataArray;
+}
 
 [Serializable]
 public class QuestionData
@@ -13,11 +18,13 @@ public class QuestionData
 [Serializable]
 public class QuestionList
 {
+    public int id;
     public string QID;
+    public string QuestionType;
     public string Question;
     public string[] Answers;
-    public string Answer;
-    public string QuestionType;
+    public string CorrectAnswer;
+    public string[] Media;
     public Texture texture;
     public AudioClip audioClip;
 }
@@ -58,7 +65,7 @@ public class CurrentQuestion
                 if (this.questionText != null) this.questionText.enabled = false;
                 if (this.questionText != null) this.questionText.text = "";
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
-                this.correctAnswer = qa.Answer;
+                this.correctAnswer = qa.CorrectAnswer;
                 this.answersChoics = qa.Answers;
                 if (this.questionImage != null && qaImage != null)
                 {
@@ -84,7 +91,7 @@ public class CurrentQuestion
                 if (this.questionImage != null) this.questionImage.enabled = false;
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
                 this.questiontype = QuestionType.Audio;
-                this.correctAnswer = qa.Answer;
+                this.correctAnswer = qa.CorrectAnswer;
                 this.answersChoics = qa.Answers;
                 this.playAudio();
                 break;
@@ -95,7 +102,7 @@ public class CurrentQuestion
                 if (this.questionText != null) this.questionText.enabled = true;
                 if (this.questionText != null) this.questionText.text = qa.Question;
                 if (this.questionImage != null) this.questionImage.enabled = false;
-                this.correctAnswer = qa.Answer;
+                this.correctAnswer = qa.CorrectAnswer;
                 this.answersChoics = qa.Answers;
                 break;
         }

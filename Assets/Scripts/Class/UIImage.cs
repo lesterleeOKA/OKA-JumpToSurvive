@@ -16,7 +16,7 @@ public class UIImage
         isAnimated = false;
         this.toImage(this.currentId);
     }
-    public void toImage(int _nextId)
+    public void toImage(int _nextId, bool useScale = true)
     {
         if (this.isAnimated) return;
         for (int i=0; i< this.cg.Length; i++)
@@ -28,12 +28,14 @@ public class UIImage
                     this.currentId = _nextId;
                     this.isAnimated = true;
                     this.cg[_nextId].DOFade(1f, this.duration).OnComplete(()=> this.isAnimated = false);
+                    if(useScale) this.cg[_nextId].transform.DOScale(0.95f, this.duration).SetEase(Ease.OutBack);
                     this.cg[_nextId].interactable = true;
                     this.cg[_nextId].blocksRaycasts = true;
                 }
                 else
                 {
                     this.cg[i].DOFade(0f, 0f);
+                    //if (useScale) this.cg[_nextId].transform.DOScale(0f, 0f);
                     this.cg[i].interactable = false;
                     this.cg[i].blocksRaycasts = false;
                 }

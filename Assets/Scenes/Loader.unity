@@ -654,6 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7aeaaec4193fb4dbfba870d9a3929c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentURL: 
   gameSetup:
     loadMethod: 1
     loadImageMethod: 1
@@ -663,15 +664,16 @@ MonoBehaviour:
     gameBackground: {fileID: 0}
     gameTime: 0
     showFPS: 0
-  currentURL: 
-  jwt: 
-  questionData: 
-  accountData: 
-  photoDataUrl: 
   unitKey: 
-  testURL: 
-  maxRetries: 10
-  debugLayer: {fileID: 364249476}
+  testURL: https://dev.openknowledge.hk//RainbowOne/webapp/OKAGames/JumpToWin/?unit=p6u1-c
+  apiManager:
+    jwt: eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjUxMS1kOTI0YWZmMWFiNmU5ZjNhMzIwYjlkNDY2MTdjNmUwMGM3OGQyZDQwZjk2NzFlMmRlMWJiYmVjYmIzMjczMWM0IiwiZXhwaXJlcyI6MTcyNTQxODg0MCwicmVuZXdfZW5hYmxlZCI6MSwidGltZSI6IjIwMjQtMDgtMjggMDM6MDA6NDAgR01UIiwidWlkIjoiNTExIiwidXNlcl9yb2xlIjoiMyIsInNjaG9vbF9pZCI6IjI3MiIsImlwIjoiMTY5LjI1NC4xMjkuNSIsInZlcnNpb24iOm51bGwsImRldmljZSI6Im1hYyJ9.1AQpIu0wVekblcVn1TliPNP7ddgeFisf33TmRa4r3ys
+    gameSettingJson: 
+    questionJson: 
+    accountJson: 
+    photoDataUrl: 
+    maxRetries: 10
+    debugLayer: {fileID: 364249476}
 --- !u!114 &1694491774
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -31,9 +32,36 @@ public class QuestionManager : MonoBehaviour
 
     public void LoadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
-        StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
+        switch (this.loadMethod)
+        {
+            case LoadMethod.www:
+            case LoadMethod.UnityWebRequest:
+                StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
+                break;
+            case LoadMethod.API:
+                var questionJson = LoaderConfig.Instance.apiManager.questionJson;
+                if (!string.IsNullOrEmpty(questionJson)) { 
+                    QuestionDataWrapper wrapper = JsonUtility.FromJson<QuestionDataWrapper>("{\"QuestionDataArray\":" + questionJson + "}");
+                    QuestionData _questionData = new QuestionData
+                    {
+                        Data = new List<QuestionList>(wrapper.QuestionDataArray)
+                    };
+                    LogController.Instance?.debug("Load Question from API");
+                    this.loadQuestionFromAPI(_questionData, onCompleted);
+                }
+                break;
+        }
     }
 
+    private void loadQuestionFromAPI(QuestionData _questionData = null, Action onCompleted = null)
+    {
+        if(_questionData != null)
+        {
+            this.questionData = _questionData;
+            LogController.Instance?.debug($"loaded api questions: {this.questionData.Data.Count}");
+            this.GetRandomQuestions(onCompleted);
+        }
+    }
 
     IEnumerator loadQuestionFile(string unitKey = "", Action onCompleted = null)
     {

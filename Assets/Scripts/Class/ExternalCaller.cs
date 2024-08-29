@@ -35,6 +35,8 @@ public static class ExternalCaller
         {
             Application.ExternalEval($"location.hash = 'exit'");
         }
+#else
+        LoaderConfig.Instance?.changeScene(1);
 #endif
     }
 
