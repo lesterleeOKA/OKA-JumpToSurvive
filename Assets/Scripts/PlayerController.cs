@@ -112,7 +112,7 @@ public class PlayerController : UserData
     public void checkAnswer()
     {
         int currentScore = this.Score;
-        int resultScore = this.scoring.score(this.answer, currentScore);
+        int resultScore = this.scoring.score(this.answer, currentScore, QuestionController.Instance.currentQuestion.correctAnswer);
         this.Score = resultScore;
         LogController.Instance?.debug("Add marks" + this.Score);
         this.Init();

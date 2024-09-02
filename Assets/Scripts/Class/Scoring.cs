@@ -22,10 +22,10 @@ public class Scoring
     }
 
 
-    public int score(string _answer, int _playerScore)
+    public int score(string _answer, int _playerScore, string _correctAnswer)
     {
         int _score = _playerScore;
-        if (QuestionController.Instance == null || this.scoringTxt == null || this.resultScoreTxt == null || this.scoringAnimator == null || answeredEffectTxt == null) {
+        if (this.scoringTxt == null || this.resultScoreTxt == null || this.scoringAnimator == null || answeredEffectTxt == null) {
 
             LogController.Instance?.debugError("One or more required components are missing.");
             return _score;
@@ -34,11 +34,9 @@ public class Scoring
         answeredEffectTxt.text = "0";
         if (!string.IsNullOrEmpty(_answer))
         {
-            var correctAnswer = QuestionController.Instance.currentQuestion.correctAnswer;
-
-            if (!string.IsNullOrEmpty(correctAnswer))
+            if (!string.IsNullOrEmpty(_correctAnswer))
             {
-                if(_answer ==  correctAnswer)
+                if(_answer == _correctAnswer)
                 {
                     this.correct = true;
                     int mark = 10 * this.bonnus;
