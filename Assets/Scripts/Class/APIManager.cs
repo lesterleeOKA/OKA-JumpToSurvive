@@ -60,7 +60,7 @@ public class APIManager
                 www.SetRequestHeader("Content-Type", "application/json");
                 www.SetRequestHeader("typ", "jwt");
                 www.SetRequestHeader("alg", "HS256");
-
+                www.certificateHandler = new WebRequestSkipCert();
                 // Send the request and wait for a response
                 yield return www.SendWebRequest();
 
@@ -87,9 +87,12 @@ public class APIManager
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
 
-                        this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
-                        this.debugText.text += "Account: " + this.accountJson + "\n\n ";
-                        this.debugText.text += "Photo: " + this.photoDataUrl;
+                        if (this.debugText != null)
+                        {
+                            this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
+                            this.debugText.text += "Account: " + this.accountJson + "\n\n ";
+                            this.debugText.text += "Photo: " + this.photoDataUrl;
+                        }
 
                         if (!string.IsNullOrEmpty(this.photoDataUrl))
                         {

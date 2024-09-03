@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using System.Text.RegularExpressions;
 
 [Serializable]
-public class LoadImage: Downloader
+public class LoadImage : Downloader
 {
     [SerializeField] public LoadImageMethod loadImageMethod = LoadImageMethod.StreamingAssets;
     [SerializeField] private ImageType imageType = ImageType.jpg;
@@ -30,13 +30,25 @@ public class LoadImage: Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
+        if (string.IsNullOrEmpty(folderName) || string.IsNullOrEmpty(fileName))
+        {
+            LogController.Instance?.debug("Folder name or file name cannot be empty.");
+            yield break;
+        }
+
         switch (this.loadImageMethod)
         {
-            case LoadImageMethod.StreamingAssets: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
-            case LoadImageMethod.Resources: return this.LoadImageFromResources(folderName, fileName, callback);
-            case LoadImageMethod.AssetsBundle: return this.LoadImageFromAssetsBundle(fileName, callback);
-            case LoadImageMethod.Url: return this.LoadImageFromURL(fileName, callback);
-            default: return this.LoadImageFromStreamingAssets(folderName, fileName, callback);
+            case LoadImageMethod.StreamingAssets:
+                yield return this.LoadImageFromStreamingAssets(folderName, fileName, callback); break;
+            case LoadImageMethod.Resources:
+                yield return this.LoadImageFromResources(folderName, fileName, callback); break;
+            case LoadImageMethod.AssetsBundle:
+                yield return this.LoadImageFromAssetsBundle(fileName, callback); break;
+            case LoadImageMethod.Url:
+                yield return this.LoadImageFromURL(fileName, callback); break;
+            default:
+                yield return this.LoadImageFromStreamingAssets(folderName, fileName, callback); break;
+
         }
     }
 
@@ -68,12 +80,14 @@ public class LoadImage: Downloader
                 }
                 else
                 {
-                    LogController.Instance?.debugError($"Error loading image:{www.error}");
+                    LogController.Instance?.debug($"Error loading image:{www.error}");
+                    callback?.Invoke(null);
                 }
                 break;
             case LoadMethod.UnityWebRequest:
                 using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imagePath))
                 {
+                    request.certificateHandler = new WebRequestSkipCert();
                     yield return request.SendWebRequest();
                     if (request.result == UnityWebRequest.Result.Success)
                     {
@@ -89,12 +103,13 @@ public class LoadImage: Downloader
                     }
                     else
                     {
-                        LogController.Instance?.debugError($"Error loading image:{request.error}");
+                        LogController.Instance?.debug($"Error loading image:{request.error}");
+                        callback?.Invoke(null);
                     }
                 }
                 break;
         }
-        
+
 
     }
 
@@ -107,12 +122,13 @@ public class LoadImage: Downloader
         if (texture != null)
         {
             // Use the loaded sprite
-            Debug.Log("Image loaded successfully!");
-            callback(texture);
+            LogController.Instance?.debug("Image loaded successfully!");
+            callback?.Invoke(texture);
         }
         else
         {
-            Debug.LogError($"Failed to load image from path: {imagePath}");
+            LogController.Instance?.debug($"Failed to load image from path: {imagePath}");
+            callback?.Invoke(null);
         }
 
         yield return null;
@@ -130,6 +146,7 @@ public class LoadImage: Downloader
 #if UNITY_WEBGL && !UNITY_EDITOR
             using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(assetBundlePath))
             {
+                request.certificateHandler = new WebRequestSkipCert();
                 yield return request.SendWebRequest();
 
                 if (request.result == UnityWebRequest.Result.Success)
@@ -163,11 +180,12 @@ public class LoadImage: Downloader
             if (texture != null)
             {
                 LogController.Instance?.debug(fileName + " loaded successfully!");
-                callback(texture);
+                callback?.Invoke(texture);
             }
             else
             {
-                LogController.Instance?.debugError($"Failed to load Image asset: {fileName}");
+                LogController.Instance?.debug($"Failed to load Image asset: {fileName}");
+                callback?.Invoke(null);
             }
 
             yield return null;
@@ -179,13 +197,15 @@ public class LoadImage: Downloader
         LogController.Instance?.debug($"Loading Image from url : {url}");
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
         {
+            www.certificateHandler = new WebRequestSkipCert();
             // Send the request and wait for a response
             yield return www.SendWebRequest();
 
             // Check for errors
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Error loading image: {www.error}");
+                LogController.Instance?.debug($"Error loading image: {www.error}");
+                callback?.Invoke(null);
             }
             else
             {

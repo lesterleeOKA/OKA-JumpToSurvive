@@ -1,78 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameController : GameBaseController
 {
     public static GameController Instance = null;
     private List<int> previousSiblingIndices = new List<int>();
     public List<RectTransform> playersList = new List<RectTransform>();
     public HorizontalLayoutGroup layoutGroup;
-    public Timer gameTimer;
-    public CanvasGroup GameUILayer, TopUILayer;
-    private Vector2 originalGetScorePos = Vector2.zero;
-    public CanvasGroup getScorePopup;
-    public EndGamePage endGamePage;
 
-    private void Awake()
+    protected override void Awake()
     {
         if(Instance == null) Instance = this;
-        LoaderConfig.Instance?.InitialGameBackground();
+        base.Awake();
     }
 
-    private void Start()
+    protected override void Start()
     {
-        SetUI.Set(this.TopUILayer, false, 0f);
-        SetUI.Set(this.getScorePopup, false, 0f);
-        if(this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
+        base.Start();
         //this.RandomlySortChildObjects();
-        this.endGamePage.init();
     }
 
-    public void enterGame(bool status)
+    public override void enterGame()
     {
-        SetUI.Set(this.TopUILayer, status, status ? 0.5f: 0f);
-        SetUI.Set(this.GameUILayer, status, status ? 0.5f : 0f);
-        if (!status)
+        base.enterGame();
+        for (int i = 0; i < this.playersList.Count; i++)
         {
-            QuestionController.Instance.killAllWords();
-
-            bool showSuccess = false;
-            for (int i = 0; i < this.playersList.Count; i++)
+            if (i == 0)
             {
                 var playerController = this.playersList[i].GetComponent<PlayerController>();
                 if (playerController != null)
                 {
-                    if (playerController.Score >= 30)
-                    {
-                        showSuccess = true;
-                    }
-
-                    this.endGamePage.updateFinalScore(i, playerController.Score);
-                }
-            }
-
-            this.endGamePage.setStatus(true, showSuccess);
-        }
-        else
-        {
-            for (int i = 0; i < this.playersList.Count; i++)
-            {
-                if (i == 0)
-                {
-                    var playerController = this.playersList[i].GetComponent<PlayerController>();
-                    if (playerController != null)
-                    {
-                        playerController.updatePlayerIcon();
-                    }
+                    playerController.updatePlayerIcon();
                 }
             }
         }
     }
 
+    public override void endGame()
+    {
+        QuestionController.Instance.killAllWords();
+        bool showSuccess = false;
+        for (int i = 0; i < this.playersList.Count; i++)
+        {
+            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                if (playerController.Score >= 30)
+                {
+                    showSuccess = true;
+                }
+
+                this.endGamePage.updateFinalScore(i, playerController.Score);
+            }
+        }
+        this.endGamePage.setStatus(true, showSuccess);
+        base.endGame();
+    }
 
     public void showAllCharacterAnswer()
     {
@@ -113,7 +99,7 @@ public class GameController : MonoBehaviour
 
         AudioController.Instance?.PlayAudio(showCorrect ? 1 : 2);
         yield return new WaitForSeconds(delay);
-        SetUI.SetMove(this.getScorePopup, false, this.originalGetScorePos, 0f);
+        SetUI.SetMove(this.getScorePopup, false, base.originalGetScorePos, 0f);
         //this.RandomlySortChildObjects();
 
         for (int i = 0; i < this.playersList.Count; i++)
@@ -126,12 +112,6 @@ public class GameController : MonoBehaviour
 
         }
         QuestionController.Instance.nextQuestion();
-    }
-
-    public void retryGame()
-    {
-        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
-        SceneManager.LoadScene(2);
     }
 
     public void RandomlySortChildObjects()
@@ -191,11 +171,4 @@ public class GameController : MonoBehaviour
         }
         return false;
     }
-
-    public void BackToWebpage()
-    {
-        ExternalCaller.BackToHomeUrlPage();
-    }
-
-
 }
