@@ -64,7 +64,7 @@ public class PlayerController : UserData
     {
         if (LoaderConfig.Instance.apiManager.peopleIcon != null)
         {
-            var icon = this.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
+            var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
 
             var _playerName = LoaderConfig.Instance.apiManager.loginName;
             if(this.displayPlayerName != null) this.displayPlayerName.text = _playerName;
@@ -183,12 +183,6 @@ public class PlayerController : UserData
         this.character.transform.DOShakePosition(0.3f, new Vector3(20f, 0f), 20).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo).SetAutoKill(true);
         yield return new WaitForSeconds(1f);
         this.characterImage.sprite = this.characterSprites[0];
-    }
-
-    private Sprite ConvertTextureToSprite(Texture2D texture)
-    {
-        // Create a sprite from the texture
-        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
     private void OnApplicationQuit()

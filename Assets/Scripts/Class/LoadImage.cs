@@ -30,12 +30,6 @@ public class LoadImage : Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
-        if (string.IsNullOrEmpty(folderName) || string.IsNullOrEmpty(fileName))
-        {
-            LogController.Instance?.debug("Folder name or file name cannot be empty.");
-            yield break;
-        }
-
         switch (this.loadImageMethod)
         {
             case LoadImageMethod.StreamingAssets:
