@@ -94,7 +94,7 @@ public class APIManager
                             this.debugText.text += "Photo: " + this.photoDataUrl;
                         }
 
-                        if (!string.IsNullOrEmpty(this.photoDataUrl))
+                        if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
                         {
                             string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
 
