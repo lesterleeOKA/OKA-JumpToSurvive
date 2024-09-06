@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 public class LoaderConfig : GameSetting
 {
     public static LoaderConfig Instance = null;
+    public APIManager apiManager;
     public string unitKey = string.Empty;
     public string testURL = string.Empty;
-    public APIManager apiManager;
 
     protected override void Awake()
     {

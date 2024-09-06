@@ -127,9 +127,9 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    private void ShuffleQuestions(Action onComplete = null)
+    private void ShuffleQuestions(bool rand=true, Action onComplete = null)
     {
-        this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
+        if(rand) this.questionData.Data.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
 
         this.totalItems = this.questionData.Data.Count;
         this.loadedItems = 0;
@@ -181,7 +181,11 @@ public class QuestionManager : MonoBehaviour
     {
         if (this.questionData.Data.Count > 1 && this.questionData.Data[0] != this.questionData.Data[this.questionData.Data.Count - 1])
         {
-            this.ShuffleQuestions(onCompleted);
+            this.ShuffleQuestions(true, onCompleted);
+        }
+        else
+        {
+            this.ShuffleQuestions(false, onCompleted);
         }
     }
 }

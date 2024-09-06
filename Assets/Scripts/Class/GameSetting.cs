@@ -47,9 +47,15 @@ public class GameSetting : MonoBehaviour
         get { return this.gameSetup.showFPS; }
         set { this.gameSetup.showFPS = value; }
     }
+
+    public int PlayerNumbers
+    {
+        get { return this.gameSetup.playerNumber; }
+        set { this.gameSetup.playerNumber = value; }
+    }
 }
 
-[System.Serializable]
+[Serializable]
 public class GameSetup: LoadImage
 {
     [Tooltip("Default Game Background Texture")]
@@ -58,7 +64,7 @@ public class GameSetup: LoadImage
     public RawImage gameBackground;
     public float gameTime;
     public bool showFPS = false;
-
+    public int playerNumber = 1;
 
     public void setBackground()
     {

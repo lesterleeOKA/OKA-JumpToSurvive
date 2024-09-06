@@ -389,8 +389,7 @@ MonoBehaviour:
     gameBackground: {fileID: 0}
     gameTime: 0
     showFPS: 0
-  unitKey: 
-  testURL: 
+    playerNumber: 1
   apiManager:
     jwt: 
     gameSettingJson: 
@@ -406,6 +405,8 @@ MonoBehaviour:
     loginName: 
     maxRetries: 10
     debugLayer: {fileID: 364249476}
+  unitKey: 
+  testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:
   m_ObjectHideFlags: 0
