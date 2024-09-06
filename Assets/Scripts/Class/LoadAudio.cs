@@ -69,23 +69,35 @@ public class LoadAudio: Downloader
             case LoadMethod.UnityWebRequest:
                 using (UnityWebRequest uwq = UnityWebRequest.Get(path))
                 {
+                    uwq.certificateHandler = new WebRequestSkipCert();
                     yield return uwq.SendWebRequest();
 
                     if (uwq.result == UnityWebRequest.Result.Success)
                     {
                         byte[] results = uwq.downloadHandler.data;
-                        var memStream = new MemoryStream(results);
-                        var mpgFile = new NLayer.MpegFile(memStream);
-                        var samples = new float[mpgFile.Length];
-                        mpgFile.ReadSamples(samples, 0, (int)mpgFile.Length);
-
-                        var audioClip = AudioClip.Create(fileName, samples.Length, mpgFile.Channels, mpgFile.SampleRate, false);
-                        audioClip.SetData(samples, 0);
-
-                        if (audioClip != null)
+                        if (results != null && results.Length > 0)
                         {
-                            LogController.Instance?.debug("Audio loaded successfully!");
-                            callback?.Invoke(audioClip);
+                            using (var memStream = new MemoryStream(results))
+                            {
+                                var mpgFile = new NLayer.MpegFile(memStream);
+                                var samples = new float[mpgFile.Length];
+
+                                // Read samples in chunks if necessary for large files
+                                mpgFile.ReadSamples(samples, 0, (int)mpgFile.Length);
+
+                                var audioClip = AudioClip.Create(fileName, samples.Length, mpgFile.Channels, mpgFile.SampleRate, false);
+                                audioClip.SetData(samples, 0);
+
+                                if (audioClip != null)
+                                {
+                                    LogController.Instance?.debug("Audio loaded successfully!");
+                                    callback?.Invoke(audioClip);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            LogController.Instance?.debugError("Downloaded data is empty.");
                         }
                     }
                     else
@@ -96,6 +108,7 @@ public class LoadAudio: Downloader
 
                 /*using (UnityWebRequest uwq = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.MPEG))
                 {
+                    uwq.certificateHandler = new WebRequestSkipCert();
                     yield return uwq.SendWebRequest();
 
                     if (uwq.result == UnityWebRequest.Result.Success)
