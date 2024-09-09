@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class LoaderConfig : GameSetting
 {
     public static LoaderConfig Instance = null;
-    public APIManager apiManager;
     public string unitKey = string.Empty;
     public string testURL = string.Empty;
 
@@ -17,17 +16,17 @@ public class LoaderConfig : GameSetting
         base.Awake();
     }
 
-    private void Start()
+    protected override void Start()
     {
-        this.apiManager.Init();
+        base.Start();
 #if UNITY_EDITOR
         this.LoadGameData();
 #endif
     }
 
-    private void Update()
+    protected override void Update()
     {
-        this.apiManager.controlDebugLayer();
+        base.Update();
     }
 
     public void LoadGameData()
@@ -86,6 +85,10 @@ public class LoaderConfig : GameSetting
                                 LogController.Instance?.debug("Game Time: " + this.GameTime);
                                 this.ShowFPS = true;
                                 break;
+                            case "playerNumbers":
+                                this.PlayerNumbers = int.Parse(value);
+                                LogController.Instance?.debug("player Numbers: " + this.PlayerNumbers);
+                                break;
                         }
                     }
                 }
@@ -93,6 +96,10 @@ public class LoaderConfig : GameSetting
         }
     }
 
+    public void closeLoginErrorBox()
+    {
+        this.apiManager.resetLoginErrorBox();
+    }
 
     public void changeScene(int sceneId)
     {

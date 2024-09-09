@@ -17,12 +17,14 @@ public class FPSCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(this.fpsCg != null)
+        bool enableFPSMonitor = LoaderConfig.Instance.ShowFPS || Debug.isDebugBuild;
+
+        if (this.fpsCg != null)
         {
-            this.fpsCg.alpha = LoaderConfig.Instance.ShowFPS ? 1f: 0f;
+            this.fpsCg.alpha = enableFPSMonitor ? 1f : 0f;
         }
 
-        if(this.fpsText != null && LoaderConfig.Instance.ShowFPS)
+        if(this.fpsText != null && enableFPSMonitor)
         {
             time += Time.unscaledDeltaTime;
             ++frames;

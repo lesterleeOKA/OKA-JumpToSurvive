@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class APIManager
@@ -23,7 +25,11 @@ public class APIManager
     public string loginName = string.Empty;
     public int maxRetries = 10;
     public CanvasGroup debugLayer;
+    public CanvasGroup loginErrorBox;
+    public TextMeshProUGUI loginErrorMessage;
     private Text debugText = null;
+    private string errorMessage = "";
+    private bool isShowLoginErrorBox = false;
     private bool showingDebugBox = false;
 
     public void Init()
@@ -32,6 +38,7 @@ public class APIManager
         {
             this.debugText = this.debugLayer.GetComponentInChildren<Text>();
         }
+        this.resetLoginErrorBox();
     }
 
     public void controlDebugLayer()
@@ -41,6 +48,26 @@ public class APIManager
             showingDebugBox = !showingDebugBox;
             SetUI.Set(this.debugLayer.GetComponent<CanvasGroup>(), showingDebugBox, 0f);
         }
+    }
+
+    public bool IsShowLoginErrorBox
+    {
+        set { this.isShowLoginErrorBox = value; }
+        get { return this.isShowLoginErrorBox; }
+    }
+
+    public void resetLoginErrorBox()
+    {
+        this.IsShowLoginErrorBox = false;
+        SetUI.Set(this.loginErrorBox, false, 0f);
+        if (this.loginErrorMessage != null) this.loginErrorMessage.text = "";
+    }
+
+    public void checkLoginErrorBox()
+    {
+        var sceneID = SceneManager.GetActiveScene().buildIndex;
+        if (sceneID == 1) SetUI.Set(this.loginErrorBox, this.IsShowLoginErrorBox, 0f);
+        if (this.loginErrorMessage != null) this.loginErrorMessage.text = this.errorMessage;
     }
 
     public IEnumerator PostGameSetting(Action getParseURLParams=null, Action onCompleted = null)
@@ -67,9 +94,10 @@ public class APIManager
                 // Check for errors
                 if (www.result != UnityWebRequest.Result.Success)
                 {
-                    LogController.Instance?.debugError("Error: " + www.error);
+                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
+                    this.IsShowLoginErrorBox = true;
                     retryCount++;
-                    LogController.Instance?.debug("Retrying... Attempt " + retryCount);
+                    LogController.Instance?.debug(this.errorMessage);
                     yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
                 }
                 else
@@ -124,7 +152,10 @@ public class APIManager
                     }
                     else
                     {
-                        LogController.Instance?.debugError("JSON data not found in the response.");
+                        this.errorMessage = "JSON data not found in the response.";
+                        LogController.Instance?.debug(this.errorMessage);
+                        this.IsShowLoginErrorBox = true;
+                        onCompleted?.Invoke();
                     }
                 }
             }
@@ -132,7 +163,10 @@ public class APIManager
 
         if (!requestSuccessful)
         {
-            LogController.Instance?.debugError("Failed to get a successful response after " + maxRetries + " attempts.");
+            this.errorMessage = "Failed to get a successful response after " + maxRetries + " attempts.";
+            LogController.Instance?.debug(this.errorMessage);
+            this.IsShowLoginErrorBox = true;
+            onCompleted?.Invoke();
         }
     }
 }

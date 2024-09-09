@@ -6,12 +6,23 @@ public class GameSetting : MonoBehaviour
 {
     public string currentURL;
     public GameSetup gameSetup;
+    public APIManager apiManager;
     protected virtual void Awake()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         Application.runInBackground = true;
         DontDestroyOnLoad(this);
+    }
+
+    protected virtual void Start()
+    {
+        this.apiManager.Init();
+    }
+
+    protected virtual void Update()
+    {
+        this.apiManager.controlDebugLayer();
     }
 
     public void InitialGameSetup(Action onCompleted = null)
@@ -28,6 +39,7 @@ public class GameSetting : MonoBehaviour
 
     public void InitialGameBackground()
     {
+        this.apiManager.checkLoginErrorBox();
         this.gameSetup.setBackground();
     }
     public string CurrentURL
@@ -52,6 +64,11 @@ public class GameSetting : MonoBehaviour
     {
         get { return this.gameSetup.playerNumber; }
         set { this.gameSetup.playerNumber = value; }
+    }
+
+    public void Reload()
+    {
+        ExternalCaller.ReLoadCurrentPage();
     }
 }
 
