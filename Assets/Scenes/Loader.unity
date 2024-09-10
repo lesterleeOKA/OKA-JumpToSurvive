@@ -600,6 +600,31 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Reload
       objectReference: {fileID: 0}
+    - target: {fileID: 2643370867711761214, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 536.5092
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643370867711761214, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -22.9004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3154877538009853832, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_text
+      value: Retry
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950639863032224073, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_text
+      value: Unable to load game. Make sure you are connected to the internet and
+        reload again.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950639863032224073, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_fontSize
+      value: 42.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950639863032224073, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3959474857218661949, guid: 8bb6bfba981009b468c53777d18d33b2, type: 3}
       propertyPath: m_Alpha
       value: 0
