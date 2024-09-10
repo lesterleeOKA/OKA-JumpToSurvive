@@ -67,7 +67,7 @@ public class APIManager
     {
         var sceneID = SceneManager.GetActiveScene().buildIndex;
         if (sceneID == 1) SetUI.Set(this.loginErrorBox, this.IsShowLoginErrorBox, 0f);
-        if (this.loginErrorMessage != null) this.loginErrorMessage.text = this.errorMessage;
+       // if (this.loginErrorMessage != null) this.loginErrorMessage.text = this.errorMessage;
     }
 
     public IEnumerator PostGameSetting(Action getParseURLParams=null, Action onCompleted = null)
