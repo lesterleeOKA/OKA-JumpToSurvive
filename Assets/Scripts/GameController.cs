@@ -89,7 +89,7 @@ public class GameController : GameBaseController
                 playerController.checkAnswer();
 
                 if(playerController.scoring.correct && !showCorrect) {
-                    SetUI.SetMove(this.getScorePopup, true, new Vector2(0f, 0f), 0.5f);
+                    this.setGetScorePopup(true);
                     delay = 2f;
                     showCorrect = true;
                 }
@@ -99,7 +99,7 @@ public class GameController : GameBaseController
 
         AudioController.Instance?.PlayAudio(showCorrect ? 1 : 2);
         yield return new WaitForSeconds(delay);
-        SetUI.SetMove(this.getScorePopup, false, base.originalGetScorePos, 0f);
+        this.setGetScorePopup(false);
         //this.RandomlySortChildObjects();
 
         for (int i = 0; i < this.playersList.Count; i++)

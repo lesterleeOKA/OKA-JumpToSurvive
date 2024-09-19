@@ -7,6 +7,7 @@ public class GameBaseController : MonoBehaviour
     public CanvasGroup GameUILayer, TopUILayer, TopRightUILayer, getScorePopup;
     protected Vector2 originalGetScorePos = Vector2.zero;
     public EndGamePage endGamePage;
+    public int playerNumber = 0;
 
     protected virtual void Awake()
     {
@@ -15,6 +16,7 @@ public class GameBaseController : MonoBehaviour
 
     protected virtual void Start()
     {
+        this.playerNumber = LoaderConfig.Instance != null ? LoaderConfig.Instance.PlayerNumbers : 4;
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         SetUI.Set(this.TopRightUILayer, true, 0f);
@@ -39,6 +41,11 @@ public class GameBaseController : MonoBehaviour
     {
         if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
         SceneManager.LoadScene(2);
+    }
+
+    public void setGetScorePopup(bool status)
+    {
+        SetUI.SetMove(this.getScorePopup, status, status ? Vector2.zero : this.originalGetScorePos, status ? 0.5f : 0f);
     }
 
     public void BackToWebpage()
