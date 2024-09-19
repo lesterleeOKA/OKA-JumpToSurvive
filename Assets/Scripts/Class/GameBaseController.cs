@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameBaseController : MonoBehaviour
 {
     public Timer gameTimer;
-    public CanvasGroup GameUILayer, TopUILayer, getScorePopup;
+    public CanvasGroup GameUILayer, TopUILayer, TopRightUILayer, getScorePopup;
     protected Vector2 originalGetScorePos = Vector2.zero;
     public EndGamePage endGamePage;
 
@@ -17,6 +17,7 @@ public class GameBaseController : MonoBehaviour
     {
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
+        SetUI.Set(this.TopRightUILayer, true, 0f);
         if (this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
         this.endGamePage.init();
     }
@@ -31,6 +32,7 @@ public class GameBaseController : MonoBehaviour
     {
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.GameUILayer, false, 0f);
+        SetUI.Set(this.TopRightUILayer, false, 0f);
     }
 
     public void retryGame()
