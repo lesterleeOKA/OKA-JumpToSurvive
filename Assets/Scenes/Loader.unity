@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eecec10ea23a904e99a992e3ecacada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadMethod: 2
+  loadMethod: 1
   jsonFileName: Question.json
   loadImage:
     loadMethod: 1

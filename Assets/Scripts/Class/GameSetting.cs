@@ -81,7 +81,7 @@ public class GameSetup: LoadImage
     public Texture bgTexture;
     [Tooltip("Find Tag name of GameBackground in different scene")]
     public RawImage gameBackground;
-    public TextMeshProUGUI instructions;
+    public InstructionText instructions;
     public float gameTime;
     public bool showFPS = false;
     public int playerNumber = 1;
@@ -108,8 +108,8 @@ public class GameSetup: LoadImage
 
             if(instructionText != null)
             {
-                this.instructions = instructionText.GetComponent<TextMeshProUGUI>();
-                this.instructions.text = content;
+                this.instructions = instructionText.GetComponent<InstructionText>();
+                this.instructions.setContent(content);
             }
         }
     }
