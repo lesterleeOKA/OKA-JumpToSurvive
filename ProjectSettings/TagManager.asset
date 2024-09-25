@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Word
   - GameBackground
+  - Instruction
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,8 @@ public class APIManager
 {
     [Tooltip("Account Jwt token, upload data jwt")]
     public string jwt;
+    [Tooltip("Created App/Book current id")]
+    public string appId;
     [Tooltip("Game Setting Json")]
     public string gameSettingJson = string.Empty;
     [Tooltip("Question Json")]
@@ -23,6 +25,7 @@ public class APIManager
     public LoadImage loadPeopleIcon;
     public Texture  peopleIcon;
     public string loginName = string.Empty;
+    public string instructionContent = string.Empty;
     public int maxRetries = 10;
     public CanvasGroup debugLayer;
     public CanvasGroup loginErrorBox;
@@ -74,7 +77,8 @@ public class APIManager
     {
         ExternalCaller.UpdateLoadBarStatus("Loading Data");
         getParseURLParams?.Invoke();
-        string api = APIConstant.GameDataAPI + this.jwt;
+        string api = APIConstant.GameDataAPI(this.appId, this.jwt);
+        LogController.Instance?.debug("called login api: " + api);
         WWWForm form = new WWWForm();
         int retryCount = 0;
         bool requestSuccessful = false;
@@ -104,7 +108,9 @@ public class APIManager
                 {
                     requestSuccessful = true;
                     string responseText = www.downloadHandler.text;
-                    int jsonStartIndex = responseText.IndexOf("{\"Data\":");
+                    int jsonStartIndex = responseText.IndexOf("{\"questions\":");
+                    LogController.Instance?.debug("www.downloadHandler.text: " + responseText);
+
                     if (jsonStartIndex != -1)
                     {
                         string jsonData = responseText.Substring(jsonStartIndex);

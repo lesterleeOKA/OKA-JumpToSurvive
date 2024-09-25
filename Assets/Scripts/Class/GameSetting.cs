@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +42,7 @@ public class GameSetting : MonoBehaviour
     {
         this.apiManager.checkLoginErrorBox();
         this.gameSetup.setBackground();
+        this.gameSetup.setInstruction(LoaderConfig.Instance?.apiManager.instructionContent);
     }
     public string CurrentURL
     {
@@ -79,6 +81,7 @@ public class GameSetup: LoadImage
     public Texture bgTexture;
     [Tooltip("Find Tag name of GameBackground in different scene")]
     public RawImage gameBackground;
+    public TextMeshProUGUI instructions;
     public float gameTime;
     public bool showFPS = false;
     public int playerNumber = 1;
@@ -96,16 +99,29 @@ public class GameSetup: LoadImage
             this.gameBackground.texture = this.bgTexture;
         }
     }
+
+    public void setInstruction(string content="")
+    {
+        if (!string.IsNullOrEmpty(content) && this.instructions == null)
+        {
+            var instructionText = GameObject.FindGameObjectWithTag("Instruction");
+
+            if(instructionText != null)
+            {
+                this.instructions = instructionText.GetComponent<TextMeshProUGUI>();
+                this.instructions.text = content;
+            }
+        }
+    }
 }
 
 
 public static class APIConstant
 {
-    public static string QuestionDataHeaderName = "Data";
-    public static string GameDataAPI {
-        get
-        {
-            return "https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json=[1]&jwt=";
-        }
+    public static string QuestionDataHeaderName = "questions";
+    public static string GameDataAPI(string _bookId = "", string _jwt = "")
+    {
+        string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
+        return $"https://ro2.azurewebsites.net/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" +_jwt;
     }
 }

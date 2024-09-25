@@ -13,17 +13,20 @@ public class QuestionDataWrapper
 [Serializable]
 public class QuestionData
 { 
-    public List<QuestionList> Data;
+    public List<QuestionList> questions;
 }
 [Serializable]
 public class QuestionList
 {
     public int id;
-    public string QID;
-    public string QuestionType;
-    public string Question;
-    public string[] Answers;
-    public string CorrectAnswer;
+    public string qid;
+    public string questionType;
+    public string question;
+    public string[] answers;
+    public string correctAnswer;
+    public int star;
+    public int score;
+    public int correctAnswerIndex;
     public string[] Media;
     public Texture texture;
     public AudioClip audioClip;
@@ -56,17 +59,17 @@ public class CurrentQuestion
         if (qa == null) return;
         this.qa = qa;
 
-        switch (qa.QuestionType)
+        switch (qa.questionType)
         {
-            case "Picture":
+            case "picture":
                 SetUI.SetGroup(this.questionBgs, 0, 0f);
                 this.questiontype = QuestionType.Picture;
                 var qaImage = qa.texture;
                 if (this.questionText != null) this.questionText.enabled = false;
                 if (this.questionText != null) this.questionText.text = "";
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
-                this.correctAnswer = qa.CorrectAnswer;
-                this.answersChoics = qa.Answers;
+                this.correctAnswer = qa.correctAnswer;
+                this.answersChoics = qa.answers;
                 if (this.questionImage != null && qaImage != null)
                 {
                     this.questionImage.enabled = true;
@@ -84,26 +87,26 @@ public class CurrentQuestion
                     this.aspecRatioFitter.aspectRatio = (float)qaImage.width / (float)qaImage.height;
                 }
                 break;
-            case "Audio":
+            case "audio":
                 SetUI.SetGroup(this.questionBgs, 1, 0f);
                 if (this.questionText != null) this.questionText.enabled = false;
                 if (this.questionText != null) this.questionText.text = "";
                 if (this.questionImage != null) this.questionImage.enabled = false;
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), true, 0f);
                 this.questiontype = QuestionType.Audio;
-                this.correctAnswer = qa.CorrectAnswer;
-                this.answersChoics = qa.Answers;
+                this.correctAnswer = qa.correctAnswer;
+                this.answersChoics = qa.answers;
                 this.playAudio();
                 break;
-            case "Text":
+            case "text":
                 SetUI.SetGroup(this.questionBgs, 2, 0f);
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
                 this.questiontype = QuestionType.Text;
                 if (this.questionText != null) this.questionText.enabled = true;
-                if (this.questionText != null) this.questionText.text = qa.Question;
+                if (this.questionText != null) this.questionText.text = qa.question;
                 if (this.questionImage != null) this.questionImage.enabled = false;
-                this.correctAnswer = qa.CorrectAnswer;
-                this.answersChoics = qa.Answers;
+                this.correctAnswer = qa.correctAnswer;
+                this.answersChoics = qa.answers;
                 break;
         }
 

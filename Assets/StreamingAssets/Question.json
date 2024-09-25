@@ -1,508 +1,508 @@
 {
-  "Data": [
+  "questions": [
     {
-      "QID": "p1u1-a1",
-      "QuestionType": "Text",
-      "Question": "What is the color of apple?",
-      "Answers": [
+      "qid": "p1u1-a1",
+      "questionType": "text",
+      "question": "What is the color of apple?",
+      "answers": [
         "red",
         "blue",
         "purple",
         "black"
       ],
-      "CorrectAnswer": "red"
+      "correctAnswer": "red"
     },
     {
-      "QID": "p1u1-a2",
-      "QuestionType": "Text",
-      "Question": "What is the color of banana?",
-      "Answers": [
+      "qid": "p1u1-a2",
+      "questionType": "text",
+      "question": "What is the color of banana?",
+      "answers": [
         "red",
         "yellow",
         "purple",
         "black"
       ],
-      "CorrectAnswer": "yellow"
+      "correctAnswer": "yellow"
     },
     {
-      "QID": "p6u1-c1",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c1",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Consern",
         "Concern",
         "Conxern",
         "Conncern"
       ],
-      "CorrectAnswer": "Concern"
+      "correctAnswer": "Concern"
     },
     {
-      "QID": "p6u1-c2",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c2",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Purform",
         "Perfune",
         "Parform",
         "Perform"
       ],
-      "CorrectAnswer": "Perform"
+      "correctAnswer": "Perform"
     },
     {
-      "QID": "p6u1-c3",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c3",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Aed",
         "Ald",
         "Aad",
         "Aid"
       ],
-      "CorrectAnswer": "Aid"
+      "correctAnswer": "Aid"
     },
     {
-      "QID": "p6u1-c4",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c4",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Sponser",
         "Sponcer",
         "Sponsar",
         "Sponsor"
       ],
-      "CorrectAnswer": "Sponsor"
+      "correctAnswer": "Sponsor"
     },
     {
-      "QID": "p6u1-c5",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c5",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Prepare",
         "Preepare",
         "Prep",
         "Prepair"
       ],
-      "CorrectAnswer": "Prepare"
+      "correctAnswer": "Prepare"
     },
     {
-      "QID": "p6u1-c6",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c6",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Donate",
         "Donut",
         "Donute",
         "Danube"
       ],
-      "CorrectAnswer": "Donate"
+      "correctAnswer": "Donate"
     },
     {
-      "QID": "p6u1-c7",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c7",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Volanteer",
         "Volantis",
         "Volunteer",
         "Volume"
       ],
-      "CorrectAnswer": "Volunteer"
+      "correctAnswer": "Volunteer"
     },
     {
-      "QID": "p6u1-c8",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c8",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Assist",
         "Assixt",
         "Ascist",
         "Azziz"
       ],
-      "CorrectAnswer": "Assist"
+      "correctAnswer": "Assist"
     },
     {
-      "QID": "p6u1-c9",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c9",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Walkathon",
         "Talkathon",
         "Speakathon",
         "Sleepathon"
       ],
-      "CorrectAnswer": "Walkathon"
+      "correctAnswer": "Walkathon"
     },
     {
-      "QID": "p6u1-c10",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c10",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Gift",
         "Givt",
         "Gipht",
         "Grift"
       ],
-      "CorrectAnswer": "Gift"
+      "correctAnswer": "Gift"
     },
     {
-      "QID": "p6u1-c11",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c11",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Charrity",
         "Chairity",
         "Charety",
         "Charity"
       ],
-      "CorrectAnswer": "Charity"
+      "correctAnswer": "Charity"
     },
     {
-      "QID": "p6u1-c12",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c12",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Suppose",
         "Suport",
         "Subport",
         "Support"
       ],
-      "CorrectAnswer": "Support"
+      "correctAnswer": "Support"
     },
     {
-      "QID": "p6u1-c13",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c13",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Reffle",
         "Roffle",
         "Raffle",
         "Riffle"
       ],
-      "CorrectAnswer": "Raffle"
+      "correctAnswer": "Raffle"
     },
     {
-      "QID": "p6u1-c14",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c14",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Adipt",
         "Adoph",
         "Adorpt",
         "Adopt"
       ],
-      "CorrectAnswer": "Adopt"
+      "correctAnswer": "Adopt"
     },
     {
-      "QID": "p6u1-c15",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c15",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Abandon",
         "Abanddon",
         "Abaddon",
         "Aband"
       ],
-      "CorrectAnswer": "Abandon"
+      "correctAnswer": "Abandon"
     },
     {
-      "QID": "p6u1-c16",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c16",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Honeless",
         "Homeless",
         "Whomeless",
         "Homless"
       ],
-      "CorrectAnswer": "Homeless"
+      "correctAnswer": "Homeless"
     },
     {
-      "QID": "p6u1-c17",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c17",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Organaize",
         "Org",
         "Organize",
         "Orgenize"
       ],
-      "CorrectAnswer": "Organize"
+      "correctAnswer": "Organize"
     },
     {
-      "QID": "p6u1-c18",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c18",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Fand",
         "Faund",
         "Fiund",
         "Fund"
       ],
-      "CorrectAnswer": "Fund"
+      "correctAnswer": "Fund"
     },
     {
-      "QID": "p6u1-c19",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c19",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Aelderly",
         "Alderly",
         "Ilderly",
         "Elderly"
       ],
-      "CorrectAnswer": "Elderly"
+      "correctAnswer": "Elderly"
     },
     {
-      "QID": "p6u1-c20",
-      "QuestionType": "Audio",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u1-c20",
+      "questionType": "audio",
+      "question": "",
+      "answers": [
         "Colect",
         "Collect",
         "Collekt",
         "Corlect"
       ],
-      "CorrectAnswer": "Collect"
+      "correctAnswer": "Collect"
     },
     {
-      "QID": "p6u6-c1",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c1",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "umbrella",
         "skirt",
         "cheongsam",
         "robe"
       ],
-      "CorrectAnswer": "cheongsam"
+      "correctAnswer": "cheongsam"
     },
     {
-      "QID": "p6u6-c2",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c2",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "poncho",
         "towel",
         "rug",
         "handkerchief"
       ],
-      "CorrectAnswer": "poncho"
+      "correctAnswer": "poncho"
     },
     {
-      "QID": "p6u6-c3",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c3",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "kaiser",
         "kimono",
         "komodo",
         "katana"
       ],
-      "CorrectAnswer": "kimono"
+      "correctAnswer": "kimono"
     },
     {
-      "QID": "p6u6-c4",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c4",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "skirt",
         "kilt",
         "dress",
         "garter"
       ],
-      "CorrectAnswer": "kilt"
+      "correctAnswer": "kilt"
     },
     {
-      "QID": "p6u6-c5",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c5",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "hijab",
         "headband",
         "scarf",
         "hat"
       ],
-      "CorrectAnswer": "hijab"
+      "correctAnswer": "hijab"
     },
     {
-      "QID": "p6u6-c6",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c6",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "V-neck",
         "tank top",
         "T-shirt",
         "changshan"
       ],
-      "CorrectAnswer": "changshan"
+      "correctAnswer": "changshan"
     },
     {
-      "QID": "p6u6-c7",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c7",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "African drum",
         "American drum",
         "Asian drum",
         "Australian drum"
       ],
-      "CorrectAnswer": "African drum"
+      "correctAnswer": "African drum"
     },
     {
-      "QID": "p6u6-c8",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c8",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "stamper",
         "simba",
         "timber",
         "samba"
       ],
-      "CorrectAnswer": "samba"
+      "correctAnswer": "samba"
     },
     {
-      "QID": "p6u6-c9",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c9",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "abs dance",
         "belly dance",
         "tummy dance",
         "stomach dance"
       ],
-      "CorrectAnswer": "belly dance"
+      "correctAnswer": "belly dance"
     },
     {
-      "QID": "p6u6-c10",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c10",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "haka",
         "hark",
         "hike",
         "hokum"
       ],
-      "CorrectAnswer": "haka"
+      "correctAnswer": "haka"
     },
     {
-      "QID": "p6u6-c11",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c11",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "Chinese opera",
         "Italian opera",
         "Spanish opera",
         "Flemish opera"
       ],
-      "CorrectAnswer": "Chinese opera"
+      "correctAnswer": "Chinese opera"
     },
     {
-      "QID": "p6u6-c12",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c12",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "salsa sauce",
         "salsa dance",
         "salsa dip",
         "salsa chips"
       ],
-      "CorrectAnswer": "salsa dance"
+      "correctAnswer": "salsa dance"
     },
     {
-      "QID": "p6u6-c13",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c13",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "jacuzzi",
         "gas",
         "jams",
         "jazz"
       ],
-      "CorrectAnswer": "jazz"
+      "correctAnswer": "jazz"
     },
     {
-      "QID": "p6u6-c14",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c14",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "mochi",
         "kimchi",
         "sushi",
         "sashimi"
       ],
-      "CorrectAnswer": "kimchi"
+      "correctAnswer": "kimchi"
     },
     {
-      "QID": "p6u6-c15",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c15",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "arm wrestling",
         "Greek wrestling",
         "sumo-wrestling",
         "WWE wrestling"
       ],
-      "CorrectAnswer": "sumo-wrestling"
+      "correctAnswer": "sumo-wrestling"
     },
     {
-      "QID": "p6u6-c16",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c16",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "cruises",
         "cuisines",
         "karmas",
         "corndogs"
       ],
-      "CorrectAnswer": "cuisines"
+      "correctAnswer": "cuisines"
     },
     {
-      "QID": "p6u6-c17",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c17",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "languages",
         "languishes",
         "lampreys",
         "lunges"
       ],
-      "CorrectAnswer": "languages"
+      "correctAnswer": "languages"
     },
     {
-      "QID": "p6u6-c18",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c18",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "releggings",
         "relics",
         "religieuse",
         "religions"
       ],
-      "CorrectAnswer": "religions"
+      "correctAnswer": "religions"
     },
     {
-      "QID": "p6u6-c19",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c19",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "customary",
         "costumes",
         "customs",
         "costs"
       ],
-      "CorrectAnswer": "costumes"
+      "correctAnswer": "costumes"
     },
     {
-      "QID": "p6u6-c20",
-      "QuestionType": "Picture",
-      "Question": "",
-      "Answers": [
+      "qid": "p6u6-c20",
+      "questionType": "picture",
+      "question": "",
+      "answers": [
         "transportations",
         "traditions",
         "transitions",
         "trepidations"
       ],
-      "CorrectAnswer": "traditions"
+      "correctAnswer": "traditions"
     }
   ]
 

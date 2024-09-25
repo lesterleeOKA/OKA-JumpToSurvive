@@ -76,6 +76,10 @@ public class LoaderConfig : GameSetting
                                 this.apiManager.jwt = value;
                                 LogController.Instance?.debug("Current jwt: " + this.apiManager.jwt);
                                 break;
+                            case "id":
+                                this.apiManager.appId = value;
+                                LogController.Instance?.debug("Current app/book id: " + this.apiManager.appId);
+                                break;
                             case "unit":
                                 this.unitKey = value;
                                 LogController.Instance?.debug("Current Game Unit: " + this.unitKey);
