@@ -119,6 +119,7 @@ public class APIManager
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                        this.gameSettingJson = jsonNode["setting"].ToString();
                         this.payloads = jsonNode["payloads"].ToString();
 
                         if (this.debugText != null)
@@ -126,6 +127,7 @@ public class APIManager
                             this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
                             this.debugText.text += "Account: " + this.accountJson + "\n\n ";
                             this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
+                            this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
                             this.debugText.text += "PayLoad: " + this.payloads;
                         }
 

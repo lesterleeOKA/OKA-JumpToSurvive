@@ -751,8 +751,8 @@ MonoBehaviour:
     scoringAnimator: {fileID: 567339331}
   answer: 
   userNameText: {fileID: 1471471884}
-  displayPlayerName: {fileID: 1244565807}
   playerButtonText: {fileID: 1506293620}
+  userNameBox: {fileID: 3952843122716216589}
   jumpBtn: {fileID: 1174192014}
   defaultIcon: {fileID: 21300000, guid: c14438dae59951145aa62292d6946d59, type: 3}
   characterSprites:
@@ -1176,17 +1176,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &388373791 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3970828814964370231, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
-  m_PrefabInstance: {fileID: 3952843122716216587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &409958528
@@ -2633,17 +2622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &655791181 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3960229248118228341, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
-  m_PrefabInstance: {fileID: 3952843122716216587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &673296858 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2969218282345968101, guid: eed31a4434fdfe7488edddfef555fa7d, type: 3}
@@ -2998,6 +2976,7 @@ MonoBehaviour:
       - {fileID: 1031000420}
       - {fileID: 1334724529}
       - {fileID: 375354550}
+  playerNumber: 0
   playersList:
   - {fileID: 1542543163}
   - {fileID: 200380411}
@@ -3046,11 +3025,14 @@ MonoBehaviour:
     questiontype: 0
     qa:
       id: 0
-      QID: 
-      QuestionType: 
-      Question: 
-      Answers: []
-      CorrectAnswer: 
+      qid: 
+      questionType: 
+      question: 
+      answers: []
+      correctAnswer: 
+      star: 0
+      score: 0
+      correctAnswerIndex: 0
       Media: []
       texture: {fileID: 0}
       audioClip: {fileID: 0}
@@ -3726,7 +3708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &936298246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10862,8 +10844,8 @@ MonoBehaviour:
     scoringAnimator: {fileID: 931282823}
   answer: 
   userNameText: {fileID: 1059713989}
-  displayPlayerName: {fileID: 1966586784}
   playerButtonText: {fileID: 945216526}
+  userNameBox: {fileID: 3952843122716216588}
   jumpBtn: {fileID: 1358773}
   defaultIcon: {fileID: 21300000, guid: 7a9ee346e4e47434fa5ded243b2b6179, type: 3}
   characterSprites:
@@ -10993,17 +10975,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1244565807 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7545726141492546908, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
-  m_PrefabInstance: {fileID: 3952843122716216587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1268011772 stripped
@@ -12291,8 +12262,8 @@ MonoBehaviour:
     scoringAnimator: {fileID: 1820863998}
   answer: 
   userNameText: {fileID: 1747116900}
-  displayPlayerName: {fileID: 655791181}
   playerButtonText: {fileID: 979101402}
+  userNameBox: {fileID: 3952843122716216590}
   jumpBtn: {fileID: 953125100}
   defaultIcon: {fileID: 21300000, guid: ea838f2ab27b86c4b90c69f05fe05e86, type: 3}
   characterSprites:
@@ -13067,8 +13038,8 @@ MonoBehaviour:
     scoringAnimator: {fileID: 1330459089}
   answer: 
   userNameText: {fileID: 913754740}
-  displayPlayerName: {fileID: 388373791}
   playerButtonText: {fileID: 1900177383}
+  userNameBox: {fileID: 3952843122716216591}
   jumpBtn: {fileID: 1359418973}
   defaultIcon: {fileID: 21300000, guid: 221d5ac81d769c74487e42aa5e9cf1a1, type: 3}
   characterSprites:
@@ -14993,17 +14964,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1966586784 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2558034671515140646, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
-  m_PrefabInstance: {fileID: 3952843122716216587}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1977457006 stripped
@@ -20906,7 +20866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!198 &2414012529422272910
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -30944,6 +30904,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3960229248118228341, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960229248118228341, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+      propertyPath: m_fontSize
+      value: 42.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4884978150788173266, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -30997,6 +30965,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+--- !u!225 &3952843122716216588 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8082349105649770035, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+  m_PrefabInstance: {fileID: 3952843122716216587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &3952843122716216589 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3703445365657682834, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+  m_PrefabInstance: {fileID: 3952843122716216587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &3952843122716216590 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8805902154075113944, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+  m_PrefabInstance: {fileID: 3952843122716216587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &3952843122716216591 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 1815182761116076285, guid: 6354f1e96e7793c4d8356dae30045535, type: 3}
+  m_PrefabInstance: {fileID: 3952843122716216587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4560166604430102311
 GameObject:
   m_ObjectHideFlags: 0

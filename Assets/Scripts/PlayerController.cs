@@ -8,7 +8,8 @@ public class PlayerController : UserData
 {
     public Scoring scoring;
     public string answer = string.Empty;
-    public TextMeshProUGUI userNameText, displayPlayerName, playerButtonText;
+    public TextMeshProUGUI userNameText, playerButtonText;
+    public CanvasGroup userNameBox;
     public Button jumpBtn;
     public Sprite defaultIcon;
     public Sprite[] characterSprites;
@@ -67,7 +68,18 @@ public class PlayerController : UserData
             var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
 
             var _playerName = LoaderConfig.Instance.apiManager.loginName;
-            if(this.displayPlayerName != null) this.displayPlayerName.text = _playerName;
+            if(!string.IsNullOrEmpty(_playerName)) { 
+                SetUI.Set(this.userNameBox, true, 0f);
+                if(this.userNameBox != null)
+                {
+                    var nameText = this.userNameBox.GetComponentInChildren<TextMeshProUGUI>();
+                    nameText.text = _playerName;
+                }
+            }
+            else
+            {
+                SetUI.Set(this.userNameBox, false, 0f);
+            }
 
             for (int i = 0; i < this.PlayerIcons.Length; i++)
             {

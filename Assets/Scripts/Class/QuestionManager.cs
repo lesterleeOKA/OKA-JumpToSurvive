@@ -32,51 +32,32 @@ public class QuestionManager : MonoBehaviour
 
     public void LoadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
-        var questionJson = LoaderConfig.Instance.apiManager.questionJson;
-        var jwt = LoaderConfig.Instance.apiManager.jwt;
-        if (!string.IsNullOrEmpty(questionJson) && !string.IsNullOrEmpty(jwt))
+        try
         {
-            QuestionDataWrapper wrapper = JsonUtility.FromJson<QuestionDataWrapper>("{\"QuestionDataArray\":" + questionJson + "}");
-            QuestionData _questionData = new QuestionData
+            var questionJson = LoaderConfig.Instance.apiManager.questionJson;
+            var jwt = LoaderConfig.Instance.apiManager.jwt;
+            var appId = LoaderConfig.Instance.apiManager.appId;
+            if (!string.IsNullOrEmpty(questionJson) && !string.IsNullOrEmpty(jwt) && !string.IsNullOrEmpty(appId))
             {
-                questions = new List<QuestionList>(wrapper.QuestionDataArray)
-            };
-            LogController.Instance?.debug("Load Question from API");
-            this.loadQuestionFromAPI(_questionData, onCompleted);
-        }
-        else
-        {
-            LogController.Instance?.debug("Missing jwt for loading question from api, switch to load question from json");
-            StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
-        }
-
-        /*switch (this.loadMethod)
-        {
-            case LoadMethod.www:
-            case LoadMethod.UnityWebRequest:
+                QuestionDataWrapper wrapper = JsonUtility.FromJson<QuestionDataWrapper>("{\"QuestionDataArray\":" + questionJson + "}");
+                QuestionData _questionData = new QuestionData
+                {
+                    questions = new List<QuestionList>(wrapper.QuestionDataArray)
+                };
+                LogController.Instance?.debug("Load Question from API");
+                this.loadQuestionFromAPI(_questionData, onCompleted);
+            }
+            else
+            {
+                LogController.Instance?.debug("Missing jwt for loading question from api, switch to load question from json");
                 StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
-                break;
-            case LoadMethod.API:
-                var questionJson = LoaderConfig.Instance.apiManager.questionJson;
-                var jwt = LoaderConfig.Instance.apiManager.jwt;
-                if (!string.IsNullOrEmpty(questionJson) && !string.IsNullOrEmpty(jwt))
-                {
-                    QuestionDataWrapper wrapper = JsonUtility.FromJson<QuestionDataWrapper>("{\"QuestionDataArray\":" + questionJson + "}");
-                    QuestionData _questionData = new QuestionData
-                    {
-                        questions = new List<QuestionList>(wrapper.QuestionDataArray)
-                    };
-                    LogController.Instance?.debug("Load Question from API");
-                    this.loadQuestionFromAPI(_questionData, onCompleted);
-                }
-                else
-                {
-                    LogController.Instance?.debug("Missing jwt for loading question from api, switch to load question from json");
-                    this.loadMethod = LoadMethod.UnityWebRequest;
-                    StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
-                }
-                break;
-        }*/
+            }
+        }
+        catch (Exception ex) {
+            LogController.Instance?.debugError(ex.Message);
+            LoaderConfig.Instance.apiManager.IsShowLoginErrorBox = true;
+            StartCoroutine(this.loadQuestionFile(unitKey, onCompleted));
+        }    
     }
 
     private void loadQuestionFromAPI(QuestionData _questionData = null, Action onCompleted = null)
