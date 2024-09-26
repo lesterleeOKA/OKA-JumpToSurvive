@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 [Serializable]
 public class APIManager
@@ -22,6 +21,8 @@ public class APIManager
     public string accountJson = string.Empty;
     [Tooltip("Account Icon Image Url")]
     public string photoDataUrl = string.Empty;
+    [Tooltip("Payloads Object for data send out")]
+    public string payloads = string.Empty;
     public LoadImage loadPeopleIcon;
     public Texture  peopleIcon;
     public string loginName = string.Empty;
@@ -32,7 +33,7 @@ public class APIManager
     public TextMeshProUGUI loginErrorMessage;
     private Text debugText = null;
     private string errorMessage = "";
-    private bool isShowLoginErrorBox = false;
+    public bool isShowLoginErrorBox = false;
     private bool showingDebugBox = false;
 
     public void Init()
@@ -51,6 +52,7 @@ public class APIManager
             showingDebugBox = !showingDebugBox;
             SetUI.Set(this.debugLayer.GetComponent<CanvasGroup>(), showingDebugBox, 0f);
         }
+        this.checkLoginErrorBox();
     }
 
     public bool IsShowLoginErrorBox
@@ -63,14 +65,11 @@ public class APIManager
     {
         this.IsShowLoginErrorBox = false;
         SetUI.Set(this.loginErrorBox, false, 0f);
-        if (this.loginErrorMessage != null) this.loginErrorMessage.text = "";
     }
 
     public void checkLoginErrorBox()
     {
-        var sceneID = SceneManager.GetActiveScene().buildIndex;
-        if (sceneID == 1) SetUI.Set(this.loginErrorBox, this.IsShowLoginErrorBox, 0f);
-       // if (this.loginErrorMessage != null) this.loginErrorMessage.text = this.errorMessage;
+        SetUI.Set(this.loginErrorBox, this.IsShowLoginErrorBox, 0f);
     }
 
     public IEnumerator PostGameSetting(Action getParseURLParams=null, Action onCompleted = null)
@@ -120,12 +119,14 @@ public class APIManager
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                        this.payloads = jsonNode["payloads"].ToString();
 
                         if (this.debugText != null)
                         {
                             this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
                             this.debugText.text += "Account: " + this.accountJson + "\n\n ";
-                            this.debugText.text += "Photo: " + this.photoDataUrl;
+                            this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
+                            this.debugText.text += "PayLoad: " + this.payloads;
                         }
 
                         if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")

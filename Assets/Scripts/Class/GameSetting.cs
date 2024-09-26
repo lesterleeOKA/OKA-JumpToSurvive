@@ -40,7 +40,6 @@ public class GameSetting : MonoBehaviour
 
     public void InitialGameBackground()
     {
-        this.apiManager.checkLoginErrorBox();
         this.gameSetup.setBackground();
         this.gameSetup.setInstruction(LoaderConfig.Instance?.apiManager.instructionContent);
     }
