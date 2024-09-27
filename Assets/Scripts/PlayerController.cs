@@ -131,6 +131,7 @@ public class PlayerController : UserData
         if(this.UserId == 0)
         {
             int correctId = this.answer == QuestionController.Instance.currentQuestion.correctAnswer ? 2 : 0;
+            int score = this.answer == QuestionController.Instance.currentQuestion.correctAnswer ? 10 : 0;
             LoaderConfig.Instance.SubmitAnswer(
                                    currentTime,
                                    this.Score,
@@ -142,7 +143,7 @@ public class PlayerController : UserData
                                    QuestionController.Instance.currentQuestion.correctAnswerId,
                                    this.answer,
                                    QuestionController.Instance.currentQuestion.correctAnswer,
-                                   10,
+                                   score,
                                    100
                                    );
         }
