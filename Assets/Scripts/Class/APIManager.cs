@@ -19,6 +19,8 @@ public class APIManager
     public string questionJson = string.Empty;
     [Tooltip("Account Json")]
     public string accountJson = string.Empty;
+    [Tooltip("Role Account uid")]
+    public int accountUid = -1;
     [Tooltip("Account Icon Image Url")]
     public string photoDataUrl = string.Empty;
     [Tooltip("Payloads Object for data send out")]
@@ -35,6 +37,7 @@ public class APIManager
     private string errorMessage = "";
     public bool isShowLoginErrorBox = false;
     private bool showingDebugBox = false;
+    public Answer answer;
 
     public void Init()
     {
@@ -118,6 +121,11 @@ public class APIManager
                         var jsonNode = JSONNode.Parse(jsonData);
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
+
+                        string accountUidString = jsonNode["account"]["uid"];
+                        int accountUid = int.Parse(accountUidString);
+                        this.accountUid = accountUid;
+
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
                         this.gameSettingJson = jsonNode["setting"].ToString();
                         this.payloads = jsonNode["payloads"].ToString();
@@ -178,4 +186,70 @@ public class APIManager
             onCompleted?.Invoke();
         }
     }
+
+    public IEnumerator SubmitAnswer(Action onCompleted = null)
+    {
+        if(string.IsNullOrEmpty(this.payloads) || this.accountUid == -1 || string.IsNullOrEmpty(this.jwt))
+        {
+            LogController.Instance?.debug("Invalid parameters: payloads, accountUid, or jwt is null or empty.");
+            yield break;
+        }
+          
+        string api = APIConstant.SubmitAnswerAPI(this.payloads, this.accountUid, this.jwt, LoaderConfig.Instance.apiManager.answer);
+        LogController.Instance?.debug("called submit marks api: " + api);
+        WWWForm form = new WWWForm();
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post(api, form))
+            {
+                // Set headers
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.SetRequestHeader("typ", "jwt");
+                www.SetRequestHeader("alg", "HS256");
+                www.certificateHandler = new WebRequestSkipCert();
+                // Send the request and wait for a response
+                yield return www.SendWebRequest();
+
+                // Check for errors
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
+                    this.IsShowLoginErrorBox = true;
+                    retryCount++;
+                    LogController.Instance?.debug(this.errorMessage);
+                    yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
+                }
+                else
+                {
+                    requestSuccessful = true;
+                    string responseText = www.downloadHandler.text;
+
+                    // Format the JSON response for better readability
+                    try
+                    {
+                        var parsedJson = JSONNode.Parse(responseText);
+                        string prettyJson = parsedJson.ToString();
+                        LogController.Instance?.debug("Success to submit answers: " + prettyJson);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogController.Instance?.debug("Failed to parse JSON: " + ex.Message);
+                    }
+
+                }
+            }
+        }
+
+        if (!requestSuccessful)
+        {
+            this.errorMessage = "Failed to call upload marks response after " + maxRetries + " attempts.";
+            LogController.Instance?.debug(this.errorMessage);
+            this.IsShowLoginErrorBox = true;
+            onCompleted?.Invoke();
+        }
+    }
+
 }

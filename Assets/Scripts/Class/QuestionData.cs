@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,7 @@ public class CurrentQuestion
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
     public TextMeshProUGUI questionText;
+    public int correctAnswerId;
     public string correctAnswer;
     public string[] answersChoics;
     public CanvasGroup[] questionBgs;
@@ -70,6 +72,8 @@ public class CurrentQuestion
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
+                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
+
                 if (this.questionImage != null && qaImage != null)
                 {
                     this.questionImage.enabled = true;
@@ -96,6 +100,7 @@ public class CurrentQuestion
                 this.questiontype = QuestionType.Audio;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
+                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
                 this.playAudio();
                 break;
             case "text":
@@ -107,6 +112,7 @@ public class CurrentQuestion
                 if (this.questionImage != null) this.questionImage.enabled = false;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
+                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
                 break;
         }
 

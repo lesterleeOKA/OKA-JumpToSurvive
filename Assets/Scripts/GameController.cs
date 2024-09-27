@@ -82,11 +82,13 @@ public class GameController : GameBaseController
     {
         bool showCorrect = false;
         float delay = 1f;
+        int currentTime = Mathf.FloorToInt(((this.gameTimer.gameDuration - this.gameTimer.currentTime) / this.gameTimer.gameDuration) * 100);
+
         for (int i = 0; i < this.playersList.Count; i++)
         {
             var playerController = this.playersList[i].GetComponent<PlayerController>();
             if (playerController != null) {
-                playerController.checkAnswer();
+                playerController.checkAnswer(currentTime);
 
                 if(playerController.scoring.correct && !showCorrect) {
                     this.setGetScorePopup(true);
@@ -111,6 +113,8 @@ public class GameController : GameBaseController
             }
 
         }
+
+
         QuestionController.Instance.nextQuestion();
     }
 

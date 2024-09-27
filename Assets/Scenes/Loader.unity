@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -398,6 +398,7 @@ MonoBehaviour:
     gameSettingJson: 
     questionJson: 
     accountJson: 
+    accountUid: -1
     photoDataUrl: 
     payloads: 
     loadPeopleIcon:
@@ -413,6 +414,21 @@ MonoBehaviour:
     loginErrorBox: {fileID: 2087651252}
     loginErrorMessage: {fileID: 2087651251}
     isShowLoginErrorBox: 0
+    answer:
+      state:
+        duration: 0
+        score: 0
+        percent: 0
+        progress: 0
+      currentQA:
+        correctId: 0
+        duration: 0
+        qid: 
+        answerId: 0
+        answerText: 
+        correctAnswerText: 
+        score: 0
+        percent: 0
   unitKey: 
   testURL: 
 --- !u!114 &1694491774

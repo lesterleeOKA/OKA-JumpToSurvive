@@ -27,6 +27,8 @@ public class LoaderConfig : GameSetting
     protected override void Update()
     {
         base.Update();
+
+
     }
 
     public void LoadGameData()
@@ -98,6 +100,34 @@ public class LoaderConfig : GameSetting
                 }
             }
         }
+    }
+
+    public void SubmitAnswer(int duration, int playerScore, int statePercent, int stateProgress,
+                             int correctId, float currentQADuration, string qid, int answerId, string answerText, 
+                             string correctAnswerText, float currentQAscore, float currentQAPercent)
+    {
+        /*        string jsonPayload = $"[{{\"payloads\":{playloads}," +
+        $"\"role\":{{\"uid\":{uid}}}," +
+        $"\"state\":{{\"duration\":{stateDuration},\"score\":{stateScore},\"percent\":{statePercent},\"progress\":{stateProgress}}}," +
+        $"\"currentQuestion\":{{\"correct\":{correct},\"duration\":{currentQADuration},\"qid\":\"{currentqid}\",\"answer\":{answerId},\"answerText\":\"{answerText}\",\"correctAnswerText\":\"{correctAnswerText}\",\"score\":{currentQAscore},\"percent\":{currentQAPercent}}}}}]";*/
+
+       var answer = this.apiManager.answer;
+        answer.state.duration = duration;
+        answer.state.score = playerScore;
+        answer.state.percent = statePercent;
+        answer.state.progress = stateProgress;
+
+        answer.currentQA.correctId = correctId;
+        answer.currentQA.duration = currentQADuration;
+        answer.currentQA.qid = qid;
+        answer.currentQA.answerId = answerId;
+        answer.currentQA.answerText = answerText;
+        answer.currentQA.correctAnswerText = correctAnswerText;
+        answer.currentQA.score = currentQAscore;
+        answer.currentQA.percent = currentQAPercent;
+
+
+        StartCoroutine(this.apiManager.SubmitAnswer());
     }
 
     public void closeLoginErrorBox()

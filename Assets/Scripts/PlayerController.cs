@@ -121,12 +121,33 @@ public class PlayerController : UserData
         }
     }
 
-    public void checkAnswer()
+    public void checkAnswer(int currentTime)
     {
         int currentScore = this.Score;
         int resultScore = this.scoring.score(this.answer, currentScore, QuestionController.Instance.currentQuestion.correctAnswer);
         this.Score = resultScore;
         LogController.Instance?.debug("Add marks" + this.Score);
+
+        if(this.UserId == 0)
+        {
+            int correctId = this.answer == QuestionController.Instance.currentQuestion.correctAnswer ? 2 : 0;
+            LoaderConfig.Instance.SubmitAnswer(
+                                   currentTime,
+                                   this.Score,
+                                   0,
+                                   0,
+                                   correctId,
+                                   currentTime,
+                                   QuestionController.Instance.currentQuestion.qa.qid,
+                                   QuestionController.Instance.currentQuestion.correctAnswerId,
+                                   this.answer,
+                                   QuestionController.Instance.currentQuestion.correctAnswer,
+                                   10,
+                                   100
+                                   );
+        }
+
+
         this.Init();
     }
 

@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -122,5 +121,32 @@ public static class APIConstant
     {
         string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
         return $"https://ro2.azurewebsites.net/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" +_jwt;
+    }
+
+    public static string SubmitAnswerAPI(string playloads, int uid, string _jwt, Answer answer = null)
+    {
+        if(answer == null) return null;
+        
+        int stateDuration = answer.state.duration;
+        float stateScore = answer.state.score;
+        float statePercent = answer.state.percent;
+        float stateProgress = answer.state.progress;
+
+        int correct = answer.currentQA.correctId;
+        float currentQADuration = answer.currentQA.duration;
+        string currentqid = answer.currentQA.qid;
+        int answerId = answer.currentQA.answerId;
+        string answerText = answer.currentQA.answerText;
+        string correctAnswerText = answer.currentQA.correctAnswerText;
+        float currentQAscore = answer.currentQA.score;
+        float currentQAPercent = answer.currentQA.percent;
+
+        string jsonPayload = $"[{{\"payloads\":{playloads}," +
+        $"\"role\":{{\"uid\":{uid}}}," +
+        $"\"state\":{{\"duration\":{stateDuration},\"score\":{stateScore},\"percent\":{statePercent},\"progress\":{stateProgress}}}," +
+        $"\"currentQuestion\":{{\"correct\":{correct},\"duration\":{currentQADuration},\"qid\":\"{currentqid}\",\"answer\":{answerId},\"answerText\":\"{answerText}\",\"correctAnswerText\":\"{correctAnswerText}\",\"score\":{currentQAscore},\"percent\":{currentQAPercent}}}}}]";
+
+        string submitAPI = $"https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.submit_answer&json={jsonPayload}&jwt=" + _jwt;
+        return submitAPI;
     }
 }
