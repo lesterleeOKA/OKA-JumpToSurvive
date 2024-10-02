@@ -115,72 +115,82 @@ public class APIManager
 
                     if (jsonStartIndex != -1)
                     {
-                        string jsonData = responseText.Substring(jsonStartIndex);
-                        LogController.Instance?.debug("Response: " + jsonData);
-
-                        var jsonNode = JSONNode.Parse(jsonData);
-                        this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
-                        this.accountJson = jsonNode["account"].ToString(); // Account json data;
-
-                        string accountUidString = jsonNode["account"]["uid"];
-                        int accountUid = int.Parse(accountUidString);
-                        this.accountUid = accountUid;
-
-                        this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
-                        this.gameSettingJson = jsonNode["setting"].ToString();
-                        this.payloads = jsonNode["payloads"].ToString();
-
-                        if (this.debugText != null)
+                        if(!string.IsNullOrEmpty(this.appId) && !string.IsNullOrEmpty(this.jwt))
                         {
-                            this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
-                            this.debugText.text += "Account: " + this.accountJson + "\n\n ";
-                            this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
-                            this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
-                            this.debugText.text += "PayLoad: " + this.payloads;
-                        }
+                            string jsonData = responseText.Substring(jsonStartIndex);
+                            LogController.Instance?.debug("Response: " + jsonData);
 
-                        if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
+                            var jsonNode = JSONNode.Parse(jsonData);
+                            this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
+                            this.accountJson = jsonNode["account"].ToString(); // Account json data;
+
+                            string accountUidString = jsonNode["account"]["uid"];
+                            int accountUid = int.Parse(accountUidString);
+                            this.accountUid = accountUid;
+
+                            this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                            this.gameSettingJson = jsonNode["setting"].ToString();
+                            this.payloads = jsonNode["payloads"].ToString();
+
+                            if (this.debugText != null)
+                            {
+                                this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
+                                this.debugText.text += "Account: " + this.accountJson + "\n\n ";
+                                this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
+                                this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
+                                this.debugText.text += "PayLoad: " + this.payloads;
+                            }
+
+                            if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
+                            {
+                                string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
+
+                                string imageUrl = modifiedPhotoDataUrl;
+                                if (!modifiedPhotoDataUrl.StartsWith("https://"))
+                                {
+                                    imageUrl = "https:" + modifiedPhotoDataUrl;
+                                }
+                                LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
+                                yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
+                                {
+                                    LogController.Instance?.debug($"Downloaded People Icon!!");
+                                    this.peopleIcon = _peopleIcon;
+                                });
+                            }
+
+                            if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
+                            {
+                                var name = jsonNode["account"]["display_name"].ToString();
+                                if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
+                                {
+                                    this.loginName = name.Replace("\"", "");
+                                    LogController.Instance?.debug("Display name: " + this.loginName);
+                                }
+                                else
+                                {
+                                    LogController.Instance?.debug("Display name is empty. use first name and last name");
+                                    var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
+                                    var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
+                                    this.loginName = last_name + " " + first_name;
+                                }
+                            }
+
+                            //E.g
+                            //Debug.Log(jsonNode["account"]["display_name"].ToString());
+                            LogController.Instance?.debug(this.questionJson);
+                            onCompleted?.Invoke();
+                        }
+                        else
                         {
-                            string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
-
-                            string imageUrl = modifiedPhotoDataUrl;
-                            if (!modifiedPhotoDataUrl.StartsWith("https://"))
-                            {
-                                imageUrl = "https:" + modifiedPhotoDataUrl;
-                            }
-                            LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
-                            yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
-                            {
-                                LogController.Instance?.debug($"Downloaded People Icon!!");
-                                this.peopleIcon = _peopleIcon;
-                            });
+                            this.errorMessage = "missing jwt or appid.";
+                            LogController.Instance?.debug(this.errorMessage);
+                            onCompleted?.Invoke();
                         }
-
-                        if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
-                        {
-                            var name = jsonNode["account"]["display_name"].ToString();
-                            if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
-                            {
-                                this.loginName = name.Replace("\"", "");
-                                LogController.Instance?.debug("Display name: " + this.loginName);
-                            }
-                            else
-                            {
-                                LogController.Instance?.debug("Display name is empty. use first name and last name");
-                                var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
-                                var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
-                                this.loginName = last_name +" " + first_name;
-                            }
-                        }
-
-                        //E.g
-                        //Debug.Log(jsonNode["account"]["display_name"].ToString());
-                        LogController.Instance?.debug(this.questionJson);
-                        onCompleted?.Invoke();
+                        
                     }
                     else
                     {
-                        this.errorMessage = "JSON data not found in the response.";
+                        this.errorMessage = "wrong json start index.";
                         LogController.Instance?.debug(this.errorMessage);
                         this.IsShowLoginErrorBox = true;
                         onCompleted?.Invoke();
