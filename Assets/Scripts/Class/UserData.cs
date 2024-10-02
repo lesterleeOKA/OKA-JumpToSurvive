@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +14,12 @@ public class UserData: MonoBehaviour
     private Color32 playerColor = Color.white;
     [SerializeField]
     private Image[] playerIcons;
+    [SerializeField]
+    private int correctedAnswerNumber;
+    [SerializeField]
+    private float correctAnswerPercentage;
+    //[SerializeField]
+    //private float correctAnswerAccuracy;
 
     public string UserName
     {
@@ -46,4 +51,23 @@ public class UserData: MonoBehaviour
         set { this.playerIcons = value; }
     }
 
+    public int CorrectedAnswerNumber
+    {
+        get{ return this.correctedAnswerNumber;}
+        set { this.correctedAnswerNumber = value; }
+    }
+
+    public float AnsweredPercentage(int totalQuestions=0)
+    {
+        if (totalQuestions == 0) return 0;
+        this.correctAnswerPercentage = ((float)this.CorrectedAnswerNumber / totalQuestions) * 100f;
+        return this.correctAnswerPercentage;
+    }
+
+    /*public float AnsweredAccuracy(int answeredQuestions=0)
+    {
+        if (answeredQuestions == 0) return 0;
+        this.correctAnswerAccuracy = ((float)this.CorrectedAnswerNumber / answeredQuestions) * 100f;
+        return this.correctAnswerAccuracy;
+    }*/
 }

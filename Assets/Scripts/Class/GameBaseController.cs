@@ -50,6 +50,15 @@ public class GameBaseController : MonoBehaviour
 
     public void BackToWebpage()
     {
-        ExternalCaller.BackToHomeUrlPage();
+        bool containsJwt = LoaderConfig.Instance.CurrentURL.Contains("?jwt=");
+        if(containsJwt) { 
+            StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(
+                ()=> ExternalCaller.BackToHomeUrlPage(true)
+            ));
+        }
+        else
+        {
+            ExternalCaller.BackToHomeUrlPage(false);
+        }
     }
 }

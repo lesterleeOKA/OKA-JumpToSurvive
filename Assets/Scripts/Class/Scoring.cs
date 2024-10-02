@@ -22,7 +22,7 @@ public class Scoring
     }
 
 
-    public int score(string _answer, int _playerScore, string _correctAnswer)
+    public int score(string _answer, int _playerScore, string _correctAnswer, int eachMarkOfQA=10)
     {
         int _score = _playerScore;
         if (this.scoringTxt == null || this.resultScoreTxt == null || this.scoringAnimator == null || answeredEffectTxt == null) {
@@ -39,7 +39,7 @@ public class Scoring
                 if(_answer == _correctAnswer)
                 {
                     this.correct = true;
-                    int mark = 10 * this.bonnus;
+                    int mark = eachMarkOfQA * this.bonnus;
                     _playerScore += mark;
                     answeredEffectTxt.text = "+" + mark;
                     this.scoringTxt.text = "+" + mark;

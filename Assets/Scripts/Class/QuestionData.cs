@@ -45,6 +45,7 @@ public enum QuestionType
 public class CurrentQuestion
 {
     public int numberQuestion = 0;
+    public int answeredQuestion = 0;
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
     public TextMeshProUGUI questionText;
@@ -121,10 +122,16 @@ public class CurrentQuestion
             LogController.Instance.debug($"Get new {nameof(this.questiontype)} question");
         }
 
-        if (this.numberQuestion < totalQuestion - 1)
+        if (this.numberQuestion < totalQuestion - 1) 
             this.numberQuestion += 1;
         else
             this.numberQuestion = 0;
+
+        if (this.answeredQuestion < totalQuestion)
+        {
+            this.answeredQuestion += 1;
+        }
+
     }
 
     public void playAudio()

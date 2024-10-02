@@ -23,31 +23,38 @@ public static class ExternalCaller
 #endif
     }
 
-    public static void BackToHomeUrlPage()
+    public static void BackToHomeUrlPage(bool containJwt = false)
     {
 #if !UNITY_EDITOR
-        string hostname = GetCurrentDomainName;
-
-        if (hostname.Contains("dev.openknowledge.hk"))
+        if (containJwt)
         {
-            string baseUrl = GetCurrentDomainName;
-            string newUrl = $"https://{baseUrl}/RainbowOne/webapp/OKAGames/SelectGames/";
-            if (LogController.Instance != null) LogController.Instance.debug("full url:" + newUrl);
-            Application.ExternalEval($"location.href = '{newUrl}', '_self'");
-        }
-        else if (hostname.Contains("www.rainbowone.app"))
-        {
-            string Production = "https://www.starwishparty.com/";
-            Application.ExternalEval($"location.href = '{Production}', '_self'");
-        }
-        else if (hostname.Contains("localhost"))
-        {
-            LoaderConfig.Instance?.changeScene(1);
+            //Web site for login api
+            Application.ExternalEval("window.close();");
         }
         else
         {
-            Application.ExternalEval($"location.hash = 'exit'");
-        }
+            string hostname = GetCurrentDomainName;
+            if (hostname.Contains("dev.openknowledge.hk"))
+            {
+                string baseUrl = GetCurrentDomainName;
+                string newUrl = $"https://{baseUrl}/RainbowOne/webapp/OKAGames/SelectGames/";
+                if (LogController.Instance != null) LogController.Instance.debug("full url:" + newUrl);
+                Application.ExternalEval($"location.href = '{newUrl}', '_self'");
+            }
+            else if (hostname.Contains("www.rainbowone.app"))
+            {
+                string Production = "https://www.starwishparty.com/";
+                Application.ExternalEval($"location.href = '{Production}', '_self'");
+            }
+            else if (hostname.Contains("localhost"))
+            {
+                LoaderConfig.Instance?.changeScene(1);
+            }
+            else
+            {
+                Application.ExternalEval($"location.hash = 'exit'");
+            }
+        }   
 #else
         LoaderConfig.Instance?.changeScene(1);
 #endif

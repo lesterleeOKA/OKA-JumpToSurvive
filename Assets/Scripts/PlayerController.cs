@@ -63,32 +63,29 @@ public class PlayerController : UserData
 
     public void updatePlayerIcon()
     {
-        if (LoaderConfig.Instance.apiManager.peopleIcon != null)
+        var icon = LoaderConfig.Instance.apiManager.peopleIcon != null ? SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D) : null;
+
+        var _playerName = LoaderConfig.Instance.apiManager.loginName;
+        if (!string.IsNullOrEmpty(_playerName))
         {
-            var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
-
-            var _playerName = LoaderConfig.Instance.apiManager.loginName;
-            if(!string.IsNullOrEmpty(_playerName)) { 
-                SetUI.Set(this.userNameBox, true, 0f);
-                if(this.userNameBox != null)
-                {
-                    var nameText = this.userNameBox.GetComponentInChildren<TextMeshProUGUI>();
-                    nameText.text = _playerName;
-                }
-            }
-            else
+            SetUI.Set(this.userNameBox, true, 0f);
+            if (this.userNameBox != null)
             {
-                SetUI.Set(this.userNameBox, false, 0f);
+                var nameText = this.userNameBox.GetComponentInChildren<TextMeshProUGUI>();
+                nameText.text = _playerName;
             }
+        }
+        else
+        {
+            SetUI.Set(this.userNameBox, false, 0f);
+        }
 
-            for (int i = 0; i < this.PlayerIcons.Length; i++)
+        for (int i = 0; i < this.PlayerIcons.Length; i++)
+        {
+            if (this.PlayerIcons[i] != null && icon != null)
             {
-                if (this.PlayerIcons[i] != null)
-                {
-                    this.PlayerIcons[i].sprite = icon;
-                }
+                this.PlayerIcons[i].sprite = icon;
             }
-
         }
     }
 
@@ -123,32 +120,61 @@ public class PlayerController : UserData
 
     public void checkAnswer(int currentTime)
     {
+        var currentQuestion = QuestionController.Instance.currentQuestion;
+        int eachQAScore = currentQuestion.qa.score == 0 ? 10 : currentQuestion.qa.score;
         int currentScore = this.Score;
-        int resultScore = this.scoring.score(this.answer, currentScore, QuestionController.Instance.currentQuestion.correctAnswer);
+        int resultScore = this.scoring.score(this.answer, currentScore, 
+                                            QuestionController.Instance.currentQuestion.correctAnswer,
+                                            eachQAScore);
         this.Score = resultScore;
+        float currentQAPercent = 0f;
         LogController.Instance?.debug("Add marks" + this.Score);
 
-        if(this.UserId == 0)
+        if(this.UserId == 0) // For first player
         {
-            int correctId = this.answer == QuestionController.Instance.currentQuestion.correctAnswer ? 2 : 0;
-            int score = this.answer == QuestionController.Instance.currentQuestion.correctAnswer ? 10 : 0;
-            LoaderConfig.Instance.SubmitAnswer(
-                                   currentTime,
-                                   this.Score,
-                                   0,
-                                   0,
-                                   correctId,
-                                   currentTime,
-                                   QuestionController.Instance.currentQuestion.qa.qid,
-                                   QuestionController.Instance.currentQuestion.correctAnswerId,
-                                   this.answer,
-                                   QuestionController.Instance.currentQuestion.correctAnswer,
-                                   score,
-                                   100
-                                   );
+            int correctId = 0;
+            float score = 0f;
+            float answeredPercentage = 0f;
+            int progress = (int)((float)currentQuestion.answeredQuestion / QuestionManager.Instance.totalItems * 100);
+
+            if (this.answer == currentQuestion.correctAnswer)
+            {
+                if(this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems)
+                    this.CorrectedAnswerNumber += 1;
+
+                correctId = 2;
+                score = eachQAScore; // load from question settings score of each question
+                currentQAPercent = 100f;
+            }
+            else{
+                if (this.CorrectedAnswerNumber > 0)
+                {
+                    this.CorrectedAnswerNumber -= 1;
+                }
+            }
+
+            if(this.CorrectedAnswerNumber < QuestionManager.Instance.totalItems) { 
+                answeredPercentage = this.AnsweredPercentage(QuestionManager.Instance.totalItems); 
+            }
+            else{
+                answeredPercentage = 100f;
+            }
+
+            LoaderConfig.Instance?.SubmitAnswer(
+                       currentTime,
+                       this.Score,
+                       answeredPercentage,
+                       progress,
+                       correctId,
+                       currentTime,
+                       currentQuestion.qa.qid,
+                       currentQuestion.correctAnswerId,
+                       this.answer,
+                       currentQuestion.correctAnswer,
+                       score,
+                       currentQAPercent
+                       );
         }
-
-
         this.Init();
     }
 

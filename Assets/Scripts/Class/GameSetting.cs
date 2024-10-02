@@ -149,4 +149,10 @@ public static class APIConstant
         string submitAPI = $"https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.submit_answer&json={jsonPayload}&jwt=" + _jwt;
         return submitAPI;
     }
+
+    public static string EndGameAPI()
+    {
+        string endAPI = "https://ro2.azurewebsites.net/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.quit_game";
+        return endAPI;
+    }
 }

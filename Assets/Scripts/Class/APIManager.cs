@@ -159,7 +159,18 @@ public class APIManager
                         if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
                         {
                             var name = jsonNode["account"]["display_name"].ToString();
-                            this.loginName = name.Replace("\"", "");
+                            if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
+                            {
+                                this.loginName = name.Replace("\"", "");
+                                LogController.Instance?.debug("Display name: " + this.loginName);
+                            }
+                            else
+                            {
+                                LogController.Instance?.debug("Display name is empty. use first name and last name");
+                                var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
+                                var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
+                                this.loginName = last_name +" " + first_name;
+                            }
                         }
 
                         //E.g
@@ -233,6 +244,7 @@ public class APIManager
                         var parsedJson = JSONNode.Parse(responseText);
                         string prettyJson = parsedJson.ToString();
                         LogController.Instance?.debug("Success to submit answers: " + prettyJson);
+                        onCompleted?.Invoke();
                     }
                     catch (Exception ex)
                     {
@@ -252,4 +264,69 @@ public class APIManager
         }
     }
 
+
+    public IEnumerator ExitGameRecord(Action onCompleted = null)
+    {
+        if (string.IsNullOrEmpty(this.payloads) || this.accountUid == -1 || string.IsNullOrEmpty(this.jwt))
+        {
+            LogController.Instance?.debug("Invalid parameters: payloads, accountUid, or jwt is null or empty.");
+            yield break;
+        }
+
+        string jsonData = $"{{ \"payloads\": {this.payloads} }}";
+        WWWForm formData = new WWWForm();
+        formData.AddField("api", "ROGame.quit_game");
+        formData.AddField("jwt", this.jwt); // Add the JWT to the form
+        formData.AddField("json", jsonData);
+
+        string endGameApi = APIConstant.EndGameAPI();
+        int retryCount = 0;
+        bool requestSuccessful = false;
+
+        while (retryCount < this.maxRetries && !requestSuccessful)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post(endGameApi, formData))
+            {
+                // Send the request and wait for a response
+                yield return www.SendWebRequest();
+
+                // Handle the response
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
+                    this.IsShowLoginErrorBox = true;
+                    retryCount++;
+                    LogController.Instance?.debug(this.errorMessage);
+                    yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
+                }
+                else
+                {
+                    requestSuccessful = true;
+                    string responseText = www.downloadHandler.text;
+
+                    // Format the JSON response for better readability
+                    try
+                    {
+                        var parsedJson = JSONNode.Parse(responseText);
+                        string prettyJson = parsedJson.ToString();
+                        LogController.Instance?.debug("Success to post end game api: " + prettyJson);
+                        onCompleted?.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogController.Instance?.debug("Failed to parse JSON: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        if (!requestSuccessful)
+        {
+            this.errorMessage = "Failed to call endgame api after " + maxRetries + " attempts.";
+            LogController.Instance?.debug(this.errorMessage);
+            this.IsShowLoginErrorBox = true;
+            onCompleted?.Invoke();
+        }
+
+    }
 }

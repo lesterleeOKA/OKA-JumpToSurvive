@@ -102,7 +102,7 @@ public class LoaderConfig : GameSetting
         }
     }
 
-    public void SubmitAnswer(int duration, int playerScore, int statePercent, int stateProgress,
+    public void SubmitAnswer(int duration, int playerScore, float statePercent, int stateProgress,
                              int correctId, float currentQADuration, string qid, int answerId, string answerText, 
                              string correctAnswerText, float currentQAscore, float currentQAPercent)
     {
