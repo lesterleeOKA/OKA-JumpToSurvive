@@ -283,7 +283,7 @@ public class APIManager
             yield break;
         }
 
-        string jsonData = $"{{ \"payloads\": {this.payloads} }}";
+        string jsonData = $"[{{ \"payloads\": {this.payloads} }}]";
         WWWForm formData = new WWWForm();
         formData.AddField("api", "ROGame.quit_game");
         formData.AddField("jwt", this.jwt); // Add the JWT to the form

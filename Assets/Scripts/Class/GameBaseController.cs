@@ -61,4 +61,13 @@ public class GameBaseController : MonoBehaviour
             ExternalCaller.BackToHomeUrlPage(false);
         }
     }
+
+    private void OnApplicationQuit()
+    {
+        LogController.Instance?.debug("Quit Game, called exit api.");
+        bool containsJwt = LoaderConfig.Instance.CurrentURL.Contains("?jwt=");
+        if (containsJwt){
+            StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(null));
+        }
+    }
 }

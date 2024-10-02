@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GameSetting : MonoBehaviour
 {
+    public HostName currentHostName = HostName.dev;
     public string currentURL;
     public GameSetup gameSetup;
     public APIManager apiManager;
@@ -66,6 +67,19 @@ public class GameSetting : MonoBehaviour
         set { this.gameSetup.playerNumber = value; }
     }
 
+    public string CurrentHostName
+    {
+        get
+        {
+            return currentHostName switch
+            {
+                HostName.dev => "https://dev.openknowledge.hk",
+                HostName.prod => "https://www.rainbowone.app/",
+                _ => throw new NotImplementedException()
+            };
+        }
+    }
+
     public void Reload()
     {
         ExternalCaller.ReLoadCurrentPage();
@@ -120,7 +134,7 @@ public static class APIConstant
     public static string GameDataAPI(string _bookId = "", string _jwt = "")
     {
         string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
-        return $"https://ro2.azurewebsites.net/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" +_jwt;
+        return $"{LoaderConfig.Instance?.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" +_jwt;
     }
 
     public static string SubmitAnswerAPI(string playloads, int uid, string _jwt, Answer answer = null)
@@ -146,13 +160,19 @@ public static class APIConstant
         $"\"state\":{{\"duration\":{stateDuration},\"score\":{stateScore},\"percent\":{statePercent},\"progress\":{stateProgress}}}," +
         $"\"currentQuestion\":{{\"correct\":{correct},\"duration\":{currentQADuration},\"qid\":\"{currentqid}\",\"answer\":{answerId},\"answerText\":\"{answerText}\",\"correctAnswerText\":\"{correctAnswerText}\",\"score\":{currentQAscore},\"percent\":{currentQAPercent}}}}}]";
 
-        string submitAPI = $"https://dev.openknowledge.hk/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.submit_answer&json={jsonPayload}&jwt=" + _jwt;
+        string submitAPI = $"{LoaderConfig.Instance?.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.submit_answer&json={jsonPayload}&jwt=" + _jwt;
         return submitAPI;
     }
 
     public static string EndGameAPI()
     {
-        string endAPI = "https://ro2.azurewebsites.net/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.quit_game";
+        string endAPI = $"{LoaderConfig.Instance?.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.quit_game";
         return endAPI;
     }
+}
+
+public enum HostName
+{
+    dev,
+    prod
 }
