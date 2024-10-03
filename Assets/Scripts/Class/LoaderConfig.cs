@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,10 +34,12 @@ public class LoaderConfig : GameSetting
 
     public void LoadGameData()
     {
-        StartCoroutine(apiManager.PostGameSetting(this.GetParseURLParams, this.LoadQuestions));
+        this.apiManager.PostGameSetting(this.GetParseURLParams,
+                                        ()=> StartCoroutine(this.apiManager.postGameSetting(this.LoadQuestions)),
+                                        this.LoadQuestions
+                                        );
     }
 
-  
     public void LoadQuestions()
     {
         this.InitialGameSetup(()=>
@@ -138,6 +141,33 @@ public class LoaderConfig : GameSetting
     public void changeScene(int sceneId)
     {
         SceneManager.LoadScene(sceneId);
+    }
+
+    public void exitPage(string state = "", Action<bool> leavePage = null)
+    {
+        bool isLogined = this.apiManager.IsLogined;
+        if (isLogined)
+        {
+            LogController.Instance?.debug($"{state}, called exit api.");
+            StartCoroutine(this.apiManager.ExitGameRecord(
+                () => leavePage?.Invoke(true)
+            ));
+        }
+        else
+        {
+            leavePage?.Invoke(false);
+            LogController.Instance?.debug($"{state}.");
+        }
+    }
+
+    public void QuitGame()
+    {
+        this.exitPage("Quit Game", null);
+    }
+
+    private void OnApplicationQuit()
+    {
+        this.QuitGame();
     }
 
 }

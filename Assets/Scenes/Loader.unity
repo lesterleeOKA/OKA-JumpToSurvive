@@ -402,6 +402,9 @@ MonoBehaviour:
     accountUid: -1
     photoDataUrl: 
     payloads: 
+    isLogined: 0
+    isShowLoginErrorBox: 0
+    showingDebugBox: 0
     loadPeopleIcon:
       loadMethod: 1
       loadImageMethod: 3
@@ -414,7 +417,6 @@ MonoBehaviour:
     debugLayer: {fileID: 364249476}
     loginErrorBox: {fileID: 2087651252}
     loginErrorMessage: {fileID: 2087651251}
-    isShowLoginErrorBox: 0
     answer:
       state:
         duration: 0

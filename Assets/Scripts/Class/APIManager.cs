@@ -25,8 +25,14 @@ public class APIManager
     public string photoDataUrl = string.Empty;
     [Tooltip("Payloads Object for data send out")]
     public string payloads = string.Empty;
+    [SerializeField]
+    private bool isLogined = false;
+    [SerializeField]
+    private bool isShowLoginErrorBox = false;
+    [SerializeField]
+    private bool showingDebugBox = false;
     public LoadImage loadPeopleIcon;
-    public Texture  peopleIcon;
+    public Texture peopleIcon;
     public string loginName = string.Empty;
     public string instructionContent = string.Empty;
     public int maxRetries = 10;
@@ -35,9 +41,8 @@ public class APIManager
     public TextMeshProUGUI loginErrorMessage;
     private Text debugText = null;
     private string errorMessage = "";
-    public bool isShowLoginErrorBox = false;
-    private bool showingDebugBox = false;
     public Answer answer;
+
 
     public void Init()
     {
@@ -58,6 +63,11 @@ public class APIManager
         this.checkLoginErrorBox();
     }
 
+    public bool IsLogined
+    {
+        set { this.isLogined = value; }
+        get { return this.isLogined; }
+    }
     public bool IsShowLoginErrorBox
     {
         set { this.isShowLoginErrorBox = value; }
@@ -75,10 +85,34 @@ public class APIManager
         SetUI.Set(this.loginErrorBox, this.IsShowLoginErrorBox, 0f);
     }
 
-    public IEnumerator PostGameSetting(Action getParseURLParams=null, Action onCompleted = null)
+    private void HandleError(string message, Action onCompleted, bool showErrorBox = false)
+    {
+        this.errorMessage = message;
+        LogController.Instance?.debug(this.errorMessage);
+        this.IsShowLoginErrorBox = showErrorBox;
+        onCompleted?.Invoke();
+    }
+
+    public void PostGameSetting(Action getParseURLParams = null, Action getDataFromAPI = null, Action onCompleted = null)
     {
         ExternalCaller.UpdateLoadBarStatus("Loading Data");
         getParseURLParams?.Invoke();
+
+        if (!string.IsNullOrEmpty(this.appId) && !string.IsNullOrEmpty(this.jwt))
+        {
+            this.IsLogined = true;
+            getDataFromAPI?.Invoke();
+        }
+        else
+        {
+            this.IsLogined = false;
+            this.HandleError("Missing JWT or App ID.", onCompleted);
+        }
+    }
+
+
+    public IEnumerator postGameSetting(Action onCompleted = null)
+    {
         string api = APIConstant.GameDataAPI(LoaderConfig.Instance, this.appId, this.jwt);
         LogController.Instance?.debug("called login api: " + api);
         WWWForm form = new WWWForm();
@@ -100,11 +134,9 @@ public class APIManager
                 // Check for errors
                 if (www.result != UnityWebRequest.Result.Success)
                 {
-                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
-                    this.IsShowLoginErrorBox = true;
                     retryCount++;
-                    LogController.Instance?.debug(this.errorMessage);
-                    yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
+                    this.HandleError("Error: " + www.error + "Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
                 }
                 else
                 {
@@ -115,85 +147,72 @@ public class APIManager
 
                     if (jsonStartIndex != -1)
                     {
-                        if(!string.IsNullOrEmpty(this.appId) && !string.IsNullOrEmpty(this.jwt))
+                        string jsonData = responseText.Substring(jsonStartIndex);
+                        LogController.Instance?.debug("Response: " + jsonData);
+
+                        var jsonNode = JSONNode.Parse(jsonData);
+                        this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
+                        this.accountJson = jsonNode["account"].ToString(); // Account json data;
+
+                        string accountUidString = jsonNode["account"]["uid"];
+                        int accountUid = int.Parse(accountUidString);
+                        this.accountUid = accountUid;
+
+                        this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
+                        this.gameSettingJson = jsonNode["setting"].ToString();
+                        this.payloads = jsonNode["payloads"].ToString();
+
+                        if (this.debugText != null)
                         {
-                            string jsonData = responseText.Substring(jsonStartIndex);
-                            LogController.Instance?.debug("Response: " + jsonData);
-
-                            var jsonNode = JSONNode.Parse(jsonData);
-                            this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
-                            this.accountJson = jsonNode["account"].ToString(); // Account json data;
-
-                            string accountUidString = jsonNode["account"]["uid"];
-                            int accountUid = int.Parse(accountUidString);
-                            this.accountUid = accountUid;
-
-                            this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
-                            this.gameSettingJson = jsonNode["setting"].ToString();
-                            this.payloads = jsonNode["payloads"].ToString();
-
-                            if (this.debugText != null)
-                            {
-                                this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
-                                this.debugText.text += "Account: " + this.accountJson + "\n\n ";
-                                this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
-                                this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
-                                this.debugText.text += "PayLoad: " + this.payloads;
-                            }
-
-                            if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
-                            {
-                                string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
-
-                                string imageUrl = modifiedPhotoDataUrl;
-                                if (!modifiedPhotoDataUrl.StartsWith("https://"))
-                                {
-                                    imageUrl = "https:" + modifiedPhotoDataUrl;
-                                }
-                                LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
-                                yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
-                                {
-                                    LogController.Instance?.debug($"Downloaded People Icon!!");
-                                    this.peopleIcon = _peopleIcon;
-                                });
-                            }
-
-                            if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
-                            {
-                                var name = jsonNode["account"]["display_name"].ToString();
-                                if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
-                                {
-                                    this.loginName = name.Replace("\"", "");
-                                    LogController.Instance?.debug("Display name: " + this.loginName);
-                                }
-                                else
-                                {
-                                    LogController.Instance?.debug("Display name is empty. use first name and last name");
-                                    var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
-                                    var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
-                                    this.loginName = last_name + " " + first_name;
-                                }
-                            }
-
-                            //E.g
-                            //Debug.Log(jsonNode["account"]["display_name"].ToString());
-                            LogController.Instance?.debug(this.questionJson);
-                            onCompleted?.Invoke();
+                            this.debugText.text += "Question Data: " + this.questionJson + "\n\n ";
+                            this.debugText.text += "Account: " + this.accountJson + "\n\n ";
+                            this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
+                            this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
+                            this.debugText.text += "PayLoad: " + this.payloads;
                         }
-                        else
+
+                        if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")
                         {
-                            this.errorMessage = "missing jwt or appid.";
-                            LogController.Instance?.debug(this.errorMessage);
-                            onCompleted?.Invoke();
+                            string modifiedPhotoDataUrl = photoDataUrl.Replace("\"", "");
+
+                            string imageUrl = modifiedPhotoDataUrl;
+                            if (!modifiedPhotoDataUrl.StartsWith("https://"))
+                            {
+                                imageUrl = "https:" + modifiedPhotoDataUrl;
+                            }
+                            LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
+                            yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
+                            {
+                                LogController.Instance?.debug($"Downloaded People Icon!!");
+                                this.peopleIcon = _peopleIcon;
+                            });
                         }
-                        
+
+                        if (jsonNode["account"] != null && !string.IsNullOrEmpty(this.accountJson))
+                        {
+                            var name = jsonNode["account"]["display_name"].ToString();
+                            if (!string.IsNullOrWhiteSpace(name) && name != "null" && name != null)
+                            {
+                                this.loginName = name.Replace("\"", "");
+                                LogController.Instance?.debug("Display name: " + this.loginName);
+                            }
+                            else
+                            {
+                                LogController.Instance?.debug("Display name is empty. use first name and last name");
+                                var first_name = jsonNode["account"]["first_name"].ToString().Replace("\"", "");
+                                var last_name = jsonNode["account"]["last_name"].ToString().Replace("\"", "");
+                                this.loginName = last_name + " " + first_name;
+                            }
+                        }
+
+                        //E.g
+                        //Debug.Log(jsonNode["account"]["display_name"].ToString());
+                        LogController.Instance?.debug(this.questionJson);
+                        onCompleted?.Invoke();
                     }
                     else
                     {
-                        this.errorMessage = "wrong json start index.";
-                        LogController.Instance?.debug(this.errorMessage);
-                        this.IsShowLoginErrorBox = true;
-                        onCompleted?.Invoke();
+                        this.HandleError("wrong json start index.", onCompleted, true);
                     }
                 }
             }
@@ -210,12 +229,12 @@ public class APIManager
 
     public IEnumerator SubmitAnswer(Action onCompleted = null)
     {
-        if(string.IsNullOrEmpty(this.payloads) || this.accountUid == -1 || string.IsNullOrEmpty(this.jwt))
+        if (string.IsNullOrEmpty(this.payloads) || this.accountUid == -1 || string.IsNullOrEmpty(this.jwt))
         {
             LogController.Instance?.debug("Invalid parameters: payloads, accountUid, or jwt is null or empty.");
             yield break;
         }
-          
+
         string api = APIConstant.SubmitAnswerAPI(LoaderConfig.Instance, this.payloads, this.accountUid, this.jwt);
         LogController.Instance?.debug("called submit marks api: " + api);
         WWWForm form = new WWWForm();
@@ -237,11 +256,9 @@ public class APIManager
                 // Check for errors
                 if (www.result != UnityWebRequest.Result.Success)
                 {
-                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
-                    this.IsShowLoginErrorBox = true;
                     retryCount++;
-                    LogController.Instance?.debug(this.errorMessage);
-                    yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
+                    this.HandleError("Error: " + www.error + "Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
                 }
                 else
                 {
@@ -258,19 +275,15 @@ public class APIManager
                     }
                     catch (Exception ex)
                     {
-                        LogController.Instance?.debug("Failed to parse JSON: " + ex.Message);
+                        this.HandleError("Failed to parse JSON: " + ex.Message, null, true);
                     }
-
                 }
             }
         }
 
         if (!requestSuccessful)
         {
-            this.errorMessage = "Failed to call upload marks response after " + maxRetries + " attempts.";
-            LogController.Instance?.debug(this.errorMessage);
-            this.IsShowLoginErrorBox = true;
-            onCompleted?.Invoke();
+            this.HandleError("Failed to call upload marks response after " + maxRetries + " attempts.", onCompleted, true);
         }
     }
 
@@ -303,11 +316,9 @@ public class APIManager
                 // Handle the response
                 if (www.result != UnityWebRequest.Result.Success)
                 {
-                    this.errorMessage = "Error: " + www.error + "Retrying..." + retryCount;
-                    this.IsShowLoginErrorBox = true;
                     retryCount++;
-                    LogController.Instance?.debug(this.errorMessage);
-                    yield return new WaitForSeconds(2); // Wait for 2 seconds before retrying
+                    this.HandleError("Error: " + www.error + "Retrying..." + retryCount, null, true);
+                    yield return new WaitForSeconds(2);
                 }
                 else
                 {
@@ -324,7 +335,7 @@ public class APIManager
                     }
                     catch (Exception ex)
                     {
-                        LogController.Instance?.debug("Failed to parse JSON: " + ex.Message);
+                        this.HandleError("Failed to parse JSON: " + ex.Message, null, true);
                     }
                 }
             }
@@ -332,10 +343,7 @@ public class APIManager
 
         if (!requestSuccessful)
         {
-            this.errorMessage = "Failed to call endgame api after " + maxRetries + " attempts.";
-            LogController.Instance?.debug(this.errorMessage);
-            this.IsShowLoginErrorBox = true;
-            onCompleted?.Invoke();
+            this.HandleError("Failed to call endgame api after " + maxRetries + " attempts.", onCompleted, true);
         }
 
     }

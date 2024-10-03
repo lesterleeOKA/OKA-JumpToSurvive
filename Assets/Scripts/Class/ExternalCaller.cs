@@ -23,10 +23,10 @@ public static class ExternalCaller
 #endif
     }
 
-    public static void BackToHomeUrlPage(bool containJwt = false)
+    public static void BackToHomeUrlPage(bool isLogined = false)
     {
 #if !UNITY_EDITOR
-        if (containJwt)
+        if (isLogined)
         {
             //Web site for login api
             Application.ExternalEval("window.close();");

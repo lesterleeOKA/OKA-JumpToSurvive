@@ -39,6 +39,7 @@ public enum QuestionType
     Text = 1,
     Picture = 2,
     Audio = 3,
+    FillInBlank = 4
 }
 
 [Serializable]
@@ -73,7 +74,7 @@ public class CurrentQuestion
                 SetUI.Set(this.audioPlayBtn.GetComponent<CanvasGroup>(), false, 0f);
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
-                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
+                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
 
                 if (this.questionImage != null && qaImage != null)
                 {
@@ -101,7 +102,7 @@ public class CurrentQuestion
                 this.questiontype = QuestionType.Audio;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
-                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
+                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
                 this.playAudio();
                 break;
             case "text":
@@ -113,7 +114,7 @@ public class CurrentQuestion
                 if (this.questionImage != null) this.questionImage.enabled = false;
                 this.correctAnswer = qa.correctAnswer;
                 this.answersChoics = qa.answers;
-                this.correctAnswerId = Array.IndexOf(this.answersChoics, this.correctAnswer);
+                this.correctAnswerId = this.answersChoics != null ? Array.IndexOf(this.answersChoics, this.correctAnswer) : 0;
                 break;
         }
 

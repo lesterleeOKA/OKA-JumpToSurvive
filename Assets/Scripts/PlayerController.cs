@@ -120,18 +120,19 @@ public class PlayerController : UserData
 
     public void checkAnswer(int currentTime)
     {
-        var currentQuestion = QuestionController.Instance.currentQuestion;
+        var loader = LoaderConfig.Instance;
+        var currentQuestion = QuestionController.Instance?.currentQuestion;
         int eachQAScore = currentQuestion.qa.score == 0 ? 10 : currentQuestion.qa.score;
         int currentScore = this.Score;
-        int resultScore = this.scoring.score(this.answer, currentScore, 
-                                            QuestionController.Instance.currentQuestion.correctAnswer,
+        int resultScore = this.scoring.score(this.answer, currentScore,
+                                            currentQuestion.correctAnswer,
                                             eachQAScore);
         this.Score = resultScore;
-        float currentQAPercent = 0f;
         LogController.Instance?.debug("Add marks" + this.Score);
 
-        if(this.UserId == 0) // For first player
+        if(this.UserId == 0 && loader != null && loader.apiManager.IsLogined) // For first player
         {
+            float currentQAPercent = 0f;
             int correctId = 0;
             float score = 0f;
             float answeredPercentage = 0f;
@@ -160,7 +161,7 @@ public class PlayerController : UserData
                 answeredPercentage = 100f;
             }
 
-            LoaderConfig.Instance?.SubmitAnswer(
+            loader.SubmitAnswer(
                        currentTime,
                        this.Score,
                        answeredPercentage,

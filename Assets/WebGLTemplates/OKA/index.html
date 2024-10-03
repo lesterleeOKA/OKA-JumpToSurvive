@@ -31,6 +31,16 @@
           navigator.serviceWorker.register("ServiceWorker.js");
         }
       });
+	  
+	  	let unityInstance;
+
+		window.onbeforeunload = function(e) {
+			console.log("Calling OnClose from Browser!");
+			unityInstance.SendMessage('Loader', 'QuitGame');
+			var dialogText = "You game has been saved!  Would you like to continue unloading the page?";
+			e.returnValue = dialogText;
+			return dialogText;
+		};
 
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -109,9 +119,9 @@
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
+        }).then((instance) => {
           //loadingBar.style.display = "none";
-		  //unityInstance.SendMessage('Loader', 'LoadQuestions');
+		  unityInstance = instance;
 		  unityInstance.SendMessage('Loader', 'LoadGameData');
         }).catch((message) => {
           alert(message);

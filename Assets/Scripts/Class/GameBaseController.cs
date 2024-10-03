@@ -50,28 +50,6 @@ public class GameBaseController : MonoBehaviour
 
     public void BackToWebpage()
     {
-        bool containsJwt = LoaderConfig.Instance.CurrentURL.Contains("?jwt=");
-        if(containsJwt) { 
-            StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(
-                ()=> ExternalCaller.BackToHomeUrlPage(true)
-            ));
-        }
-        else
-        {
-            ExternalCaller.BackToHomeUrlPage(false);
-        }
-    }
-
-    private void OnApplicationQuit()
-    {
-        bool containsJwt = LoaderConfig.Instance.CurrentURL.Contains("?jwt=");
-        if (containsJwt){
-            LogController.Instance?.debug("Quit Game, called exit api.");
-            StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(null));
-        }
-        else
-        {
-            LogController.Instance?.debug("Quit Game.");
-        }
+        LoaderConfig.Instance?.exitPage("Leave Game", ExternalCaller.BackToHomeUrlPage);
     }
 }
