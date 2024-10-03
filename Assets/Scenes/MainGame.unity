@@ -740,6 +740,8 @@ MonoBehaviour:
   - {fileID: 1946575443}
   - {fileID: 104742997}
   - {fileID: 1533787972}
+  correctedAnswerNumber: 0
+  correctAnswerPercentage: 0
   scoring:
     usingDeductLogic: 0
     bonnus: 4
@@ -2976,7 +2978,7 @@ MonoBehaviour:
       - {fileID: 1031000420}
       - {fileID: 1334724529}
       - {fileID: 375354550}
-  playerNumber: 0
+  playerNumber: 4
   playersList:
   - {fileID: 1542543163}
   - {fileID: 200380411}
@@ -3022,6 +3024,7 @@ MonoBehaviour:
   createdWords: []
   currentQuestion:
     numberQuestion: 0
+    answeredQuestion: 0
     questiontype: 0
     qa:
       id: 0
@@ -3037,6 +3040,7 @@ MonoBehaviour:
       texture: {fileID: 0}
       audioClip: {fileID: 0}
     questionText: {fileID: 365331385}
+    correctAnswerId: 0
     correctAnswer: 
     answersChoics: []
     questionBgs:
@@ -10833,6 +10837,8 @@ MonoBehaviour:
   - {fileID: 1977457006}
   - {fileID: 2059847502}
   - {fileID: 1893963228}
+  correctedAnswerNumber: 0
+  correctAnswerPercentage: 0
   scoring:
     usingDeductLogic: 0
     bonnus: 4
@@ -12251,6 +12257,8 @@ MonoBehaviour:
   - {fileID: 52298208}
   - {fileID: 51985894}
   - {fileID: 916105573}
+  correctedAnswerNumber: 0
+  correctAnswerPercentage: 0
   scoring:
     usingDeductLogic: 0
     bonnus: 4
@@ -13027,6 +13035,8 @@ MonoBehaviour:
   - {fileID: 693188471}
   - {fileID: 1165884020}
   - {fileID: 2009564175}
+  correctedAnswerNumber: 0
+  correctAnswerPercentage: 0
   scoring:
     usingDeductLogic: 0
     bonnus: 4

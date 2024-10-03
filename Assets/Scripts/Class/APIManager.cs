@@ -79,7 +79,7 @@ public class APIManager
     {
         ExternalCaller.UpdateLoadBarStatus("Loading Data");
         getParseURLParams?.Invoke();
-        string api = APIConstant.GameDataAPI(this.appId, this.jwt);
+        string api = APIConstant.GameDataAPI(LoaderConfig.Instance, this.appId, this.jwt);
         LogController.Instance?.debug("called login api: " + api);
         WWWForm form = new WWWForm();
         int retryCount = 0;
@@ -216,7 +216,7 @@ public class APIManager
             yield break;
         }
           
-        string api = APIConstant.SubmitAnswerAPI(this.payloads, this.accountUid, this.jwt, LoaderConfig.Instance.apiManager.answer);
+        string api = APIConstant.SubmitAnswerAPI(LoaderConfig.Instance, this.payloads, this.accountUid, this.jwt);
         LogController.Instance?.debug("called submit marks api: " + api);
         WWWForm form = new WWWForm();
         int retryCount = 0;
@@ -289,7 +289,7 @@ public class APIManager
         formData.AddField("jwt", this.jwt); // Add the JWT to the form
         formData.AddField("json", jsonData);
 
-        string endGameApi = APIConstant.EndGameAPI();
+        string endGameApi = APIConstant.EndGameAPI(LoaderConfig.Instance);
         int retryCount = 0;
         bool requestSuccessful = false;
 

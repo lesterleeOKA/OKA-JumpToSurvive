@@ -16,7 +16,7 @@ public class GameBaseController : MonoBehaviour
 
     protected virtual void Start()
     {
-        this.playerNumber = LoaderConfig.Instance != null ? LoaderConfig.Instance.PlayerNumbers : 4;
+        if(LoaderConfig.Instance != null) this.playerNumber = LoaderConfig.Instance.PlayerNumbers;
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         SetUI.Set(this.TopRightUILayer, true, 0f);
@@ -64,10 +64,14 @@ public class GameBaseController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        LogController.Instance?.debug("Quit Game, called exit api.");
         bool containsJwt = LoaderConfig.Instance.CurrentURL.Contains("?jwt=");
         if (containsJwt){
+            LogController.Instance?.debug("Quit Game, called exit api.");
             StartCoroutine(LoaderConfig.Instance.apiManager.ExitGameRecord(null));
+        }
+        else
+        {
+            LogController.Instance?.debug("Quit Game.");
         }
     }
 }
