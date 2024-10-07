@@ -168,7 +168,8 @@ public class APIManager
                             this.debugText.text += "Account: " + this.accountJson + "\n\n ";
                             this.debugText.text += "Photo: " + this.photoDataUrl + "\n\n ";
                             this.debugText.text += "Setting: " + this.gameSettingJson + "\n\n ";
-                            this.debugText.text += "PayLoad: " + this.payloads;
+                            this.debugText.text += "PayLoad: " + this.payloads + "\n\n ";
+                            this.debugText.text += "Is Logined: " + this.IsLogined;
                         }
 
                         if (!string.IsNullOrEmpty(this.photoDataUrl) && this.photoDataUrl != "null")

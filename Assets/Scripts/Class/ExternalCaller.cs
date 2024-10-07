@@ -28,8 +28,14 @@ public static class ExternalCaller
 #if !UNITY_EDITOR
         if (isLogined)
         {
-            //Web site for login api
-            Application.ExternalEval("window.close();");
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                Application.ExternalEval("history.back();");
+            }
+            else
+            {
+                Application.ExternalEval($"location.hash = 'exit'");
+            }
         }
         else
         {
