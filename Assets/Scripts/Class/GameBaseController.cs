@@ -8,7 +8,7 @@ public class GameBaseController : MonoBehaviour
     protected Vector2 originalGetScorePos = Vector2.zero;
     public EndGamePage endGamePage;
     public int playerNumber = 0;
-    public bool startedGame = false;
+    public bool playing = false;
 
     protected virtual void Awake()
     {
@@ -29,7 +29,7 @@ public class GameBaseController : MonoBehaviour
     {
         SetUI.Set(this.TopUILayer, true, 0.5f);
         SetUI.Set(this.GameUILayer, true, 0.5f);
-        this.startedGame = true;
+        this.playing = true;
     }
 
     public virtual void endGame()
@@ -37,7 +37,7 @@ public class GameBaseController : MonoBehaviour
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.GameUILayer, false, 0f);
         SetUI.Set(this.TopRightUILayer, false, 0f);
-        this.startedGame = false;
+        this.playing = false;
     }
 
     public void retryGame()
