@@ -8,6 +8,7 @@ public class GameBaseController : MonoBehaviour
     protected Vector2 originalGetScorePos = Vector2.zero;
     public EndGamePage endGamePage;
     public int playerNumber = 0;
+    public bool startedGame = false;
 
     protected virtual void Awake()
     {
@@ -28,6 +29,7 @@ public class GameBaseController : MonoBehaviour
     {
         SetUI.Set(this.TopUILayer, true, 0.5f);
         SetUI.Set(this.GameUILayer, true, 0.5f);
+        this.startedGame = true;
     }
 
     public virtual void endGame()
@@ -35,12 +37,15 @@ public class GameBaseController : MonoBehaviour
         SetUI.Set(this.TopUILayer, false, 0f);
         SetUI.Set(this.GameUILayer, false, 0f);
         SetUI.Set(this.TopRightUILayer, false, 0f);
+        this.startedGame = false;
     }
 
     public void retryGame()
     {
-        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
-        SceneManager.LoadScene(2);
+        if (AudioController.Instance != null) 
+            AudioController.Instance.changeBGMStatus(true);
+
+        LoaderConfig.Instance?.exitPage("Replay", null, ()=> SceneManager.LoadScene(2));
     }
 
     public void setGetScorePopup(bool status)
@@ -50,6 +55,7 @@ public class GameBaseController : MonoBehaviour
 
     public void BackToWebpage()
     {
-        LoaderConfig.Instance?.exitPage("Leave Game", ExternalCaller.BackToHomeUrlPage);
+        LoaderConfig.Instance?.exitPage("Leave Game", ExternalCaller.BackToHomeUrlPage, null);
+
     }
 }

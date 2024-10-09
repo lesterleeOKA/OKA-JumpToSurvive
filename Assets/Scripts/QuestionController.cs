@@ -58,7 +58,7 @@ public class QuestionController : MonoBehaviour
 
         if(GameController.Instance != null && StartGame.Instance != null && this.createdWords != null)
         {
-            if (!GameController.Instance.gameTimer.endGame && StartGame.Instance.startedGame && this.createdWords.Count > 0 && this.allowCheckingWords)
+            if (!GameController.Instance.gameTimer.endGame && StartGame.Instance.startedGame && this.createdWords.Count > 0 && this.allowCheckingWords && GameController.Instance.startedGame)
             {
                 this.moveTonextQuestion = this.createdWords.All(word => !word.allowMove);
 
@@ -119,6 +119,7 @@ public class QuestionController : MonoBehaviour
     private IEnumerator InstantiateWordsWithDelay()
     {
         yield return new WaitForSeconds(2f);
+        if(!GameController.Instance.startedGame) yield break;
         this.wordTriggering = true;
         SortExtensions.ShuffleArray(this.currentQuestion.answersChoics);
         var answers = this.currentQuestion.answersChoics.Length;
@@ -191,7 +192,14 @@ public class QuestionController : MonoBehaviour
             string correctAnswer = this.currentQuestion.correctAnswer;
             int questionCount = questionDataList.questions.Count;
             QuestionList qa = questionDataList.questions[this.currentQuestion.numberQuestion];
-            this.currentQuestion.setNewQuestion(qa, questionCount);
+            this.currentQuestion.setNewQuestion(qa, questionCount, ()=>
+            {
+                if (LoaderConfig.Instance.apiManager.IsLogined)
+                {
+                    GameController.Instance.endGame();
+                    return;
+                }
+            });
             this.moveTonextQuestion = false;
             this.randAnswer();
         }
