@@ -9,6 +9,7 @@ public class NumberCounter : MonoBehaviour
     public int CountFPS = 30;
     public float Duration = 1f;
     public string NumberFormat = "N0";
+    public string Unit="";
     private int _value;
     public AudioSource scoringEffect;
 
@@ -61,7 +62,7 @@ public class NumberCounter : MonoBehaviour
                     previousValue = newValue;
                 }
 
-                Text.SetText(previousValue.ToString(NumberFormat));
+                Text.SetText(previousValue.ToString(NumberFormat) + this.Unit);
                 if (previousValue % 2 == 0)
                 {
                     // Play scoring effect for even value
@@ -80,7 +81,7 @@ public class NumberCounter : MonoBehaviour
                     previousValue = newValue;
                 }
 
-                Text.SetText(previousValue.ToString(NumberFormat));
+                Text.SetText(previousValue.ToString(NumberFormat) + this.Unit);
                 if (previousValue % 2 == 0)
                 {
                     // Play scoring effect for even value

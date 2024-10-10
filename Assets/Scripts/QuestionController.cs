@@ -191,10 +191,11 @@ public class QuestionController : MonoBehaviour
 
             string correctAnswer = this.currentQuestion.correctAnswer;
             int questionCount = questionDataList.questions.Count;
+            bool isLogined = LoaderConfig.Instance.apiManager.IsLogined;
             QuestionList qa = questionDataList.questions[this.currentQuestion.numberQuestion];
-            this.currentQuestion.setNewQuestion(qa, questionCount, ()=>
+            this.currentQuestion.setNewQuestion(qa, questionCount, isLogined, ()=>
             {
-                if (LoaderConfig.Instance.apiManager.IsLogined)
+                if (isLogined)
                 {
                     GameController.Instance.endGame();
                     return;
