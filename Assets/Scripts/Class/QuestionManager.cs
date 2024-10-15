@@ -25,8 +25,7 @@ public class QuestionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (Instance == null)Instance = this;
     }
 
 
@@ -73,7 +72,6 @@ public class QuestionManager : MonoBehaviour
     IEnumerator loadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
         var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
-
         switch (this.loadMethod) 
         { 
             case LoadMethod.www:
@@ -192,7 +190,8 @@ public class QuestionManager : MonoBehaviour
 
     private void GetRandomQuestions(Action onCompleted = null)
     {
-        if (this.questionData.questions.Count > 1 && this.questionData.questions[0] != this.questionData.questions[this.questionData.questions.Count - 1])
+        if (this.questionData.questions.Count > 1 && 
+            this.questionData.questions[0] != this.questionData.questions[this.questionData.questions.Count - 1])
         {
             this.ShuffleQuestions(true, onCompleted);
         }

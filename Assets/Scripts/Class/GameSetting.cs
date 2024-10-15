@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameSetting : MonoBehaviour
@@ -46,13 +47,13 @@ public class GameSetting : MonoBehaviour
         {
             LogController.Instance?.debug($"Downloaded bg Image!!");
             ExternalCaller.UpdateLoadBarStatus("Loading Bg");
-            this.gameSetup.bgTexture = _bgTexture;
+            if (_bgTexture != null) this.gameSetup.bgTexture = _bgTexture;
 
             StartCoroutine(this.gameSetup.Load("GameUI", "preview", _previewTexture =>
             {
                 LogController.Instance?.debug($"Downloaded preview Image!!");
                 ExternalCaller.UpdateLoadBarStatus("Loading Instruction");
-                this.gameSetup.previewTexture = _previewTexture;
+                if (_previewTexture != null) this.gameSetup.previewTexture = _previewTexture;
                 onCompleted?.Invoke();
             } ));
         }));
@@ -70,7 +71,7 @@ public class GameSetting : MonoBehaviour
             {
                 LogController.Instance?.debug($"Downloaded bg Image!!");
                 ExternalCaller.UpdateLoadBarStatus("Loading Bg");
-                this.gameSetup.bgTexture = _bgTexture;
+                if(_bgTexture != null) this.gameSetup.bgTexture = _bgTexture;
 
                 if (!string.IsNullOrEmpty(previewGameImageUrl))
                 {
@@ -78,7 +79,7 @@ public class GameSetting : MonoBehaviour
                     {
                         LogController.Instance?.debug($"Downloaded preview Image!!");
                         ExternalCaller.UpdateLoadBarStatus("Loading Instruction");
-                        this.gameSetup.previewTexture = _previewTexture;
+                        if(_previewTexture != null) this.gameSetup.previewTexture = _previewTexture;
                         onCompleted?.Invoke();
                     }));
                 }
@@ -143,6 +144,11 @@ public class GameSetting : MonoBehaviour
     {
         ExternalCaller.ReLoadCurrentPage();
     }
+
+    public void changeScene(int sceneId)
+    {
+        SceneManager.LoadScene(sceneId);
+    }
 }
 
 [Serializable]
@@ -197,53 +203,6 @@ public class GameSetup: LoadImage
                 this.gamePreview.texture = this.previewTexture;
             }
         }
-    }
-}
-
-
-public static class APIConstant
-{
-    public static string QuestionDataHeaderName = "questions";
-    public static string GameDataAPI(LoaderConfig loader, string _bookId = "", string _jwt = "")
-    {
-        string jsonParameter = string.IsNullOrEmpty(_bookId) ? "[1]" : $"[\"{_bookId}\"]";
-        return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" +_jwt;
-    }
-
-    public static string SubmitAnswerAPI(LoaderConfig loader, string playloads, int uid, string _jwt)
-    {
-        if(loader == null) return null;
-        var hostName = loader.CurrentHostName;
-        var answer = loader.apiManager.answer;
-
-        
-        int stateDuration = answer.state.duration;
-        float stateScore = answer.state.score;
-        float statePercent = answer.state.percent;
-        float stateProgress = answer.state.progress;
-
-        int correct = answer.currentQA.correctId;
-        float currentQADuration = answer.currentQA.duration;
-        string currentqid = answer.currentQA.qid;
-        int answerId = answer.currentQA.answerId;
-        string answerText = answer.currentQA.answerText;
-        string correctAnswerText = answer.currentQA.correctAnswerText;
-        float currentQAscore = answer.currentQA.score;
-        float currentQAPercent = answer.currentQA.percent;
-
-        string jsonPayload = $"[{{\"payloads\":{playloads}," +
-        $"\"role\":{{\"uid\":{uid}}}," +
-        $"\"state\":{{\"duration\":{stateDuration},\"score\":{stateScore},\"percent\":{statePercent},\"progress\":{stateProgress}}}," +
-        $"\"currentQuestion\":{{\"correct\":{correct},\"duration\":{currentQADuration},\"qid\":\"{currentqid}\",\"answer\":{answerId},\"answerText\":\"{answerText}\",\"correctAnswerText\":\"{correctAnswerText}\",\"score\":{currentQAscore},\"percent\":{currentQAPercent}}}}}]";
-
-        string submitAPI = $"{hostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.submit_answer&json={jsonPayload}&jwt=" + _jwt;
-        return submitAPI;
-    }
-
-    public static string EndGameAPI(LoaderConfig loader)
-    {
-        string endAPI = $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.quit_game";
-        return endAPI;
     }
 }
 

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class LoaderConfig : GameSetting
@@ -71,7 +70,6 @@ public class LoaderConfig : GameSetting
 
                     if (!string.IsNullOrEmpty(value))
                     {
-
                         switch (key)
                         {
                             case "jwt":
@@ -106,7 +104,7 @@ public class LoaderConfig : GameSetting
                              int correctId, float currentQADuration, string qid, int answerId, string answerText, 
                              string correctAnswerText, float currentQAscore, float currentQAPercent)
     {
-        /*        string jsonPayload = $"[{{\"payloads\":{playloads}," +
+        /*string jsonPayload = $"[{{\"payloads\":{playloads}," +
         $"\"role\":{{\"uid\":{uid}}}," +
         $"\"state\":{{\"duration\":{stateDuration},\"score\":{stateScore},\"percent\":{statePercent},\"progress\":{stateProgress}}}," +
         $"\"currentQuestion\":{{\"correct\":{correct},\"duration\":{currentQADuration},\"qid\":\"{currentqid}\",\"answer\":{answerId},\"answerText\":\"{answerText}\",\"correctAnswerText\":\"{correctAnswerText}\",\"score\":{currentQAscore},\"percent\":{currentQAPercent}}}}}]";*/
@@ -133,11 +131,6 @@ public class LoaderConfig : GameSetting
     public void closeLoginErrorBox()
     {
         this.apiManager.resetLoginErrorBox();
-    }
-
-    public void changeScene(int sceneId)
-    {
-        SceneManager.LoadScene(sceneId);
     }
 
     public void exitPage(string state = "", Action<bool> leavePageWithValue = null, Action leavePageWithoutValue = null)

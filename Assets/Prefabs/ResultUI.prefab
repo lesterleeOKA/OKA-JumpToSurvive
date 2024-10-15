@@ -584,6 +584,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 0}
 --- !u!1 &1942132174873846644
 GameObject:
@@ -806,7 +807,7 @@ MonoBehaviour:
   autoPlay: 1
   useTargetAsV3: 0
   endValueFloat: 0
-  endValueV3: {x: -217, y: -290, z: 0}
+  endValueV3: {x: -217, y: -280, z: 0}
   endValueV2: {x: 0, y: 0}
   endValueColor: {r: 1, g: 1, b: 1, a: 1}
   endValueString: 
@@ -2184,6 +2185,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 0}
 --- !u!1 &4055573773777796252
 GameObject:
@@ -3174,6 +3176,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 0}
 --- !u!1 &5412996830018927169
 GameObject:
@@ -3710,6 +3713,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 0}
 --- !u!1 &6261288149949226958
 GameObject:
