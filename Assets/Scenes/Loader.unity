@@ -414,10 +414,12 @@ MonoBehaviour:
       allTextures: []
     peopleIcon: {fileID: 0}
     loginName: 
-    chapterUnit: 
-    previewGameImageUrl: 
-    backgroundImageUrl: 
-    instructionContent: 
+    settings:
+      chapterUnit: 
+      previewGameImageUrl: 
+      backgroundImageUrl: 
+      instructionContent: 
+      gameTime: 0
     maxRetries: 10
     debugLayer: {fileID: 364249476}
     loginErrorBox: {fileID: 2087651252}
