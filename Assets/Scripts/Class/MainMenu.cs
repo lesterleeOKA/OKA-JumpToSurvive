@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1f;
-        LoaderConfig.Instance?.InitialGameBackground();
+        LoaderConfig.Instance?.InitialGameSetup();
     }
     private void Start()
     {

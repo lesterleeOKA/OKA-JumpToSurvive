@@ -12,7 +12,7 @@ public class GameBaseController : MonoBehaviour
 
     protected virtual void Awake()
     {
-        LoaderConfig.Instance?.InitialGameBackground();
+        LoaderConfig.Instance?.InitialGameSetup();
     }
 
     protected virtual void Start()

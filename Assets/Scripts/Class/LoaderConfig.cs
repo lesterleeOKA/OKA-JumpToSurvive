@@ -27,21 +27,19 @@ public class LoaderConfig : GameSetting
     protected override void Update()
     {
         base.Update();
-
-
     }
 
     public void LoadGameData()
     {
         this.apiManager.PostGameSetting(this.GetParseURLParams,
-                                        ()=> StartCoroutine(this.apiManager.postGameSetting(this.LoadQuestions)),
-                                        this.LoadQuestions
+                                        ()=> StartCoroutine(this.apiManager.postGameSetting(this.LoadQuestions)), //success action
+                                        this.LoadQuestions // failure action
                                         );
     }
 
     public void LoadQuestions()
     {
-        this.InitialGameSetup(()=>
+        this.InitialGameImages(()=>
         {
             QuestionManager.Instance?.LoadQuestionFile(this.unitKey, () => this.finishedLoadQuestion());
         });    

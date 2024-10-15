@@ -26,23 +26,82 @@ public class GameSetting : MonoBehaviour
         this.apiManager.controlDebugLayer();
     }
 
-    public void InitialGameSetup(Action onCompleted = null)
+    public void InitialGameImages(Action onCompleted = null)
     {
-        //Download game background image
+        if (this.apiManager.IsLogined)
+        {
+           this.initialGameImagesByAPI(onCompleted);
+        }
+        else
+        {
+            this.initialGameImagesByLocal(onCompleted);
+        }
+    }
+
+    private void initialGameImagesByLocal(Action onCompleted = null)
+    {
+        //Download game background image from local streaming assets
+        this.gameSetup.loadImageMethod = LoadImageMethod.StreamingAssets;
         StartCoroutine(this.gameSetup.Load("GameUI", "bg", _bgTexture =>
         {
             LogController.Instance?.debug($"Downloaded bg Image!!");
             ExternalCaller.UpdateLoadBarStatus("Loading Bg");
             this.gameSetup.bgTexture = _bgTexture;
-            onCompleted?.Invoke();
+
+            StartCoroutine(this.gameSetup.Load("GameUI", "preview", _previewTexture =>
+            {
+                LogController.Instance?.debug($"Downloaded preview Image!!");
+                ExternalCaller.UpdateLoadBarStatus("Loading Instruction");
+                this.gameSetup.previewTexture = _previewTexture;
+                onCompleted?.Invoke();
+            } ));
         }));
     }
 
-    public void InitialGameBackground()
+    private void initialGameImagesByAPI(Action onCompleted = null)
+    {
+        //Download game background image from api
+        this.gameSetup.loadImageMethod = LoadImageMethod.Url;
+        string backgroundImageUrl = this.apiManager.settings.backgroundImageUrl;
+        string previewGameImageUrl = this.apiManager.settings.previewGameImageUrl;
+
+        if(!string.IsNullOrEmpty( backgroundImageUrl)) {
+            StartCoroutine(this.gameSetup.Load("", backgroundImageUrl, _bgTexture =>
+            {
+                LogController.Instance?.debug($"Downloaded bg Image!!");
+                ExternalCaller.UpdateLoadBarStatus("Loading Bg");
+                this.gameSetup.bgTexture = _bgTexture;
+
+                if (!string.IsNullOrEmpty(previewGameImageUrl))
+                {
+                    StartCoroutine(this.gameSetup.Load("", previewGameImageUrl, _previewTexture =>
+                    {
+                        LogController.Instance?.debug($"Downloaded preview Image!!");
+                        ExternalCaller.UpdateLoadBarStatus("Loading Instruction");
+                        this.gameSetup.previewTexture = _previewTexture;
+                        onCompleted?.Invoke();
+                    }));
+                }
+                else
+                {
+                    LogController.Instance?.debug($"Missing previewGameImage Url!!");
+                    onCompleted?.Invoke();
+                }
+            }));
+        }
+        else
+        {
+            LogController.Instance?.debug($"Missing backgroundImage Url!!");
+            onCompleted?.Invoke();
+        }   
+    }
+
+    public void InitialGameSetup()
     {
         this.gameSetup.setBackground();
-        this.gameSetup.setInstruction(LoaderConfig.Instance?.apiManager.instructionContent);
+        this.gameSetup.setInstruction(this.apiManager.settings.instructionContent);
     }
+
     public string CurrentURL
     {
         set { this.currentURL = value; }
@@ -91,8 +150,12 @@ public class GameSetup: LoadImage
 {
     [Tooltip("Default Game Background Texture")]
     public Texture bgTexture;
+    [Tooltip("Default Game Preview Texture")]
+    public Texture previewTexture;
     [Tooltip("Find Tag name of GameBackground in different scene")]
     public RawImage gameBackground;
+    [Tooltip("Instruction Preview Image")]
+    public RawImage gamePreview;
     public InstructionText instructions;
     public float gameTime;
     public bool showFPS = false;
@@ -122,6 +185,16 @@ public class GameSetup: LoadImage
             {
                 this.instructions = instructionText.GetComponent<InstructionText>();
                 this.instructions.setContent(content);
+            }
+        }
+
+        if (this.gamePreview == null)
+        {
+            var preview = GameObject.FindGameObjectWithTag("GamePreview");
+            if(preview != null)
+            {
+                this.gamePreview = preview.GetComponent<RawImage>();
+                this.gamePreview.texture = this.previewTexture;
             }
         }
     }

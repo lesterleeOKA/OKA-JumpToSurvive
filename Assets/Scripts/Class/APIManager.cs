@@ -34,7 +34,7 @@ public class APIManager
     public LoadImage loadPeopleIcon;
     public Texture peopleIcon;
     public string loginName = string.Empty;
-    public string instructionContent = string.Empty;
+    public Settings settings;
     public int maxRetries = 10;
     public CanvasGroup debugLayer;
     public CanvasGroup loginErrorBox;
@@ -346,6 +346,15 @@ public class APIManager
         {
             this.HandleError("Failed to call endgame api after " + maxRetries + " attempts.", onCompleted, true);
         }
-
     }
+}
+
+[Serializable]
+public class Settings
+{
+    public string chapterUnit = string.Empty;
+    public string previewGameImageUrl;
+    public string backgroundImageUrl;
+    public string instructionContent = string.Empty;
+    public float gameTime = 0f;
 }
