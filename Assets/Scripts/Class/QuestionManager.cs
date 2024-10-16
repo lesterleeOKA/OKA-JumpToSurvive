@@ -69,6 +69,12 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Load question from question json
+    /// </summary>
+    /// <param name="unitKey"></param>
+    /// <param name="onCompleted"></param>
+    /// <returns></returns>
     IEnumerator loadQuestionFile(string unitKey = "", Action onCompleted = null)
     {
         var questionPath = Path.Combine(Application.streamingAssetsPath, this.jsonFileName);
@@ -132,9 +138,22 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    private void ShuffleQuestions(bool rand=true, Action onComplete = null)
+    private void GetRandomQuestions(Action onCompleted = null)
     {
-        if(rand) this.questionData.questions.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
+        if (this.questionData.questions.Count > 1 && 
+            this.questionData.questions[0] != this.questionData.questions[this.questionData.questions.Count - 1])
+        {
+            this.ShuffleQuestions(true, onCompleted);
+        }
+        else
+        {
+            this.ShuffleQuestions(false, onCompleted);
+        }
+    }
+
+    private void ShuffleQuestions(bool rand = true, Action onComplete = null)
+    {
+        if (rand) this.questionData.questions.Sort((a, b) => UnityEngine.Random.Range(-1, 2));
 
         this.totalItems = this.questionData.questions.Count;
         this.loadedItems = 0;
@@ -154,16 +173,16 @@ public class QuestionManager : MonoBehaviour
                     break;
                 case "picture":
                     ExternalCaller.UpdateLoadBarStatus("Loading Images");
-                     StartCoroutine(
-                        this.loadImage.Load(
-                            folderName, qid, tex =>
-                            {
-                                qa.texture = tex;
-                                this.loadedItems++;
-                                if (this.loadedItems == this.totalItems) onComplete?.Invoke();
-                            }
-                         )
-                      );
+                    StartCoroutine(
+                       this.loadImage.Load(
+                           folderName, qid, tex =>
+                           {
+                               qa.texture = tex;
+                               this.loadedItems++;
+                               if (this.loadedItems == this.totalItems) onComplete?.Invoke();
+                           }
+                        )
+                     );
                     break;
                 case "audio":
                 case "fillInBlank":
@@ -185,19 +204,6 @@ public class QuestionManager : MonoBehaviour
                     if (this.loadedItems == this.totalItems) onComplete?.Invoke();
                     break;
             }
-        }
-    }
-
-    private void GetRandomQuestions(Action onCompleted = null)
-    {
-        if (this.questionData.questions.Count > 1 && 
-            this.questionData.questions[0] != this.questionData.questions[this.questionData.questions.Count - 1])
-        {
-            this.ShuffleQuestions(true, onCompleted);
-        }
-        else
-        {
-            this.ShuffleQuestions(false, onCompleted);
         }
     }
 }

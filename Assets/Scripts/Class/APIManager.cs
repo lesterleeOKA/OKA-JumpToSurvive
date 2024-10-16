@@ -31,7 +31,7 @@ public class APIManager
     private bool isShowLoginErrorBox = false;
     [SerializeField]
     private bool showingDebugBox = false;
-    public LoadImage loadPeopleIcon;
+    public LoadImage loadImage;
     public Texture peopleIcon;
     public string loginName = string.Empty;
     public Settings settings;
@@ -148,9 +148,9 @@ public class APIManager
                     if (jsonStartIndex != -1)
                     {
                         string jsonData = responseText.Substring(jsonStartIndex);
-                        LogController.Instance?.debug("Response: " + jsonData);
-
                         var jsonNode = JSONNode.Parse(jsonData);
+                        LogController.Instance?.debug("jsonNode: " + jsonNode.ToString());
+
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
 
@@ -161,6 +161,24 @@ public class APIManager
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
                         this.gameSettingJson = jsonNode["setting"].ToString();
                         this.payloads = jsonNode["payloads"].ToString();
+
+                        if (!string.IsNullOrEmpty(this.gameSettingJson) && this.gameSettingJson != "{}")
+                        {
+                            string bgImagUrl = jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "");
+                            if (!bgImagUrl.StartsWith("https://"))
+                            {
+                                this.settings.backgroundImageUrl = "https:" + bgImagUrl;
+                            }
+
+                            yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
+                            {
+                                LogController.Instance?.debug($"Downloaded Background Image from api!!");
+                                LoaderConfig.Instance.gameSetup.bgTexture = _backgroundImage;
+                            });
+
+                            //remain settings
+                            //...
+                        }
 
                         if (this.debugText != null)
                         {
@@ -182,7 +200,7 @@ public class APIManager
                                 imageUrl = "https:" + modifiedPhotoDataUrl;
                             }
                             LogController.Instance?.debug($"Downloading People Icon!!{imageUrl}");
-                            yield return this.loadPeopleIcon.Load("", imageUrl, _peopleIcon =>
+                            yield return this.loadImage.Load("", imageUrl, _peopleIcon =>
                             {
                                 LogController.Instance?.debug($"Downloaded People Icon!!");
                                 this.peopleIcon = _peopleIcon;
