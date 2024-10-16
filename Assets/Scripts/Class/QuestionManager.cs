@@ -34,9 +34,7 @@ public class QuestionManager : MonoBehaviour
         try
         {
             var questionJson = LoaderConfig.Instance.apiManager.questionJson;
-            var jwt = LoaderConfig.Instance.apiManager.jwt;
-            var appId = LoaderConfig.Instance.apiManager.appId;
-            if (!string.IsNullOrEmpty(questionJson) && !string.IsNullOrEmpty(jwt) && !string.IsNullOrEmpty(appId))
+            if (!string.IsNullOrEmpty(questionJson) && LoaderConfig.Instance.apiManager.IsLogined)
             {
                 QuestionDataWrapper wrapper = JsonUtility.FromJson<QuestionDataWrapper>("{\"QuestionDataArray\":" + questionJson + "}");
                 QuestionData _questionData = new QuestionData
@@ -59,6 +57,12 @@ public class QuestionManager : MonoBehaviour
         }    
     }
 
+    /// <summary>
+    /// Load question from api
+    /// </summary>
+    /// <param name="_questionData"></param>
+    /// <param name="onCompleted"></param>
+    /// <returns></returns>
     private void loadQuestionFromAPI(QuestionData _questionData = null, Action onCompleted = null)
     {
         if(_questionData != null)
