@@ -13,7 +13,7 @@ public class UserData: MonoBehaviour
     [SerializeField]
     private Color32 playerColor = Color.white;
     [SerializeField]
-    private Image[] playerIcons;
+    private PlayerIcon[] playerIcons;
     [SerializeField]
     private int correctedAnswerNumber;
     [SerializeField]
@@ -45,7 +45,7 @@ public class UserData: MonoBehaviour
         set { this.playerColor = value; }
     }
 
-    public Image[] PlayerIcons
+    public PlayerIcon[] PlayerIcons
     {
         get { return this.playerIcons; }
         set { this.playerIcons = value; }

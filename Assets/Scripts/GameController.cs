@@ -28,13 +28,27 @@ public class GameController : GameBaseController
         base.enterGame();
         for (int i = 0; i < this.playersList.Count; i++)
         {
-            if (i == 0)
+            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                var playerController = this.playersList[i].GetComponent<PlayerController>();
-                if (playerController != null)
+                if (i < this.playerNumber)
                 {
-                    playerController.updatePlayerIcon();
+                    if (i == 0 && LoaderConfig.Instance != null && LoaderConfig.Instance.apiManager.peopleIcon != null)
+                    {
+                        var _playerName = LoaderConfig.Instance?.apiManager.loginName;
+                        var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
+                        playerController.updatePlayerIcon(true, _playerName, icon);
+                    }
+                    else
+                    {
+                        playerController.updatePlayerIcon(true);
+                    }
                 }
+                else
+                {
+                    playerController.gameObject.SetActive(false);
+                    playerController.updatePlayerIcon(false);
+                }          
             }
         }
     }

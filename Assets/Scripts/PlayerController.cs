@@ -8,7 +8,7 @@ public class PlayerController : UserData
 {
     public Scoring scoring;
     public string answer = string.Empty;
-    public TextMeshProUGUI userNameText, playerButtonText;
+    public TextMeshProUGUI playerButtonText;
     public CanvasGroup userNameBox;
     public Button jumpBtn;
     public Sprite defaultIcon;
@@ -42,16 +42,24 @@ public class PlayerController : UserData
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
 
-        if (this.userNameText != null) this.userNameText.color = this.PlayerColor;
         if (this.playerButtonText != null) this.playerButtonText.color = this.PlayerColor;
-        for (int i = 0; i < this.PlayerIcons.Length; i++)
-        {
-            if (this.PlayerIcons[i] != null) this.PlayerIcons[i].sprite = this.defaultIcon;
-        }
         this.scoring.init();
 
         this.characterImage = this.character.gameObject.GetComponent<Image>();
         this.Init();
+    }
+
+    public void updatePlayerIcon(bool _status = false, string _playerName = "", Sprite _icon = null)
+    {
+        for (int i = 0; i < this.PlayerIcons.Length; i++)
+        {
+            if (this.PlayerIcons[i] != null)
+            {
+                this.PlayerIcons[i].playerColor = this.PlayerColor;
+                this.PlayerIcons[i].SetStatus(_status, _playerName, _icon== null ? this.defaultIcon : _icon);
+            }
+        }
+
     }
 
     public void Init()
@@ -61,7 +69,8 @@ public class PlayerController : UserData
         this.scoring.bonnus = 1;
     }
 
-    public void updatePlayerIcon()
+
+    /*public void updatePlayerIcon()
     {
         var icon = LoaderConfig.Instance.apiManager.peopleIcon != null ? SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D) : null;
 
@@ -87,7 +96,7 @@ public class PlayerController : UserData
                 this.PlayerIcons[i].sprite = icon;
             }
         }
-    }
+    }*/
 
     public void setAnsswer(string word)
     {

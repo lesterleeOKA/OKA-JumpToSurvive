@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 2986352457361300252}
   - component: {fileID: 3135583157355082823}
   m_Layer: 5
-  m_Name: Name
+  m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 6225259472446886398}
   - component: {fileID: 6163571151875875701}
   - component: {fileID: 1007210380854423073}
+  - component: {fileID: 7364720178416745063}
   - component: {fileID: 6540426113997971779}
   m_Layer: 5
   m_Name: p2-score
@@ -396,10 +397,10 @@ RectTransform:
   - {fileID: 4699364456994639396}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6225259472446886398
 CanvasRenderer:
@@ -456,6 +457,29 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
   iterations: 15
   shadowSpread: {x: 15, y: 15}
+--- !u!114 &7364720178416745063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277411878148996414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d438833993a672145a256a4898b63d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  playerIcons:
+  - {fileID: 438600670981440253}
+  playerNames:
+  - {fileID: 7545726141492546908}
+  playerNos:
+  - {fileID: 9213806089020610984}
+  playerNameBoxes:
+  - {fileID: 3703445365657682834}
 --- !u!114 &6540426113997971779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,6 +646,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 6557280462373945260}
 --- !u!82 &6557280462373945260
 AudioSource:
@@ -1330,6 +1355,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 2521318396597857824}
 --- !u!82 &2521318396597857824
 AudioSource:
@@ -1514,7 +1540,7 @@ GameObject:
   - component: {fileID: 1117712988348312324}
   - component: {fileID: 1171435086662255328}
   m_Layer: 5
-  m_Name: Name
+  m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1648,6 +1674,7 @@ GameObject:
   - component: {fileID: 441676400746484926}
   - component: {fileID: 5448999935443745315}
   - component: {fileID: 3628995533070755300}
+  - component: {fileID: 3913920202598215250}
   - component: {fileID: 8533523459848832915}
   m_Layer: 5
   m_Name: p1-score
@@ -1674,10 +1701,10 @@ RectTransform:
   - {fileID: 2817066278856796584}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &441676400746484926
 CanvasRenderer:
@@ -1734,6 +1761,29 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
   iterations: 5
   shadowSpread: {x: 10, y: 10}
+--- !u!114 &3913920202598215250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3145876874244840305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d438833993a672145a256a4898b63d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  playerIcons:
+  - {fileID: 1109971270222560948}
+  playerNames:
+  - {fileID: 3960229248118228341}
+  playerNos:
+  - {fileID: 3135583157355082823}
+  playerNameBoxes:
+  - {fileID: 8805902154075113944}
 --- !u!114 &8533523459848832915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2087,6 +2137,7 @@ GameObject:
   - component: {fileID: 2684836879186306615}
   - component: {fileID: 514615490844053675}
   - component: {fileID: 4755677583578786950}
+  - component: {fileID: 3299660837800336272}
   - component: {fileID: 7980697163921169842}
   m_Layer: 5
   m_Name: p3-score
@@ -2113,10 +2164,10 @@ RectTransform:
   - {fileID: 1169466264079323114}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 880, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2684836879186306615
 CanvasRenderer:
@@ -2173,6 +2224,29 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
   iterations: 15
   shadowSpread: {x: 15, y: 15}
+--- !u!114 &3299660837800336272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4023172505142145599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d438833993a672145a256a4898b63d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  playerIcons:
+  - {fileID: 8382997791727455377}
+  playerNames:
+  - {fileID: 2558034671515140646}
+  playerNos:
+  - {fileID: 5963047162514621662}
+  playerNameBoxes:
+  - {fileID: 8082349105649770035}
 --- !u!114 &7980697163921169842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,6 +3179,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 6491943544592315780}
 --- !u!82 &6491943544592315780
 AudioSource:
@@ -3354,6 +3429,7 @@ MonoBehaviour:
   CountFPS: 30
   Duration: 2
   NumberFormat: N0
+  Unit: 
   scoringEffect: {fileID: 6397219797466662447}
 --- !u!82 &6397219797466662447
 AudioSource:
@@ -3539,7 +3615,7 @@ GameObject:
   - component: {fileID: 6192580071338990649}
   - component: {fileID: 9213806089020610984}
   m_Layer: 5
-  m_Name: Name
+  m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3897,6 +3973,7 @@ GameObject:
   - component: {fileID: 7451850468665314409}
   - component: {fileID: 2066166792633567514}
   - component: {fileID: 912703270678457265}
+  - component: {fileID: 8630009067767976536}
   - component: {fileID: 364045322249550312}
   m_Layer: 5
   m_Name: p4-score
@@ -3923,10 +4000,10 @@ RectTransform:
   - {fileID: 3231303747877482615}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 266.3883}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1220, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7451850468665314409
 CanvasRenderer:
@@ -3983,6 +4060,29 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
   iterations: 15
   shadowSpread: {x: 15, y: 15}
+--- !u!114 &8630009067767976536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8899460191781525649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d438833993a672145a256a4898b63d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  playerIcons:
+  - {fileID: 9025607429673380588}
+  playerNames:
+  - {fileID: 3970828814964370231}
+  playerNos:
+  - {fileID: 1171435086662255328}
+  playerNameBoxes:
+  - {fileID: 1815182761116076285}
 --- !u!114 &364045322249550312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4009,7 +4109,7 @@ GameObject:
   - component: {fileID: 3064819344239129529}
   - component: {fileID: 5963047162514621662}
   m_Layer: 5
-  m_Name: Name
+  m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
