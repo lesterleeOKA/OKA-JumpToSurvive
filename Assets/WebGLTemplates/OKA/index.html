@@ -26,7 +26,18 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
+      async function accessAudio() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log('Microphone access granted and audio playback started.');
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Could not access the microphone. Please check your permissions.');
+            }
+        }
+
       window.addEventListener("load", function () {
+        accessAudio();
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("ServiceWorker.js");
         }
