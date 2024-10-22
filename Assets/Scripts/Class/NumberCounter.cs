@@ -9,9 +9,11 @@ public class NumberCounter : MonoBehaviour
     public int CountFPS = 30;
     public float Duration = 1f;
     public string NumberFormat = "N0";
-    public string Unit="";
+    public string Unit = "";
     private int _value;
     public AudioSource scoringEffect;
+    public Color textColor = default;
+    public bool isAnimatedColor = true;
 
     public int Value
     {
@@ -23,7 +25,11 @@ public class NumberCounter : MonoBehaviour
 
     private void Awake()
     {
-        if(this.Text == null) Text = GetComponent<TextMeshProUGUI>();
+        if (this.Text == null)
+        {
+            Text = GetComponent<TextMeshProUGUI>();
+            Text.color = this.textColor;
+        }
     }
 
     private void UpdateText(int newValue)
@@ -34,7 +40,7 @@ public class NumberCounter : MonoBehaviour
 
     private IEnumerator CountText(int newValue)
     {
-        Text.color = Color.yellow;
+        if (this.isAnimatedColor) Text.color = Color.yellow;
 
         WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
 
@@ -87,10 +93,10 @@ public class NumberCounter : MonoBehaviour
                     // Play scoring effect for even value
                     if (this.scoringEffect != null && AudioController.Instance.audioStatus) this.scoringEffect.Play();
                 }
-                yield return Wait;            
+                yield return Wait;
             }
         }
 
-        Text.color = Color.white;
+        Text.color = this.textColor;
     }
 }

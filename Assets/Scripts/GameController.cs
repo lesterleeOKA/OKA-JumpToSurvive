@@ -95,7 +95,7 @@ public class GameController : GameBaseController
     private IEnumerator checkAllAnswer()
     {
         bool showCorrect = false;
-        float delay = 1f;
+        float delay = 2f;
         int currentTime = Mathf.FloorToInt(((this.gameTimer.gameDuration - this.gameTimer.currentTime) / this.gameTimer.gameDuration) * 100);
 
         for (int i = 0; i < this.playersList.Count; i++)
@@ -105,8 +105,6 @@ public class GameController : GameBaseController
                 playerController.checkAnswer(currentTime);
 
                 if(playerController.scoring.correct && !showCorrect) {
-                    this.setGetScorePopup(true);
-                    delay = 2f;
                     showCorrect = true;
                 }
             }
@@ -114,8 +112,17 @@ public class GameController : GameBaseController
         }
 
         AudioController.Instance?.PlayAudio(showCorrect ? 1 : 2);
-        yield return new WaitForSeconds(delay);
-        this.setGetScorePopup(false);
+
+        if (showCorrect) { 
+            this.setGetScorePopup(true);
+            yield return new WaitForSeconds(delay);
+            this.setGetScorePopup(false);
+        }
+        else { 
+            this.setWrongPopup(true);
+            yield return new WaitForSeconds(delay);
+            this.setWrongPopup(false);
+        }
         //this.RandomlySortChildObjects();
 
         for (int i = 0; i < this.playersList.Count; i++)
@@ -127,7 +134,6 @@ public class GameController : GameBaseController
             }
 
         }
-
 
         QuestionController.Instance.nextQuestion();
     }

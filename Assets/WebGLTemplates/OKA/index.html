@@ -24,20 +24,26 @@
         </div>
       </div>
       <div id="unity-warning"> </div>
+	  <audio src="/silence.mp3" autoplay muted controls> 
     </div>
     <script>
-      async function accessAudio() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                console.log('Microphone access granted and audio playback started.');
-            } catch (error) {
-                console.error('Error accessing microphone:', error);
-                alert('Could not access the microphone. Please check your permissions.');
-            }
-        }
+		/*async function accessAudio() {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+				console.log('Microphone access granted and audio playback started.');
+
+				// Stop all tracks after using the stream
+				stream.getTracks().forEach(function (track) {
+					track.stop();
+				});
+			} catch (error) {
+				console.error('Error accessing microphone:', error);
+				alert('Could not access the microphone. Please check your permissions.');
+			}
+		}*/
 
       window.addEventListener("load", function () {
-        accessAudio();
+        //accessAudio();
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("ServiceWorker.js");
         }

@@ -35,14 +35,18 @@ public class PlayerIcon : MonoBehaviour
     public void SetStatus(bool _status = false, string _playerName = "", Sprite _icon = null)
     {
         this.gameObject.SetActive(_status);
-        if(_status) { 
+        if (_status)
+        {
             for (int i = 0; i < this.PlayerNames.Length; i++)
             {
-                if (this.PlayerNames[i] != null && this.PlayerNameBoxes[i] != null) {
+                if (this.PlayerNames[i] != null && this.PlayerNameBoxes[i] != null)
+                {
 
                     if (!string.IsNullOrEmpty(_playerName))
                     {
                         SetUI.Set(this.PlayerNameBoxes[i], true, 0f);
+                        if (this.PlayerNameBoxes[i].GetComponent<Image>() != null)
+                            this.PlayerNameBoxes[i].GetComponent<Image>().color = this.playerColor;
                         this.PlayerNames[i].text = _playerName;
                     }
                     else
@@ -65,7 +69,7 @@ public class PlayerIcon : MonoBehaviour
         {
             if (this.PlayerNos[i] != null)
             {
-                this.PlayerNos[i].color = playerColor;
+                this.PlayerNos[i].color = this.playerColor;
             }
         }
     }

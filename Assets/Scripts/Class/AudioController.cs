@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class AudioController : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class AudioController : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField]
     private AudioSource bgmAudioSource;
+    //[SerializeField]
+    //private AudioClip bgmClip;
     public bool audioStatus = false;
 
     private void Awake()
@@ -20,6 +23,15 @@ public class AudioController : MonoBehaviour
     {
         this.audioSource = GetComponent<AudioSource>();
     }
+
+    /*private IEnumerator delayEnableBGM()
+    {
+        yield return new WaitForSeconds(1f);
+        if(this.bgmAudioSource != null) { 
+            this.bgmAudioSource.clip = bgmClip;
+            this.bgmAudioSource.Play();
+        }
+    }*/
 
     public void PlayAudio(int index, bool loop=false)
     {
