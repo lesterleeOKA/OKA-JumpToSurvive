@@ -440,7 +440,7 @@ MonoBehaviour:
         score: 0
         percent: 0
   unitKey: 
-  testURL: https://dev.openknowledge.hk/RainbowOne/webapp/2.8/gamefile/OKAGames/JumpToWin/?jwt=eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dfZW5hYmxlZCI6IjEiLCJ0b2tlbiI6IjQyLTZjYzQ1NTJiNTk2YzZkYmFlZDE0ZjE4ZDNjNmY0MTczN2Q4MmNhZWUzMDQ0ZDg4NDVlODljOGNmZDhjODkyM2UiLCJleHBpcmVzIjoxNzMwMjc1MzcyLCJyZW5ld19lbmFibGVkIjoxLCJ0aW1lIjoiMjAyNC0xMC0yMyAwODowMjo1MiBHTVQiLCJ1aWQiOiI0MiIsInVzZXJfcm9sZSI6IjIiLCJzY2hvb2xfaWQiOiIyNzIiLCJpcCI6IjE2OS4yNTQuMTI5LjIiLCJ2ZXJzaW9uIjpudWxsLCJkZXZpY2UiOiJ3aW5kb3dzIn0.lbodKg-HlWr-CGpos-riUMaLpsXk2eaFVvn3DzCHStQ&lang=tc&id=book-667486-3053688
+  testURL: 
 --- !u!114 &1694491774
 MonoBehaviour:
   m_ObjectHideFlags: 0
