@@ -164,10 +164,15 @@ public class APIManager
 
                         if (!string.IsNullOrEmpty(this.gameSettingJson) && this.gameSettingJson != "{}")
                         {
+                            this.settings.gameTime = jsonNode["setting"]["game_time"];
                             string bgImagUrl = jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "");
+                            string gamePreviewUrl = jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "");
+                            LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
+
                             if (!bgImagUrl.StartsWith("https://"))
                             {
-                                this.settings.backgroundImageUrl = "https:" + bgImagUrl;
+                                this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;     
+                                this.settings.previewGameImageUrl = APIConstant.blobServerRelativePath + gamePreviewUrl;
                             }
 
                             yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
@@ -376,6 +381,8 @@ public static class APIConstant
         return $"{loader.CurrentHostName}/RainbowOne/index.php/PHPGateway/proxy/2.8/?api=ROGame.get_game_setting&json={jsonParameter}&jwt=" + _jwt;
     }
 
+    public static string blobServerRelativePath = "https://oka.blob.core.windows.net/media/";
+
     public static string SubmitAnswerAPI(LoaderConfig loader, string playloads, int uid, string _jwt)
     {
         if (loader == null) return null;
@@ -420,5 +427,5 @@ public class Settings
     public string previewGameImageUrl;
     public string backgroundImageUrl;
     public string instructionContent = string.Empty;
-    public float gameTime = 0f;
+    public int gameTime = 0;
 }
