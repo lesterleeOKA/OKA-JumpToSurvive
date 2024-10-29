@@ -28,7 +28,7 @@ public class QuestionList
     public int star;
     public int score;
     public int correctAnswerIndex;
-    public string[] Media;
+    public string[] media;
     public Texture texture;
     public AudioClip audioClip;
 }

@@ -30,6 +30,11 @@ public class LoadImage : Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<Texture> callback = null)
     {
+        if (LoaderConfig.Instance.apiManager.IsLogined)
+        {
+            this.loadImageMethod = LoadImageMethod.Url;
+        }
+
         switch (this.loadImageMethod)
         {
             case LoadImageMethod.StreamingAssets:
@@ -205,6 +210,7 @@ public class LoadImage : Downloader
             {
                 // Get the texture and apply it to the target renderer
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                Debug.Log("loaded api qa texture: " + texture.texelSize);
                 if (texture != null)
                 {
                     texture.filterMode = FilterMode.Bilinear;

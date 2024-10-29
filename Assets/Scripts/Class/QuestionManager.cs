@@ -167,7 +167,7 @@ public class QuestionManager : MonoBehaviour
             var qa = this.questionData.questions[i];
             string folderName = qa.questionType == "fillInBlank" ? "audio" : qa.questionType;
             string qid = qa.qid;
-            string mediaUrl = qa.Media != null && qa.Media.Length > 0 ? qa.Media[0] : "";
+            string mediaUrl = qa.media != null && qa.media.Length > 0 ? APIConstant.blobServerRelativePath + qa.media[0] : "";
 
             switch (qa.questionType)
             {

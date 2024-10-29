@@ -26,10 +26,16 @@ public class LoadAudio: Downloader
 
     public IEnumerator Load(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
+        if (LoaderConfig.Instance.apiManager.IsLogined)
+        {
+            this.loadAudioMethod = LoadAudioMethod.Url;
+        }
+
         switch (this.loadAudioMethod)
         {
             case LoadAudioMethod.StreamingAssets: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
             case LoadAudioMethod.Resources: return this.LoadAudioFromResources(folderName, fileName, callback);
+            case LoadAudioMethod.Url: return this.LoadAudioFromURL(fileName, callback);
             //case LoadFileMethod.AssetsBundle: return this.LoadAudioFromAssetsBundle(folderName, fileName, callback);
             default: return this.LoadAudioFromStreamingAssets(folderName, fileName, callback);
         }
@@ -130,6 +136,50 @@ public class LoadAudio: Downloader
         }
     }
 
+    private IEnumerator LoadAudioFromURL(string url = "", Action<AudioClip> callback = null)
+    {
+        string fileName = Path.GetFileName(url);
+        LogController.Instance?.debug($"Loading Image from url : {url}");
+        using (UnityWebRequest uwq = UnityWebRequest.Get(url))
+        {
+            uwq.certificateHandler = new WebRequestSkipCert();
+            yield return uwq.SendWebRequest();
+
+            if (uwq.result == UnityWebRequest.Result.Success)
+            {
+                byte[] results = uwq.downloadHandler.data;
+                if (results != null && results.Length > 0)
+                {
+                    using (var memStream = new MemoryStream(results))
+                    {
+                        var mpgFile = new NLayer.MpegFile(memStream);
+                        var samples = new float[mpgFile.Length];
+
+                        // Read samples in chunks if necessary for large files
+                        mpgFile.ReadSamples(samples, 0, (int)mpgFile.Length);
+
+                        var audioClip = AudioClip.Create(fileName, samples.Length, mpgFile.Channels, mpgFile.SampleRate, false);
+                        audioClip.SetData(samples, 0);
+
+                        if (audioClip != null)
+                        {
+                            LogController.Instance?.debug("Audio loaded successfully!");
+                            callback?.Invoke(audioClip);
+                        }
+                    }
+                }
+                else
+                {
+                    LogController.Instance?.debugError("Downloaded data is empty.");
+                }
+            }
+            else
+            {
+                LogController.Instance?.debugError($"Failed to load Audio from path: {url}, Error: {uwq.error}");
+            }
+        }
+    }
+
 
     private IEnumerator LoadAudioFromResources(string folderName = "", string fileName = "", Action<AudioClip> callback = null)
     {
@@ -156,6 +206,7 @@ public enum LoadAudioMethod
 {
     Resources = 0,
     StreamingAssets = 1,
+    Url = 2
 }
 
 public enum AudioFormat
