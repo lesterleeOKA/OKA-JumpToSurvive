@@ -131,7 +131,7 @@ public class PlayerController : UserData
     {
         var loader = LoaderConfig.Instance;
         var currentQuestion = QuestionController.Instance?.currentQuestion;
-        int eachQAScore = currentQuestion.qa.score == 0 ? 10 : currentQuestion.qa.score;
+        int eachQAScore = currentQuestion.qa.score.full == 0 ? 10 : currentQuestion.qa.score.full;
         int currentScore = this.Score;
         int resultScore = this.scoring.score(this.answer, currentScore,
                                             currentQuestion.correctAnswer,

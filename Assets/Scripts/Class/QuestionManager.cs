@@ -169,6 +169,14 @@ public class QuestionManager : MonoBehaviour
             string qid = qa.qid;
             string mediaUrl = qa.media != null && qa.media.Length > 0 ? APIConstant.blobServerRelativePath + qa.media[0] : "";
 
+            if(qa.answers.Length > 0)
+            {
+                if (string.IsNullOrEmpty(qa.correctAnswer))
+                {
+                    qa.correctAnswer = qa.answers[qa.correctAnswerIndex];
+                }
+            }
+
             switch (qa.questionType)
             {
                 case "text":

@@ -167,6 +167,7 @@ public class APIManager
                             this.settings.gameTime = jsonNode["setting"]["game_time"];
                             string bgImagUrl = jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "");
                             string gamePreviewUrl = jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "");
+                            this.settings.instructionContent = jsonNode["setting"]["description"].ToString().Replace("\"", "");
                             LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
 
                             if (!bgImagUrl.StartsWith("https://"))
