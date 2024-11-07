@@ -101,15 +101,15 @@ public class GameSetting : MonoBehaviour
             // Assign textures based on their URL
             if (url == this.apiManager.settings.backgroundImageUrl)
             {
-                if (texture != null) this.gameSetup.bgTexture = texture;
+                this.gameSetup.bgTexture = texture != null ? texture : null;
             }
             else if (url == this.apiManager.settings.previewGameImageUrl)
             {
-                if (texture != null) this.gameSetup.previewTexture = texture;
+                this.gameSetup.previewTexture = texture != null ? texture : null;
             }
             else if (url == this.apiManager.settings.prefabItemImageUrl)
             {
-                if (texture != null) this.gameSetup.prefabTexture = texture;
+                this.gameSetup.prefabTexture = texture != null ? texture : null;
             }
         }
 
@@ -207,22 +207,15 @@ public class GameSetup: LoadImage
         if (!string.IsNullOrEmpty(content) && this.instructions == null)
         {
             var instructionText = GameObject.FindGameObjectWithTag("Instruction");
-
-            if(instructionText != null)
-            {
-                this.instructions = instructionText.GetComponent<InstructionText>();
-                this.instructions.setContent(content);
-            }
+            this.instructions = instructionText != null ? instructionText.GetComponent<InstructionText>() : null;
+            if (instructionText != null) this.instructions.setContent(content);
         }
 
         if (this.gamePreview == null)
         {
             var preview = GameObject.FindGameObjectWithTag("GamePreview");
-            if(preview != null)
-            {
-                this.gamePreview = preview.GetComponent<RawImage>();
-                this.gamePreview.texture = this.previewTexture;
-            }
+            this.gamePreview = preview != null ? preview.GetComponent<RawImage>() : null;
+            if (preview != null) this.gamePreview.texture = this.previewTexture;
         }
     }
 }

@@ -194,11 +194,11 @@ public class APIManager
                                     this.settings.prefabItemImageUrl = APIConstant.blobServerRelativePath + prefabItemUrl;
                             }
 
-                            yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
+                            /*yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
                             {
                                 LogController.Instance?.debug($"Downloaded Background Image from api!!");
                                 LoaderConfig.Instance.gameSetup.bgTexture = _backgroundImage;
-                            });
+                            });*/
 
                             //remain settings
                             //...
