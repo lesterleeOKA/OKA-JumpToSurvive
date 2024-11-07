@@ -95,7 +95,7 @@ public class GameSetting : MonoBehaviour
             {
                 texture = _texture;
                 LogController.Instance?.debug($"Downloaded image from: {url}");
-                ExternalCaller.UpdateLoadBarStatus($"Loading {url}");
+                ExternalCaller.UpdateLoadBarStatus($"Loading SetupUI");
             }));
 
             // Assign textures based on their URL

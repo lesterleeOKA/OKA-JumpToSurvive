@@ -108,8 +108,6 @@ public static class SetUI
         // Use Uri to ensure the URL is well-formed
         Uri uri = new Uri(url);
         string fileName = Path.GetFileNameWithoutExtension(uri.LocalPath);
-        Debug.Log("Get fileName: " + fileName);
-
         // Extract the file name from the last segment of the path
         return fileName;
     }
