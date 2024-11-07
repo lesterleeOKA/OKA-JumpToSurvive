@@ -10,6 +10,15 @@ public class Bird : Item
     public Material birdOutline;
     public int originalSortOrder = 10;
 
+    public void setBirdTexture(string fileName, Sprite sprite = null)
+    {
+        if(sprite != null && this.birdSprite != null && fileName != this.birdSprite.sprite.name)
+        {
+            this.birdSprite.sprite = sprite;
+            this.birdSprite.GetComponent<Animator>().enabled = false;
+        }
+    }
+
     public void setOutline(bool status)
     {
         if(this.birdOutline != null)

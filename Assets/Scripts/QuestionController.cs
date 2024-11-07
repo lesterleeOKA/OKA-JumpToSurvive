@@ -163,6 +163,11 @@ public class QuestionController : MonoBehaviour
             rock.transform.SetParent(this.wordParent, true); // Set parent and keep local scale
             rock.transform.localScale = Vector3.one; // Ensure scale is set correctly
             createdWord = rock.GetComponent<Bird>();
+            if(LoaderConfig.Instance.gameSetup.prefabTexture != null) { 
+                string prefabImgName = SetUI.GetFileNameFromUrl(LoaderConfig.Instance.apiManager.settings.prefabItemImageUrl);
+                Sprite prefabUI = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.gameSetup.prefabTexture as Texture2D);
+                createdWord.setBirdTexture(prefabImgName, prefabUI);        
+            }
             createdWord.speed = speed;
             createdWord.startPosition = pos;
             createdWord.setWord(text, id + 1, birdOutline);

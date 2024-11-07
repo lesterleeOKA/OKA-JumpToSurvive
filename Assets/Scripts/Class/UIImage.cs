@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.IO;
 
 [Serializable]
 public class UIImage
@@ -102,4 +103,14 @@ public static class SetUI
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
+    public static string GetFileNameFromUrl(string url)
+    {
+        // Use Uri to ensure the URL is well-formed
+        Uri uri = new Uri(url);
+        string fileName = Path.GetFileNameWithoutExtension(uri.LocalPath);
+        Debug.Log("Get fileName: " + fileName);
+
+        // Extract the file name from the last segment of the path
+        return fileName;
+    }
 }

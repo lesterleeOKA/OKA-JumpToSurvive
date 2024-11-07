@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -389,6 +389,7 @@ MonoBehaviour:
     allTextures: []
     bgTexture: {fileID: 2800000, guid: 80d2e9bcd5453df46a852715faf67eb4, type: 3}
     previewTexture: {fileID: 2800000, guid: 39d965bc15d31ae4fa471ef067da3e69, type: 3}
+    prefabTexture: {fileID: 0}
     gameBackground: {fileID: 0}
     gamePreview: {fileID: 0}
     instructions: {fileID: 0}
@@ -420,6 +421,7 @@ MonoBehaviour:
       backgroundImageUrl: 
       instructionContent: 
       gameTime: 0
+      prefabItemImageUrl: 
     maxRetries: 10
     debugLayer: {fileID: 364249476}
     loginErrorBox: {fileID: 2087651252}

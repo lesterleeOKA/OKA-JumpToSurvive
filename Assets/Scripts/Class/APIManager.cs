@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 using TMPro;
+using Unity.VisualScripting;
 
 [Serializable]
 public class APIManager
@@ -153,27 +154,44 @@ public class APIManager
 
                         this.questionJson = jsonNode[APIConstant.QuestionDataHeaderName].ToString(); // Question json data;
                         this.accountJson = jsonNode["account"].ToString(); // Account json data;
-
+                        LogController.Instance?.debug("accountJson: " + this.accountJson);
                         string accountUidString = jsonNode["account"]["uid"];
                         int accountUid = int.Parse(accountUidString);
                         this.accountUid = accountUid;
 
                         this.photoDataUrl = jsonNode["photo"].ToString(); // Account json data;
                         this.gameSettingJson = jsonNode["setting"].ToString();
+                        LogController.Instance?.debug("gameSettingJson: " + this.gameSettingJson);
                         this.payloads = jsonNode["payloads"].ToString();
+                        LogController.Instance?.debug("payloads: " + this.payloads);
 
                         if (!string.IsNullOrEmpty(this.gameSettingJson) && this.gameSettingJson != "{}")
                         {
-                            this.settings.gameTime = jsonNode["setting"]["game_time"];
-                            string bgImagUrl = jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "");
-                            string gamePreviewUrl = jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "");
+                            this.settings.gameTime = jsonNode["setting"]["game_time"] != null ? jsonNode["setting"]["game_time"] : null;
+                            string bgImagUrl = jsonNode["setting"]["background_image_url"] != null ? 
+                                jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "") : null;
+                            string gamePreviewUrl = jsonNode["setting"]["game_preview_image"] != null ? 
+                                jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "") : null;
+                            string prefabItemUrl = jsonNode["setting"]["flying_item_image"] != null ? 
+                                jsonNode["setting"]["flying_item_image"].ToString().Replace("\"", "") : null;
+
                             this.settings.instructionContent = jsonNode["setting"]["description"].ToString().Replace("\"", "");
                             LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
 
-                            if (!bgImagUrl.StartsWith("https://"))
+                            if (bgImagUrl != null)
                             {
-                                this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;     
-                                this.settings.previewGameImageUrl = APIConstant.blobServerRelativePath + gamePreviewUrl;
+                                if (!bgImagUrl.StartsWith("https://") || !bgImagUrl.StartsWith(APIConstant.blobServerRelativePath))
+                                    this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;     
+                            }
+                            if (gamePreviewUrl != null)
+                            {
+                                if (!gamePreviewUrl.StartsWith("https://") || !gamePreviewUrl.StartsWith(APIConstant.blobServerRelativePath))
+                                    this.settings.previewGameImageUrl = APIConstant.blobServerRelativePath + gamePreviewUrl;
+                            }
+                            if(prefabItemUrl != null)
+                            {
+                                if (!prefabItemUrl.StartsWith("https://") || !prefabItemUrl.StartsWith(APIConstant.blobServerRelativePath))
+                                    this.settings.prefabItemImageUrl = APIConstant.blobServerRelativePath + prefabItemUrl;
                             }
 
                             yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
@@ -429,4 +447,5 @@ public class Settings
     public string backgroundImageUrl;
     public string instructionContent = string.Empty;
     public int gameTime = 0;
+    public string prefabItemImageUrl;
 }
