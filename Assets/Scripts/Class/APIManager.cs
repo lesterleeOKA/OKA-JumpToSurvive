@@ -175,7 +175,8 @@ public class APIManager
                             string prefabItemUrl = jsonNode["setting"]["flying_item_image"] != null ? 
                                 jsonNode["setting"]["flying_item_image"].ToString().Replace("\"", "") : null;
 
-                            this.settings.instructionContent = jsonNode["setting"]["hint"].ToString().Replace("\"", "");
+                            this.settings.instructionContent = jsonNode["setting"]["hint"] != null ?
+                                jsonNode["setting"]["hint"].ToString().Replace("\"", "") : null;
                             LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
 
                             if (bgImagUrl != null)
