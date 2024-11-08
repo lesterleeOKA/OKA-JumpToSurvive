@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -341,7 +341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -655, y: -393.72}
+  m_AnchoredPosition: {x: -675, y: -410}
   m_SizeDelta: {x: 999, y: 391}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20876051 stripped
@@ -3044,9 +3044,13 @@ MonoBehaviour:
       answers: []
       correctAnswer: 
       star: 0
-      score: 0
+      score:
+        full: 0
+        n: 0
+        unit: 0
       correctAnswerIndex: 0
-      Media: []
+      maxScore: 0
+      media: []
       texture: {fileID: 0}
       audioClip: {fileID: 0}
     questionText: {fileID: 365331385}
@@ -32441,6 +32445,10 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9061376030492114657, guid: eed31a4434fdfe7488edddfef555fa7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 300
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -32462,8 +32470,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 300}
-  m_SizeDelta: {x: 440, y: 200}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 731.1501, y: 332.3409}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &7814261991889583683
 CanvasGroup:
