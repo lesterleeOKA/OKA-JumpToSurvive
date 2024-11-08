@@ -20789,6 +20789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructionText: {fileID: 2038851053}
   lengthOfPixelX: 20
+  maxWidth: 1100
 --- !u!1 &2038867024
 GameObject:
   m_ObjectHideFlags: 0
