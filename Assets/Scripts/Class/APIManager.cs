@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 using TMPro;
-using Unity.VisualScripting;
 
 [Serializable]
 public class APIManager
@@ -35,7 +34,7 @@ public class APIManager
     public LoadImage loadImage;
     public Texture peopleIcon;
     public string loginName = string.Empty;
-    public Settings settings;
+    public GameSettings settings;
     public int maxRetries = 10;
     public CanvasGroup debugLayer;
     public CanvasGroup loginErrorBox;
@@ -172,9 +171,6 @@ public class APIManager
                                 jsonNode["setting"]["background_image_url"].ToString().Replace("\"", "") : null;
                             string gamePreviewUrl = jsonNode["setting"]["game_preview_image"] != null ? 
                                 jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "") : null;
-                            string prefabItemUrl = jsonNode["setting"]["flying_item_image"] != null ? 
-                                jsonNode["setting"]["flying_item_image"].ToString().Replace("\"", "") : null;
-
                             this.settings.instructionContent = jsonNode["setting"]["hint"] != null ?
                                 jsonNode["setting"]["hint"].ToString().Replace("\"", "") : null;
                             LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
@@ -182,27 +178,16 @@ public class APIManager
                             if (bgImagUrl != null)
                             {
                                 if (!bgImagUrl.StartsWith("https://") || !bgImagUrl.StartsWith(APIConstant.blobServerRelativePath))
-                                    this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;     
+                                    this.settings.backgroundImageUrl = APIConstant.blobServerRelativePath + bgImagUrl;
                             }
                             if (gamePreviewUrl != null)
                             {
                                 if (!gamePreviewUrl.StartsWith("https://") || !gamePreviewUrl.StartsWith(APIConstant.blobServerRelativePath))
                                     this.settings.previewGameImageUrl = APIConstant.blobServerRelativePath + gamePreviewUrl;
                             }
-                            if(prefabItemUrl != null)
-                            {
-                                if (!prefabItemUrl.StartsWith("https://") || !prefabItemUrl.StartsWith(APIConstant.blobServerRelativePath))
-                                    this.settings.prefabItemImageUrl = APIConstant.blobServerRelativePath + prefabItemUrl;
-                            }
 
-                            /*yield return this.loadImage.Load("", this.settings.backgroundImageUrl, _backgroundImage =>
-                            {
-                                LogController.Instance?.debug($"Downloaded Background Image from api!!");
-                                LoaderConfig.Instance.gameSetup.bgTexture = _backgroundImage;
-                            });*/
-
-                            //remain settings
-                            //...
+                            ////////Game Customization params/////////
+                            SetParams.setCustomParameters(this.settings, jsonNode);
                         }
 
                         if (this.debugText != null)
@@ -448,5 +433,5 @@ public class Settings
     public string backgroundImageUrl;
     public string instructionContent = string.Empty;
     public int gameTime = 0;
-    public string prefabItemImageUrl;
 }
+
