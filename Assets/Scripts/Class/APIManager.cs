@@ -173,7 +173,10 @@ public class APIManager
                                 jsonNode["setting"]["game_preview_image"].ToString().Replace("\"", "") : null;
                             this.settings.instructionContent = jsonNode["setting"]["hint"] != null ?
                                 jsonNode["setting"]["hint"].ToString().Replace("\"", "") : null;
-                            LoaderConfig.Instance.gameSetup.gameTime = this.settings.gameTime;
+
+                            LoaderConfig.Instance.gameSetup.gameTime = LoaderConfig.Instance.gameSetup.gameTime == 0
+                                    ? this.settings.gameTime
+                                    : LoaderConfig.Instance.gameSetup.gameTime;
 
                             if (bgImagUrl != null)
                             {
