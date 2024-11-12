@@ -42,9 +42,8 @@ public class GameBaseController : MonoBehaviour
 
     public void retryGame()
     {
-        if (AudioController.Instance != null) 
-            AudioController.Instance.changeBGMStatus(true);
-
+        QuestionManager.Instance?.ReorderTheQuestionList();
+        if (AudioController.Instance != null) AudioController.Instance.changeBGMStatus(true);
         LoaderConfig.Instance?.exitPage("Replay", null, ()=> SceneManager.LoadScene(2));
     }
 
