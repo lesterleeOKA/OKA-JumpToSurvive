@@ -6,6 +6,7 @@ public class Bird : Item
     private EdgeCollider2D col = null;
     public float checkEndDistance = 200f;
     public float speed = 200f;
+    public Canvas wordBoard;
     public SpriteRenderer birdSprite;
     public Material birdOutline;
     public int originalSortOrder = 10;
@@ -35,6 +36,10 @@ public class Bird : Item
                 this.birdSprite.sortingOrder = this.originalSortOrder;
                 this.birdSprite.material = this.birdOutline;
                 this.birdSprite.sortingOrder += birdOrder;
+            }
+            if (this.wordBoard != null) { 
+                this.wordBoard.sortingOrder = this.originalSortOrder;
+                this.wordBoard.sortingOrder += birdOrder;
             }
             this.rectTransform = GetComponent<RectTransform>();
             this.col = GetComponent<EdgeCollider2D>();
@@ -76,6 +81,7 @@ public class Bird : Item
         this.setAudioEffect(false);
         this.setOutline(false);
         if (this.birdSprite != null) this.birdSprite.sortingOrder = this.originalSortOrder;
+        if (this.wordBoard != null) this.wordBoard.sortingOrder = this.originalSortOrder;
     }
 
     public void reTrigger()

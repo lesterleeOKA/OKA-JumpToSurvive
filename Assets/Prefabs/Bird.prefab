@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3559264171733697530}
   - component: {fileID: 6828053799395983563}
   - component: {fileID: 2117379984492333093}
+  - component: {fileID: 379754237085680055}
   m_Layer: 5
   m_Name: wordBoard
   m_TagString: Untagged
@@ -94,6 +95,29 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
   iterations: 100
   shadowSpread: {x: 10, y: 10}
+--- !u!223 &379754237085680055
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478660610641706459}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &3039621832044360333
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,6 +516,7 @@ MonoBehaviour:
   allowMove: 0
   checkEndDistance: 200
   speed: 200
+  wordBoard: {fileID: 379754237085680055}
   birdSprite: {fileID: 4960979630659049729}
   birdOutline: {fileID: 0}
   originalSortOrder: 11
