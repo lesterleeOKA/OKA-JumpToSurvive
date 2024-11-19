@@ -88,7 +88,7 @@ public class CurrentQuestion
     {
         bool updating = true;
         float progress = 0f;
-        if (this.answeredQuestion < totalQuestion - 1)
+        if (this.numberQuestion < totalQuestion)
         {
             this.answeredQuestion += 1;
             progress = (float)this.answeredQuestion / totalQuestion;
