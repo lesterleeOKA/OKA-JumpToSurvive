@@ -15,6 +15,12 @@ public class NumberCounter : MonoBehaviour
     public Color textColor = default;
     public bool isAnimatedColor = true;
 
+    public void Init(string _startValue = "", string _unit = "")
+    {
+        this.Unit = _unit;
+        this.Text.SetText(_startValue.ToString() + this.Unit);
+    }
+
     public int Value
     {
         get { return _value; }
