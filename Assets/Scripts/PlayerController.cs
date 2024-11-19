@@ -226,7 +226,7 @@ public class PlayerController : UserData
     {
         if (AudioController.Instance != null) AudioController.Instance.PlayAudio(0);
         this.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        this.rb.velocity = new Vector2(this.rb.velocity.x, this.rb.velocity.y * jumpSpeedMultiplier);
+        this.rb.velocity = new Vector2(this.rb.velocity.x, this.rb.velocity.y * this.jumpSpeedMultiplier);
         if(this.jumpup_particle != null) this.jumpup_particle.Play();
     }
 
