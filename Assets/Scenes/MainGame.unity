@@ -3034,7 +3034,7 @@ MonoBehaviour:
   createdWords: []
   currentQuestion:
     numberQuestion: 0
-    answeredQuestion: 0
+    answeredQuestion: -1
     questiontype: 0
     qa:
       id: 0

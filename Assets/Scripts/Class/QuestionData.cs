@@ -60,7 +60,7 @@ public enum QuestionType
 public class CurrentQuestion
 {
     public int numberQuestion = 0;
-    public int answeredQuestion = 0;
+    public int answeredQuestion = -1;
     public QuestionType questiontype = QuestionType.None;
     public QuestionList qa = null;
     public TextMeshProUGUI questionText;
@@ -106,8 +106,10 @@ public class CurrentQuestion
                 if(progress >= 1f) onQuestionCompleted?.Invoke();
             });
 
-            int percentage = (int)(progress * 100);
-            this.progressiveBar.GetComponentInChildren<NumberCounter>().Value = percentage;
+            //int percentage = (int)(progress * 100);
+            //this.progressiveBar.GetComponentInChildren<NumberCounter>().Value = percentage;
+            this.progressiveBar.GetComponentInChildren<NumberCounter>().Unit = "/" + totalQuestion;
+            this.progressiveBar.GetComponentInChildren<NumberCounter>().Value = this.answeredQuestion;
         }
         return updating;
     }
