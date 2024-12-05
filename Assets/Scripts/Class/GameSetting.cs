@@ -12,12 +12,83 @@ public class GameSetting : MonoBehaviour
     public string currentURL;
     public GameSetup gameSetup;
     public APIManager apiManager;
+    public delegate void ParameterHandler(string value);
+    protected private Dictionary<string, ParameterHandler> customHandlers = new Dictionary<string, ParameterHandler>();
+    public string unitKey = string.Empty;
+    public string testURL = string.Empty;
+
+
     protected virtual void Awake()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         Application.runInBackground = true;
         DontDestroyOnLoad(this);
+    }
+
+    protected virtual void GetParseURLParams()
+    {
+        this.CurrentURL = string.IsNullOrEmpty(Application.absoluteURL) ? this.testURL : Application.absoluteURL;
+        string[] urlParts = this.CurrentURL.Split('?');
+        if (urlParts.Length > 1)
+        {
+            string queryString = urlParts[1];
+            string[] parameters = queryString.Split('&');
+
+            foreach (string parameter in parameters)
+            {
+                string[] keyValue = parameter.Split('=');
+                if (keyValue.Length == 2)
+                {
+                    string key = keyValue[0];
+                    string value = keyValue[1];
+                    LogController.Instance?.debug($"Parameter Key: {key}, Value: {value}");
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+
+                        switch (key)
+                        {
+                            case "jwt":
+                                this.apiManager.jwt = value;
+                                LogController.Instance?.debug("Current jwt: " + this.apiManager.jwt);
+                                break;
+                            case "id":
+                                this.apiManager.appId = value;
+                                LogController.Instance?.debug("Current app/book id: " + this.apiManager.appId);
+                                break;
+                            case "unit":
+                                this.unitKey = value;
+                                LogController.Instance?.debug("Current Game Unit: " + this.unitKey);
+                                break;
+                            case "gameTime":
+                                this.GameTime = float.Parse(value);
+                                LogController.Instance?.debug("Game Time: " + this.GameTime);
+                                this.ShowFPS = true;
+                                break;
+                            case "playerNumbers":
+                                this.PlayerNumbers = int.Parse(value);
+                                LogController.Instance?.debug("player Numbers: " + this.PlayerNumbers);
+                                break;
+                            default:
+                                if (this.customHandlers.TryGetValue(key, out ParameterHandler handler))
+                                {
+                                    handler(value);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void RegisterCustomHandler(string key, ParameterHandler handler)
+    {
+        if (!this.customHandlers.ContainsKey(key))
+        {
+            this.customHandlers[key] = handler;
+        }
     }
 
     protected virtual void Start()

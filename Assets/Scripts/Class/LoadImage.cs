@@ -13,6 +13,7 @@ public class LoadImage : Downloader
     private AssetBundle assetBundle = null;
     [HideInInspector]
     public Texture[] allTextures;
+    public bool useGCCollect = true;
 
     public string ImageExtension
     {
@@ -47,9 +48,15 @@ public class LoadImage : Downloader
                 yield return this.LoadImageFromURL(fileName, callback); break;
             default:
                 yield return this.LoadImageFromStreamingAssets(folderName, fileName, callback); break;
+        }
 
+        if (this.useGCCollect)
+        {
+            yield return Resources.UnloadUnusedAssets();
+            System.GC.Collect();
         }
     }
+
 
     private IEnumerator LoadImageFromStreamingAssets(
     string folderName = "",
@@ -108,8 +115,6 @@ public class LoadImage : Downloader
                 }
                 break;
         }
-
-
     }
 
     private IEnumerator LoadImageFromResources(string folderName = "", string fileName = "", Action<Texture> callback = null)

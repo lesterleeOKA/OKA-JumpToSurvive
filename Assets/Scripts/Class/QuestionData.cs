@@ -152,7 +152,7 @@ public class CurrentQuestion
                     var width = this.questionImage.GetComponent<RectTransform>().sizeDelta.x;
                     if (qaImage.width > qaImage.height)
                     {
-                        this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 350f);
+                        this.questionImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 325f);
                     }
                     else
                     {

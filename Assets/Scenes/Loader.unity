@@ -387,6 +387,7 @@ MonoBehaviour:
     loadImageMethod: 1
     imageType: 2
     allTextures: []
+    useGCCollect: 1
     bgTexture: {fileID: 2800000, guid: 80d2e9bcd5453df46a852715faf67eb4, type: 3}
     previewTexture: {fileID: 2800000, guid: 39d965bc15d31ae4fa471ef067da3e69, type: 3}
     prefabTexture: {fileID: 0}
@@ -413,6 +414,7 @@ MonoBehaviour:
       loadImageMethod: 3
       imageType: 1
       allTextures: []
+      useGCCollect: 1
     peopleIcon: {fileID: 0}
     loginName: 
     settings:
@@ -475,6 +477,7 @@ MonoBehaviour:
     loadImageMethod: 1
     imageType: 1
     allTextures: []
+    useGCCollect: 1
   loadAudio:
     loadMethod: 1
     loadAudioMethod: 1
