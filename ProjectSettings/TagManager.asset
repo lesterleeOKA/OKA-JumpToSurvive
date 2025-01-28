@@ -9,6 +9,26 @@ TagManager:
   - GameBackground
   - Instruction
   - GamePreview
+  - P1_controller
+  - P2_controller
+  - P3_controller
+  - P4_controller
+  - P1_Icon
+  - P2_Icon
+  - P3_Icon
+  - P4_Icon
+  - P1_Score
+  - P2_Score
+  - P3_Score
+  - P4_Score
+  - P1_AnswerScore
+  - P2_AnswerScore
+  - P3_AnswerScore
+  - P4_AnswerScore
+  - P1_ResultScore
+  - P2_ResultScore
+  - P3_ResultScore
+  - P4_ResultScore
   layers:
   - Default
   - TransparentFX

@@ -6,13 +6,11 @@ using DG.Tweening;
 
 public class PlayerController : UserData
 {
+    public CharacterSet characterSet;
     public Scoring scoring;
     public string answer = string.Empty;
-    public TextMeshProUGUI playerButtonText;
     public CanvasGroup userNameBox;
     public Button jumpBtn;
-    public Sprite defaultIcon;
-    public Sprite[] characterSprites;
     public Character character;
     public float jumpSpeedMultiplier = 5f;
     public float jumpForce = 10f;
@@ -20,33 +18,72 @@ public class PlayerController : UserData
     private Rigidbody2D rb = null;
     public CanvasGroup answerBox;
     public TextMeshProUGUI answerText;
-    private Image characterImage = null;
+    private RawImage characterImage = null;
     private AudioSource effect = null;
     public ParticleSystem jumpup_particle;
     private CanvasGroup jumpBtnGroup = null;
 
-    void Start()
+    public void Init(CharacterSet characterSet = null)
     {
-        if(this.effect == null) { this.effect = this.GetComponent<AudioSource>(); }
-        if(this.character != null) {  
-            rb = this.character.GetComponent<Rigidbody2D>();
+        this.characterSet = characterSet;
+        this.PlayerColor = characterSet.playerColor;
+        if (this.effect == null) { this.effect = this.GetComponent<AudioSource>(); }
+        if (this.character != null)
+        {
+            this.rb = this.character.GetComponent<Rigidbody2D>();
             this.character.enterGround += this.SetCharacterSprite;
             this.character.exitGround += this.SetCharacterSprite;
             this.character.collidedWord += this.TriggerWord;
         }
 
-        if(this.jumpBtn != null)
+        if (this.jumpBtn != null)
         {
             this.jumpBtnGroup = this.jumpBtn.GetComponent<CanvasGroup>();
             this.jumpBtn.GetComponent<Image>().color = this.PlayerColor;
             this.jumpBtn.onClick.AddListener(this.Jump);
         }
+        else
+        {
+            var playerController = GameObject.FindGameObjectWithTag("P" + this.RealUserId + "_controller");
+            if (playerController != null)
+            {
+                this.jumpBtn = playerController.GetComponent<Button>();
+                this.jumpBtnGroup = playerController.GetComponent<CanvasGroup>();
+                this.jumpBtn.onClick.AddListener(this.Jump);
+            }
+        }
 
-        if (this.playerButtonText != null) this.playerButtonText.color = this.PlayerColor;
+        if (this.PlayerIcons[0] == null)
+        {
+            this.PlayerIcons[0] = GameObject.FindGameObjectWithTag("P" + this.RealUserId + "_Icon").GetComponent<PlayerIcon>();
+        }
+
+        if (this.scoring.scoreTxt == null)
+        {
+            this.scoring.scoreTxt = GameObject.FindGameObjectWithTag("P" + this.RealUserId + "_Score").GetComponent<TextMeshProUGUI>();
+        }
+
+        if (this.scoring.answeredEffectTxt == null)
+        {
+            this.scoring.answeredEffectTxt = GameObject.FindGameObjectWithTag("P" + this.RealUserId + "_AnswerScore").GetComponent<TextMeshProUGUI>();
+        }
+
+        if (this.scoring.resultScoreTxt == null)
+        {
+            this.scoring.resultScoreTxt = GameObject.FindGameObjectWithTag("P" + this.RealUserId + "_ResultScore").GetComponent<TextMeshProUGUI>();
+        }
         this.scoring.init();
 
-        this.characterImage = this.character.gameObject.GetComponent<Image>();
-        this.Init();
+        this.characterImage = this.character.gameObject.GetComponent<RawImage>();
+
+        this.resetPlayer();
+    }
+
+    void resetPlayer()
+    {
+        this.setAnsswer("");
+        this.SetCharacterSprite(0);
+        this.scoring.bonnus = 1;
     }
 
     public void updatePlayerIcon(bool _status = false, string _playerName = "", Sprite _icon = null)
@@ -56,19 +93,10 @@ public class PlayerController : UserData
             if (this.PlayerIcons[i] != null)
             {
                 this.PlayerIcons[i].playerColor = this.PlayerColor;
-                this.PlayerIcons[i].SetStatus(_status, _playerName, _icon== null ? this.defaultIcon : _icon);
+                this.PlayerIcons[i].SetStatus(_status, _playerName, _icon);
             }
         }
-
     }
-
-    public void Init()
-    {
-        this.setAnsswer("");
-        this.SetCharacterSprite(0);
-        this.scoring.bonnus = 1;
-    }
-
 
     /*public void updatePlayerIcon()
     {
@@ -115,8 +143,6 @@ public class PlayerController : UserData
             }
             if (this.answerText != null) this.answerText.text = this.answer;
 
-            //if (this.answer != QuestionController.Instance.currentQuestion.correctAnswer)
-              //  StartCoroutine(showHurt());
         }
     }
 
@@ -185,7 +211,7 @@ public class PlayerController : UserData
                        currentQAPercent
                        );
         }
-        this.Init();
+        this.resetPlayer();
     }
 
     void FixedUpdate()
@@ -206,7 +232,6 @@ public class PlayerController : UserData
             if (this.character.isGrounded &&
                StartGame.Instance.startedGame &&
                QuestionController.Instance.allowCheckingWords &&
-               this.characterImage.sprite != this.characterSprites[2] &&
                 string.IsNullOrEmpty(this.answerText.text))
             {
                 this.jumpBtnGroup.alpha = 1f;
@@ -232,8 +257,9 @@ public class PlayerController : UserData
 
     void SetCharacterSprite(int id)
     {
-        if(this.characterSprites[id] != null && this.characterImage.sprite != this.characterSprites[2])
-            this.characterImage.sprite = this.characterSprites[id];
+        var animationSprites = this.characterSet.animationTextures;
+        if(animationSprites[id] != null)
+            this.characterImage.texture = animationSprites[id];
     }
 
 
@@ -252,7 +278,7 @@ public class PlayerController : UserData
         this.SetCharacterSprite(2);
         this.character.transform.DOShakePosition(0.3f, new Vector3(20f, 0f), 20).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo).SetAutoKill(true);
         yield return new WaitForSeconds(1f);
-        this.characterImage.sprite = this.characterSprites[0];
+        this.characterImage.texture = this.characterSet.animationTextures[0];
     }
 
     private void OnApplicationQuit()

@@ -388,8 +388,8 @@ MonoBehaviour:
     imageType: 2
     allTextures: []
     useGCCollect: 1
-    bgTexture: {fileID: 2800000, guid: 80d2e9bcd5453df46a852715faf67eb4, type: 3}
-    previewTexture: {fileID: 2800000, guid: 39d965bc15d31ae4fa471ef067da3e69, type: 3}
+    bgTexture: {fileID: 2800000, guid: 66b738ce12503574bbb9df17efa73bf6, type: 3}
+    previewTexture: {fileID: 2800000, guid: d209452b0d4fc9e43b941399ebce2ea1, type: 3}
     prefabTexture: {fileID: 0}
     gameBackground: {fileID: 0}
     gamePreview: {fileID: 0}
@@ -788,6 +788,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_Font
       value: 
       objectReference: {fileID: 12800000, guid: 65e0021e32122fe4eafa107cecf8fd43, type: 3}
+    - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
+      propertyPath: m_Text
+      value: Ver 1.08
+      objectReference: {fileID: 0}
     - target: {fileID: 4981277203392254078, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Pivot.x
       value: 0

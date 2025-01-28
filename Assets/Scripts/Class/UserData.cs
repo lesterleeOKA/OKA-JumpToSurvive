@@ -33,6 +33,11 @@ public class UserData: MonoBehaviour
         set { this.userId = value; }
     }
 
+    public int RealUserId
+    {
+        get { return this.userId + 1; }
+    }
+
     public int Score
     {
         get { return this.score; }

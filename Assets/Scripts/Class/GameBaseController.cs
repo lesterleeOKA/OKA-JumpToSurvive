@@ -8,7 +8,9 @@ public class GameBaseController : MonoBehaviour
     protected Vector2 originalGetScorePos = Vector2.zero;
     public EndGamePage endGamePage;
     public int playerNumber = 0;
+    public int maxPlayers = 2;
     public bool playing = false;
+    public bool showingPopup = false;
 
     protected virtual void Awake()
     {
@@ -19,6 +21,7 @@ public class GameBaseController : MonoBehaviour
     {
         if(LoaderConfig.Instance != null) this.playerNumber = LoaderConfig.Instance.PlayerNumbers;
         SetUI.Set(this.TopUILayer, false, 0f);
+        SetUI.Set(this.GameUILayer, false, 0f);
         SetUI.Set(this.getScorePopup, false, 0f);
         SetUI.Set(this.TopRightUILayer, true, 0f);
         if (this.getScorePopup != null) this.originalGetScorePos = this.getScorePopup.transform.localPosition;
@@ -49,11 +52,13 @@ public class GameBaseController : MonoBehaviour
 
     public void setGetScorePopup(bool status)
     {
+        this.showingPopup = status;
         SetUI.SetMove(this.getScorePopup, status, status ? Vector2.zero : this.originalGetScorePos, status ? 0.5f : 0f);
     }
 
     public void setWrongPopup(bool status)
     {
+        this.showingPopup = status;
         SetUI.SetMove(this.wrongPopup, status, status ? Vector2.zero : this.originalGetScorePos, status ? 0.5f : 0f);
     }
 

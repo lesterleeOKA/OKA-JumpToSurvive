@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class GameController : GameBaseController
 {
     public static GameController Instance = null;
-    private List<int> previousSiblingIndices = new List<int>();
-    public List<RectTransform> playersList = new List<RectTransform>();
+    public CharacterSet[] characterSets;
+    public GameObject playerPrefab;
     public HorizontalLayoutGroup layoutGroup;
+    public List<PlayerController> playerControllers = new List<PlayerController>();
+    private List<int> previousSiblingIndices = new List<int>();
 
     protected override void Awake()
     {
@@ -23,51 +25,77 @@ public class GameController : GameBaseController
         //this.RandomlySortChildObjects();
     }
 
-    public override void enterGame()
+    void createPlayer()
     {
-        base.enterGame();
-        for (int i = 0; i < this.playersList.Count; i++)
+        for (int i = 0; i < this.maxPlayers; i++)
         {
-            var playerController = this.playersList[i].GetComponent<PlayerController>();
-            if (playerController != null)
+            if (i < this.playerNumber)
             {
-                if (i < this.playerNumber)
+                var playerController = GameObject.Instantiate(this.playerPrefab, this.layoutGroup.transform).GetComponent<PlayerController>();
+                playerController.gameObject.name = "Player_" + i;
+                playerController.UserId = i;
+                this.playerControllers.Add(playerController);
+                this.playerControllers[i].Init(this.characterSets[i]);
+
+                if (i == 0 && LoaderConfig.Instance != null && LoaderConfig.Instance.apiManager.peopleIcon != null)
                 {
-                    if (i == 0 && LoaderConfig.Instance != null && LoaderConfig.Instance.apiManager.peopleIcon != null)
-                    {
-                        var _playerName = LoaderConfig.Instance?.apiManager.loginName;
-                        var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
-                        playerController.updatePlayerIcon(true, _playerName, icon);
-                    }
-                    else
-                    {
-                        playerController.updatePlayerIcon(true);
-                    }
+                    var _playerName = LoaderConfig.Instance?.apiManager.loginName;
+                    var icon = SetUI.ConvertTextureToSprite(LoaderConfig.Instance.apiManager.peopleIcon as Texture2D);
+                    this.playerControllers[i].UserName = _playerName;
+                    this.playerControllers[i].updatePlayerIcon(true, _playerName, icon);
                 }
                 else
                 {
-                    playerController.gameObject.SetActive(false);
-                    playerController.updatePlayerIcon(false);
-                }          
+                    var icon = SetUI.ConvertTextureToSprite(this.characterSets[i].defaultIcon as Texture2D);
+                    this.playerControllers[i].updatePlayerIcon(true, null, icon);
+                }
+            }
+            else
+            {
+                int notUsedId = i + 1;
+                var notUsedPlayerIcon = GameObject.FindGameObjectWithTag("P" + notUsedId + "_Icon");
+                if (notUsedPlayerIcon != null)
+                {
+                    var notUsedIcon = notUsedPlayerIcon.GetComponent<PlayerIcon>();
+
+                    if (notUsedIcon != null)
+                    {
+                        notUsedIcon.HiddenIcon();
+                    }
+                }
+
+                var notUsedPlayerController = GameObject.FindGameObjectWithTag("P" + notUsedId + "_controller").GetComponent<CanvasGroup>();
+                if (notUsedPlayerController != null)
+                {
+                   SetUI.Set(notUsedPlayerController, false);
+                }
             }
         }
+    }
+
+    public override void enterGame()
+    {
+        base.enterGame();
+        this.createPlayer();      
     }
 
     public override void endGame()
     {
         QuestionController.Instance.killAllWords();
         bool showSuccess = false;
-        for (int i = 0; i < this.playersList.Count; i++)
+        for (int i = 0; i < this.playerControllers.Count; i++)
         {
-            var playerController = this.playersList[i].GetComponent<PlayerController>();
-            if (playerController != null)
+            if (i < this.playerNumber)
             {
-                if (playerController.Score >= 30)
+                var playerController = this.playerControllers[i];
+                if (playerController != null)
                 {
-                    showSuccess = true;
+                    if (playerController.Score >= 30)
+                    {
+                        showSuccess = true;
+                    }
+                    this.endGamePage.updateFinalScore(i, playerController.Score);
                 }
-
-                this.endGamePage.updateFinalScore(i, playerController.Score);
             }
         }
         this.endGamePage.setStatus(true, showSuccess);
@@ -76,9 +104,9 @@ public class GameController : GameBaseController
 
     public void showAllCharacterAnswer()
     {
-        for (int i = 0; i < this.playersList.Count; i++)
+        for (int i = 0; i < this.playerControllers.Count; i++)
         {
-            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            var playerController = this.playerControllers[i];
             if (playerController != null)
             {
                playerController.showCharacterAnswer();
@@ -98,9 +126,9 @@ public class GameController : GameBaseController
         float delay = 2f;
         int currentTime = Mathf.FloorToInt(((this.gameTimer.gameDuration - this.gameTimer.currentTime) / this.gameTimer.gameDuration) * 100);
 
-        for (int i = 0; i < this.playersList.Count; i++)
+        for (int i = 0; i < this.playerControllers.Count; i++)
         {
-            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            var playerController = this.playerControllers[i];
             if (playerController != null) {
                 playerController.checkAnswer(currentTime);
 
@@ -125,9 +153,9 @@ public class GameController : GameBaseController
         }
         //this.RandomlySortChildObjects();
 
-        for (int i = 0; i < this.playersList.Count; i++)
+        for (int i = 0; i < this.playerControllers.Count; i++)
         {
-            var playerController = this.playersList[i].GetComponent<PlayerController>();
+            var playerController = this.playerControllers[i];
             if (playerController != null)
             {
                 playerController.scoring.correct = false;
@@ -141,7 +169,7 @@ public class GameController : GameBaseController
     public void RandomlySortChildObjects()
     {
         // Create a list of available sibling indices (0 to playersList.Count - 1)
-        List<int> availableSiblingIndices = Enumerable.Range(0, playersList.Count).ToList();
+        List<int> availableSiblingIndices = Enumerable.Range(0, this.playerControllers.Count).ToList();
 
         // Ensure the new order does not match the previous order
         List<int> newSiblingIndices;
@@ -161,19 +189,19 @@ public class GameController : GameBaseController
         }
 
         // Reorder the child GameObjects in the Horizontal Layout Group
-        for (int i = 0; i < playersList.Count; i++)
+        for (int i = 0; i < this.playerControllers.Count; i++)
         {
             //Debug.Log(newSiblingIndices[i]);
-            playersList[i].SetSiblingIndex(newSiblingIndices[i]);
+            this.playerControllers[i].GetComponent<RectTransform>().SetSiblingIndex(newSiblingIndices[i]);
         }
 
         // Clear the previousSiblingIndices list
         previousSiblingIndices.Clear();
 
         // Update the previousSiblingIndices list with the new sibling indices
-        foreach (var player in playersList)
+        foreach (var player in this.playerControllers)
         {
-            previousSiblingIndices.Add(player.GetSiblingIndex());
+            previousSiblingIndices.Add(player.GetComponent<RectTransform>().GetSiblingIndex());
 
             if (player.GetComponent<PlayerController>() != null)
                 player.GetComponent<PlayerController>().scoring.correct = false;
