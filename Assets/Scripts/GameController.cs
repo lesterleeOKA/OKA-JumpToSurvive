@@ -62,12 +62,25 @@ public class GameController : GameBaseController
                     {
                         notUsedIcon.HiddenIcon();
                     }
+                    notUsedPlayerIcon.SetActive(false);
                 }
 
-                var notUsedPlayerController = GameObject.FindGameObjectWithTag("P" + notUsedId + "_controller").GetComponent<CanvasGroup>();
+                var notUsedPlayerController = GameObject.FindGameObjectWithTag("P" + notUsedId + "_controller");
                 if (notUsedPlayerController != null)
                 {
-                   SetUI.Set(notUsedPlayerController, false);
+                    notUsedPlayerController.SetActive(false);
+                }
+
+                var notUsedAnsweredEffectTxt = GameObject.FindGameObjectWithTag("P" + notUsedId + "_AnswerScore");
+                if (notUsedAnsweredEffectTxt != null)
+                {
+                    notUsedAnsweredEffectTxt.SetActive(false);
+                }
+
+                var notUsedResultScore = GameObject.FindGameObjectWithTag("P" + notUsedId + "_ResultScore");
+                if(notUsedResultScore != null)
+                {
+                    notUsedResultScore.SetActive(false);
                 }
             }
         }
