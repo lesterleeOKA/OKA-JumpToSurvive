@@ -1,6 +1,116 @@
 {
   "questions": [
     {
+      "qid": "p1u7-g1",
+      "questionType": "text",
+      "question": "_______ a pineapple?",
+      "answers": [
+        "Yes, it is.",
+        "Is that",
+        "Are those"
+      ],
+      "correctAnswer": "Is that"
+    },
+    {
+      "qid": "p1u7-g2",
+      "questionType": "text",
+      "question": "Is this a watermelon? No, it _______.",
+      "answers": [
+        "is",
+        "is not",
+        "is not"
+      ],
+      "correctAnswer": "is not"
+    },
+    {
+      "qid": "p1u7-g3",
+      "questionType": "text",
+      "question": "__________ pears? No, they are not.",
+      "answers": [
+        "Are these",
+        "Is this",
+        "Are these"
+      ],
+      "correctAnswer": "Are these"
+    },
+    {
+      "qid": "p1u7-g4",
+      "questionType": "text",
+      "question": "Is this a banana? Yes, it ______.",
+      "answers": [
+        "is",
+        "is not",
+        "is"
+      ],
+      "correctAnswer": "is"
+    },
+    {
+      "qid": "p1u7-g5",
+      "questionType": "text",
+      "question": "Are those cherries? Yes, they ______.",
+      "answers": [
+        "are not",
+        "are",
+        "are"
+      ],
+      "correctAnswer": "are"
+    },
+    {
+      "qid": "p1u7-g6",
+      "questionType": "text",
+      "question": "_______ an apple? No, it is not",
+      "answers": [
+        "Is this",
+        "Are these",
+        "Is this"
+      ],
+      "correctAnswer": "Is this"
+    },
+    {
+      "qid": "p1u7-g7",
+      "questionType": "text",
+      "question": "_______ mangoes? Yes, they are.",
+      "answers": [
+        "Is that",
+        "Are those",
+        "Are those"
+      ],
+      "correctAnswer": "Are those"
+    },
+    {
+      "qid": "p1u7-g8",
+      "questionType": "text",
+      "question": "Are these strawberries? No, they ______.",
+      "answers": [
+        "are",
+        "are not",
+        "are not"
+      ],
+      "correctAnswer": "are not"
+    },
+    {
+      "qid": "p1u7-g9",
+      "questionType": "text",
+      "question": "Is that a dragon fruit? Yes, it _____.",
+      "answers": [
+        "is",
+        "is not",
+        "is"
+      ],
+      "correctAnswer": "is"
+    },
+    {
+      "qid": "p1u7-g10",
+      "questionType": "text",
+      "question": "_______ blueberries? Yes, they are.",
+      "answers": [
+        "Are these",
+        "Is this",
+        "Are these"
+      ],
+      "correctAnswer": "Are these"
+    },
+    {
       "qid": "p6u1-c1",
       "questionType": "audio",
       "question": "",
