@@ -45,12 +45,14 @@ public static class ExternalCaller
                 string baseUrl = GetCurrentDomainName;
                 string newUrl = $"https://{baseUrl}/RainbowOne/webapp/OKAGames/SelectGames/";
                 if (LogController.Instance != null) LogController.Instance.debug("full url:" + newUrl);
-                Application.ExternalEval($"location.href = '{newUrl}', '_self'");
+                //Application.ExternalEval($"location.href = '{newUrl}', '_self'");
+                Application.ExternalEval($"window.location.replace('{newUrl}')");
             }
             else if (hostname.Contains("www.rainbowone.app"))
             {
                 string Production = "https://www.starwishparty.com/";
-                Application.ExternalEval($"location.href = '{Production}', '_self'");
+                //Application.ExternalEval($"location.href = '{Production}', '_self'");
+                Application.ExternalEval($"window.location.replace('{Production}')");
             }
             else if (hostname.Contains("localhost"))
             {

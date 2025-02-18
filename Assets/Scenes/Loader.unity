@@ -792,6 +792,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: Ver 1.08
       objectReference: {fileID: 0}
+    - target: {fileID: 2671891215309770865, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4981277203392254078, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Pivot.x
       value: 0
