@@ -178,7 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleRatio: 0.75
-  pointDown: 0
 --- !u!114 &4008211168772009390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +222,7 @@ RectTransform:
   m_GameObject: {fileID: 529676457652778623}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3900566113890188359}
@@ -233,7 +232,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 227}
+  m_AnchoredPosition: {x: 0, y: -227}
   m_SizeDelta: {x: 852.7, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8694922376081667249
@@ -310,14 +309,14 @@ RectTransform:
   m_GameObject: {fileID: 557242570657938219}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2839207523627907244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.700012, y: 39.800003}
+  m_AnchoredPosition: {x: -24.700012, y: -16}
   m_SizeDelta: {x: -168.3, y: -175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7081886735120205558
@@ -514,14 +513,14 @@ RectTransform:
   m_GameObject: {fileID: 6053202241909732510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2839207523627907244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -128, y: -191}
+  m_AnchoredPosition: {x: -135, y: -75}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8402221065672978883
@@ -674,14 +673,14 @@ RectTransform:
   m_GameObject: {fileID: 6518357397557855087}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2839207523627907244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98, y: -194}
+  m_AnchoredPosition: {x: 98, y: -79}
   m_SizeDelta: {x: 74.599976, y: 43.899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2127092187548629367
@@ -714,8 +713,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Hints
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
-  m_sharedMaterial: {fileID: 985774332121155581, guid: efef8b91b300fa84f9a50e1ac422f2d8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: db5aebfdef14de84b8aa5f27bba59c74, type: 2}
+  m_sharedMaterial: {fileID: 985774332121155581, guid: db5aebfdef14de84b8aa5f27bba59c74, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -849,7 +848,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5b1448fb108527748ae785aaf92f5516, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 83927660910aaa1409d00e15322477b8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -957,7 +956,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleRatio: 0.75
-  pointDown: 0
 --- !u!1 &8364788864102920444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1024,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 86894e559dda50544ad9403bf0143e3b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 29f28155a0497634e819fe498714a8ec, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1134,4 +1132,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleRatio: 0.75
-  pointDown: 0
