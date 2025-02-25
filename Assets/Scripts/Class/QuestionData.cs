@@ -128,7 +128,7 @@ public class CurrentQuestion
             }
         }
 
-        if (qa == null) return;
+        if (qa == null || this.answeredQuestion >= totalQuestion) return;
         this.qa = qa;
 
         switch (qa.questionType)
