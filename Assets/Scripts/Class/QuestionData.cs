@@ -200,7 +200,7 @@ public class CurrentQuestion
 
     public void playAudio()
     {
-        if(this.audioPlayBtn != null && this.qa.audioClip != null)
+        if(this.audioPlayBtn != null && this.qa.audioClip != null && AudioController.Instance.audioStatus)
         {
             this.audioPlayBtn.GetComponent<AudioSource>().clip = this.qa.audioClip;
             this.audioPlayBtn.GetComponent<AudioSource>().Play();

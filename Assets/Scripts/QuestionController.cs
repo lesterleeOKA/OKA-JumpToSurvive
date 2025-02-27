@@ -126,9 +126,9 @@ public class QuestionController : MonoBehaviour
 
         float minY = startPositionY[0]; //min
         float maxY = startPositionY[1]; //max
-        float posY = UnityEngine.Random.Range(minY, maxY);
         for (int i = 0; i < answers; i++)
         {
+            float posY = UnityEngine.Random.Range(minY, maxY);
             var answer = this.currentQuestion.answersChoics[i];
             float _delay = UnityEngine.Random.Range(1f, 3f);
             if (!string.IsNullOrEmpty(answer) && !GameController.Instance.gameTimer.endGame)
