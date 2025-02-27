@@ -3,9 +3,8 @@
     {
       "qid": "p1u7-g1",
       "questionType": "text",
-      "question": "_______ a pineapple?",
+      "question": "_______ a pineapple? Yes, it is.",
       "answers": [
-        "Yes, it is.",
         "Is that",
         "Are those"
       ],
@@ -17,7 +16,6 @@
       "question": "Is this a watermelon? No, it _______.",
       "answers": [
         "is",
-        "is not",
         "is not"
       ],
       "correctAnswer": "is not"
@@ -28,8 +26,7 @@
       "question": "__________ pears? No, they are not.",
       "answers": [
         "Are these",
-        "Is this",
-        "Are these"
+        "Is this"
       ],
       "correctAnswer": "Are these"
     },
@@ -39,8 +36,7 @@
       "question": "Is this a banana? Yes, it ______.",
       "answers": [
         "is",
-        "is not",
-        "is"
+        "is not"
       ],
       "correctAnswer": "is"
     },
@@ -50,7 +46,6 @@
       "question": "Are those cherries? Yes, they ______.",
       "answers": [
         "are not",
-        "are",
         "are"
       ],
       "correctAnswer": "are"
@@ -61,8 +56,7 @@
       "question": "_______ an apple? No, it is not",
       "answers": [
         "Is this",
-        "Are these",
-        "Is this"
+        "Are these"
       ],
       "correctAnswer": "Is this"
     },
@@ -72,7 +66,6 @@
       "question": "_______ mangoes? Yes, they are.",
       "answers": [
         "Is that",
-        "Are those",
         "Are those"
       ],
       "correctAnswer": "Are those"
@@ -83,7 +76,6 @@
       "question": "Are these strawberries? No, they ______.",
       "answers": [
         "are",
-        "are not",
         "are not"
       ],
       "correctAnswer": "are not"
@@ -94,8 +86,7 @@
       "question": "Is that a dragon fruit? Yes, it _____.",
       "answers": [
         "is",
-        "is not",
-        "is"
+        "is not"
       ],
       "correctAnswer": "is"
     },
@@ -105,8 +96,7 @@
       "question": "_______ blueberries? Yes, they are.",
       "answers": [
         "Are these",
-        "Is this",
-        "Are these"
+        "Is this"
       ],
       "correctAnswer": "Are these"
     },
