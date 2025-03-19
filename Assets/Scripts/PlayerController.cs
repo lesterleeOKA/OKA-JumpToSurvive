@@ -22,6 +22,7 @@ public class PlayerController : UserData
     private AudioSource effect = null;
     public ParticleSystem jumpup_particle;
     private CanvasGroup jumpBtnGroup = null;
+
     public CanvasGroup[] playerNoTexts;
 
     public void Init(CharacterSet characterSet = null)
