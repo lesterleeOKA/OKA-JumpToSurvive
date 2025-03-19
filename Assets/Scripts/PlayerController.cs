@@ -22,12 +22,19 @@ public class PlayerController : UserData
     private AudioSource effect = null;
     public ParticleSystem jumpup_particle;
     private CanvasGroup jumpBtnGroup = null;
+    public CanvasGroup[] playerNoTexts;
 
     public void Init(CharacterSet characterSet = null)
     {
         this.characterSet = characterSet;
         this.PlayerColor = characterSet.playerColor;
         if (this.effect == null) { this.effect = this.GetComponent<AudioSource>(); }
+
+        if (this.playerNoTexts[this.UserId] != null)
+        {
+            SetUI.Set(this.playerNoTexts[this.UserId], true);
+            this.playerNoTexts[this.UserId].GetComponentInChildren<TextMeshProUGUI>().color = this.PlayerColor;
+        }
         if (this.character != null)
         {
             this.rb = this.character.GetComponent<Rigidbody2D>();

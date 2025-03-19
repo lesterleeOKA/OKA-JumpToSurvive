@@ -397,10 +397,10 @@ RectTransform:
   - {fileID: 4699364456994639396}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 266.3883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6225259472446886398
 CanvasRenderer:
@@ -648,6 +648,8 @@ MonoBehaviour:
   NumberFormat: N0
   Unit: 
   scoringEffect: {fileID: 6557280462373945260}
+  textColor: {r: 0, g: 0, b: 0, a: 0}
+  isAnimatedColor: 1
 --- !u!82 &6557280462373945260
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1357,6 +1359,8 @@ MonoBehaviour:
   NumberFormat: N0
   Unit: 
   scoringEffect: {fileID: 2521318396597857824}
+  textColor: {r: 0, g: 0, b: 0, a: 0}
+  isAnimatedColor: 1
 --- !u!82 &2521318396597857824
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1701,10 +1705,10 @@ RectTransform:
   - {fileID: 2817066278856796584}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 266.3883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &441676400746484926
 CanvasRenderer:
@@ -2164,10 +2168,10 @@ RectTransform:
   - {fileID: 1169466264079323114}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 880, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 266.3883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2684836879186306615
 CanvasRenderer:
@@ -3181,6 +3185,8 @@ MonoBehaviour:
   NumberFormat: N0
   Unit: 
   scoringEffect: {fileID: 6491943544592315780}
+  textColor: {r: 0, g: 0, b: 0, a: 0}
+  isAnimatedColor: 1
 --- !u!82 &6491943544592315780
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3431,6 +3437,8 @@ MonoBehaviour:
   NumberFormat: N0
   Unit: 
   scoringEffect: {fileID: 6397219797466662447}
+  textColor: {r: 0, g: 0, b: 0, a: 0}
+  isAnimatedColor: 1
 --- !u!82 &6397219797466662447
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4000,10 +4008,10 @@ RectTransform:
   - {fileID: 3231303747877482615}
   m_Father: {fileID: 1998527767000306883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1220, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 266.3883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7451850468665314409
 CanvasRenderer:
