@@ -9,7 +9,6 @@ public class QuestionController : MonoBehaviour
     public static QuestionController Instance = null;
     public float starPositionX;
     public float[] startPositionY = new float[2]{0f, 165f};
-    public float[] speedRange = new float[2]{150f, 500f};
     public Transform wordParent;
     public GameObject word;
     public List<Bird> createdWords = new List<Bird>();
@@ -144,7 +143,7 @@ public class QuestionController : MonoBehaviour
     {
         // Instantiate the prefab at the current transform position and rotation
         Vector2 pos = new Vector2(this.starPositionX, posY);
-        float speed = UnityEngine.Random.Range(this.speedRange[0], this.speedRange[1]);
+        float speed = LoaderConfig.Instance.gameSetup.objectAverageSpeed * 250f;
         Material birdOutline = new Material(Shader.Find("Hidden/GlobalOutline"));
 
         Bird createdWord;

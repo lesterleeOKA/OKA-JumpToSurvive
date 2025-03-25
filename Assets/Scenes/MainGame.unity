@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -751,6 +751,7 @@ MonoBehaviour:
   answerBox: {fileID: 1531590089}
   answerText: {fileID: 1668249804}
   jumpup_particle: {fileID: 531219187}
+  playerNoTexts: []
 --- !u!82 &200380413
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3235,9 +3236,6 @@ MonoBehaviour:
   startPositionY:
   - 0
   - 155
-  speedRange:
-  - 300
-  - 300
   wordParent: {fileID: 808262308}
   word: {fileID: 7861068192979733197, guid: 1d1bc9b148eb07447831ae3dd3b38bcb, type: 3}
   createdWords: []
@@ -10687,6 +10685,7 @@ MonoBehaviour:
   answerBox: {fileID: 2107644004}
   answerText: {fileID: 451125569}
   jumpup_particle: {fileID: 997175960}
+  playerNoTexts: []
 --- !u!82 &1187884255
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12412,6 +12411,7 @@ MonoBehaviour:
   answerBox: {fileID: 1501309998}
   answerText: {fileID: 1059339956}
   jumpup_particle: {fileID: 2035571398}
+  playerNoTexts: []
 --- !u!82 &1614304796
 AudioSource:
   m_ObjectHideFlags: 0
@@ -36143,6 +36143,7 @@ MonoBehaviour:
   answerBox: {fileID: 1824073893497201935}
   answerText: {fileID: 1959423907584137173}
   jumpup_particle: {fileID: 3416043822906380535}
+  playerNoTexts: []
 --- !u!224 &4364039165555999533
 RectTransform:
   m_ObjectHideFlags: 0

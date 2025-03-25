@@ -256,6 +256,8 @@ public class GameSetup: LoadImage
     public RawImage gamePreview;
     public InstructionText instructions;
     public float gameTime;
+    [Range(1, 3)]
+    public int objectAverageSpeed;
     public bool showFPS = false;
     public int playerNumber = 1;
 

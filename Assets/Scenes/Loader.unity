@@ -395,6 +395,7 @@ MonoBehaviour:
     gamePreview: {fileID: 0}
     instructions: {fileID: 0}
     gameTime: 300
+    objectAverageSpeed: 1
     showFPS: 0
     playerNumber: 3
   apiManager:
@@ -423,7 +424,9 @@ MonoBehaviour:
       backgroundImageUrl: 
       instructionContent: 
       gameTime: 0
+      playerNumber: 0
       prefabItemImageUrl: 
+      objectMovingSpeed: 0
     maxRetries: 10
     debugLayer: {fileID: 364249476}
     loginErrorBox: {fileID: 2087651252}
@@ -790,7 +793,7 @@ PrefabInstance:
       objectReference: {fileID: 12800000, guid: 65e0021e32122fe4eafa107cecf8fd43, type: 3}
     - target: {fileID: 1761761257498461912, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Text
-      value: Ver 1.08
+      value: Ver 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 2671891215309770865, guid: bc74bb1d218bbcc4daf665d7ff132001, type: 3}
       propertyPath: m_Alpha
