@@ -287,8 +287,20 @@ public class GameSetup: LoadImage
         if (this.gamePreview == null)
         {
             var preview = GameObject.FindGameObjectWithTag("GamePreview");
-            this.gamePreview = preview != null ? preview.GetComponent<RawImage>() : null;
-            if (preview != null) this.gamePreview.texture = this.previewTexture;
+
+            if (preview != null)
+            {
+                var aspectRatio = preview.GetComponent<AspectRatioFitter>();
+                this.gamePreview = preview.GetComponent<RawImage>();
+
+                if (this.gamePreview != null) this.gamePreview.texture = this.previewTexture;
+
+                if (aspectRatio != null)
+                {
+                    aspectRatio.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+                    aspectRatio.aspectRatio = (float)this.previewTexture.width / this.previewTexture.height;
+                }
+            }
         }
     }
 }
